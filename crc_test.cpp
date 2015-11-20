@@ -1225,6 +1225,26 @@ int test_ucrc16_11(struct test_info_t  *test_info)
 
 
 
+//width=16  poly=0x8005  init=0x0000  refin=true  refout=true  xorout=0xffff  check=0x44c2  name="CRC-16/MAXIM"
+int test_ucrc16_12(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint16_t crc;
+
+    Universal_CRC<16, 0x8005, 0x0, true, true, 0xffff>  ucrc;
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0x44c2 )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -1307,7 +1327,8 @@ ptest_func tests[] =
     test_ucrc16_8,
     test_ucrc16_9,
     test_ucrc16_10,
-    test_ucrc16_11
+    test_ucrc16_11,
+    test_ucrc16_12
 };
 
 
