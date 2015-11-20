@@ -365,6 +365,25 @@ int test_ucrc3(struct test_info_t  *test_info)
 
 
 
+int test_ucrc4(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint8_t crc;
+
+    Universal_CRC<4, 0x3, 0x0, false, false, 0x0>  ucrc;
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0xE )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -391,7 +410,9 @@ ptest_func tests[] =
     test_universal_crc_get_crc_mask,
 
     //CRC
-    test_ucrc3
+    test_ucrc3,
+
+    test_ucrc4
 };
 
 
