@@ -34,6 +34,19 @@
 #ifndef UNIVERSAL_CRC_H
 #define UNIVERSAL_CRC_H
 
+#include <stdint.h>
+
+
+
+
+
+template<uint8_t Bits_minus_1_div_8> struct CRC_Type_helper{ typedef uint64_t value_type; }; // default
+
+template<> struct CRC_Type_helper<0> { typedef uint8_t  value_type; }; //for Bits 1..8
+template<> struct CRC_Type_helper<1> { typedef uint16_t value_type; }; //for Bits 9..16
+template<> struct CRC_Type_helper<2> { typedef uint32_t value_type; }; //for Bits 17..24
+template<> struct CRC_Type_helper<3> { typedef uint32_t value_type; }; //for Bits 25..32
+
 
 
 
