@@ -29,12 +29,36 @@ int test_crc_type_helper_uint8(struct test_info_t  *test_info)
 
 
 
+int test_crc_type_helper_uint16(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+
+    if(
+        sizeof(CRC_Type_helper< (9 -1)/8 >::value_type) != sizeof(uint16_t) ||
+        sizeof(CRC_Type_helper< (10-1)/8 >::value_type) != sizeof(uint16_t) ||
+        sizeof(CRC_Type_helper< (11-1)/8 >::value_type) != sizeof(uint16_t) ||
+        sizeof(CRC_Type_helper< (12-1)/8 >::value_type) != sizeof(uint16_t) ||
+        sizeof(CRC_Type_helper< (13-1)/8 >::value_type) != sizeof(uint16_t) ||
+        sizeof(CRC_Type_helper< (14-1)/8 >::value_type) != sizeof(uint16_t) ||
+        sizeof(CRC_Type_helper< (15-1)/8 >::value_type) != sizeof(uint16_t) ||
+        sizeof(CRC_Type_helper< (16-1)/8 >::value_type) != sizeof(uint16_t)
+      )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
 
 ptest_func tests[] =
 {
 
     //CRC_Type_Helper
-    test_crc_type_helper_uint8
+    test_crc_type_helper_uint8,
+    test_crc_type_helper_uint16
 };
 
 
