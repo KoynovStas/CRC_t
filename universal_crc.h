@@ -70,6 +70,7 @@ class Universal_CRC
         std::string name;
 
         uint8_t   get_bits()    const { return Bits;  }
+        CRC_Type  get_poly()    const { return Poly;  }
 
 
     private:
