@@ -1546,6 +1546,26 @@ int test_ucrc31(struct test_info_t  *test_info)
 
 
 
+//width=32 poly=0x04c11db7 init=0xffffffff refin=true refout=true xorout=0xffffffff check=0xcbf43926 name="CRC-32"
+int test_ucrc32(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint32_t crc;
+
+    Universal_CRC<32, 0x04C11DB7, 0xFFFFFFFF, true, true, 0xFFFFFFFF>  ucrc;
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0xCBF43926 )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -1646,7 +1666,9 @@ ptest_func tests[] =
     test_ucrc24_2,
     test_ucrc24_3,
 
-    test_ucrc31
+    test_ucrc31,
+
+    test_ucrc32
 };
 
 
