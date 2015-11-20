@@ -179,6 +179,23 @@ int test_universal_crc_get_poly(struct test_info_t  *test_info)
 
 
 
+int test_universal_crc_get_init(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    Universal_CRC<16, 0, 1234, true, true, 0>  ucrc;
+
+
+    if( ucrc.get_init() != 1234 )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -194,7 +211,8 @@ ptest_func tests[] =
     test_universal_crc_name_2,
 
     test_universal_crc_get_bits,
-    test_universal_crc_get_poly
+    test_universal_crc_get_poly,
+    test_universal_crc_get_init
 };
 
 
