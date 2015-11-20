@@ -196,6 +196,23 @@ int test_universal_crc_get_init(struct test_info_t  *test_info)
 
 
 
+int test_universal_crc_get_xor_out(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    Universal_CRC<16, 0, 0, true, false, 4321>  ucrc;
+
+
+    if( ucrc.get_xor_out() != 4321 )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -212,7 +229,8 @@ ptest_func tests[] =
 
     test_universal_crc_get_bits,
     test_universal_crc_get_poly,
-    test_universal_crc_get_init
+    test_universal_crc_get_init,
+    test_universal_crc_get_xor_out
 };
 
 
