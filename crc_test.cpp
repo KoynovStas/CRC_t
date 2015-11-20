@@ -863,6 +863,26 @@ int test_ucrc11(struct test_info_t  *test_info)
 
 
 
+//width=12 poly=0x80f init=0x000 refin=false refout=true xorout=0x000 check=0xdaf name="CRC-12/3GPP"
+int test_ucrc12(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint16_t crc;
+
+    Universal_CRC<12, 0x80f, 0x0, false, true, 0x0>  ucrc;
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0xDAF )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -922,7 +942,9 @@ ptest_func tests[] =
     test_ucrc10,
     test_ucrc10_2,
 
-    test_ucrc11
+    test_ucrc11,
+
+    test_ucrc12
 };
 
 
