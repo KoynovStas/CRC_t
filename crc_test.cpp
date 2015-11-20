@@ -1345,6 +1345,26 @@ int test_ucrc16_17(struct test_info_t  *test_info)
 
 
 
+//width=16  poly=0x8005  init=0xffff  refin=true  refout=true  xorout=0xffff  check=0xb4c8  name="CRC-16/USB"
+int test_ucrc16_18(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint16_t crc;
+
+    Universal_CRC<16, 0x8005, 0xffff, true, true, 0xffff>  ucrc;
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0xb4c8 )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -1433,7 +1453,8 @@ ptest_func tests[] =
     test_ucrc16_14,
     test_ucrc16_15,
     test_ucrc16_16,
-    test_ucrc16_17
+    test_ucrc16_17,
+    test_ucrc16_18
 };
 
 
