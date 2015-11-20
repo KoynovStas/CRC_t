@@ -36,6 +36,7 @@
 
 #include <stdint.h>
 #include <string>
+#include <cstdio>
 
 
 
@@ -82,6 +83,8 @@ class Universal_CRC
 
         CRC_Type get_crc(const char* buf, size_t len);
         CRC_Type get_crc(CRC_Type crc, const char* buf, size_t len); //for first byte crc = init (must be)
+
+        int get_crc(CRC_Type *crc, const char *file_name);
 
 
     private:
@@ -187,6 +190,44 @@ CRC_TYPE Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::reflect(CRC_Typ
     }
 
     return reflection;
+}
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
+int Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type *crc, const char *file_name)
+{
+
+    if( !file_name || !crc )
+        return -1; //Bad param
+
+    *crc = init;
+
+    char buf[4096];
+
+
+    FILE *stream = fopen(file_name, "rb");
+    if( stream == NULL )
+        return -1; //Cant open file
+
+
+    while( !feof(stream) )
+    {
+       size_t len = fread(buf, 1, sizeof(buf), stream);
+       *crc = get_crc(*crc, buf, len);
+    }
+
+
+    fclose(stream);
+
+
+    if(RefOut^RefIn) *crc = reflect(*crc, Bits);
+
+    *crc ^= XorOut;
+    *crc &= crc_mask; //for CRC not power 2
+
+
+    return 0; //good  job
 }
 
 
