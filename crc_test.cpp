@@ -944,6 +944,26 @@ int test_ucrc13(struct test_info_t  *test_info)
 
 
 
+//width=14 poly=0x0805 init=0x0000 refin=true refout=true xorout=0x0000 check=0x082d name="CRC-14/DARC"
+int test_ucrc14(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint16_t crc;
+
+    Universal_CRC<14, 0x0805, 0x0, true, true, 0x0>  ucrc;
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0x082D )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -1009,7 +1029,9 @@ ptest_func tests[] =
     test_ucrc12_2,
     test_ucrc12_3,
 
-    test_ucrc13
+    test_ucrc13,
+
+    test_ucrc14
 };
 
 
