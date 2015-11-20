@@ -85,13 +85,30 @@ int test_crc_type_helper_uint32(struct test_info_t  *test_info)
 
 
 
+int test_crc_type_helper_uint64(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+
+    //Template CRC_Type_helper default is uint64_t
+    if( sizeof(CRC_Type_helper<100>::value_type) != sizeof(uint64_t) )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
     //CRC_Type_Helper
     test_crc_type_helper_uint8,
     test_crc_type_helper_uint16,
-    test_crc_type_helper_uint32
+    test_crc_type_helper_uint32,
+    test_crc_type_helper_uint64
 };
 
 
