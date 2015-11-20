@@ -69,6 +69,8 @@ class Universal_CRC
 
         std::string name;
 
+        uint8_t   get_bits()    const { return Bits;  }
+
 
     private:
 
