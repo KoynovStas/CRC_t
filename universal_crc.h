@@ -85,6 +85,7 @@ class Universal_CRC
 
         CRC_Type reflect(CRC_Type data, uint8_t num_bits);
 
+        uint8_t  shift;
         CRC_Type init;
         CRC_Type top_bit;
         CRC_Type crc_mask;
@@ -101,6 +102,12 @@ Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::Universal_CRC(const std:
 
     top_bit  = (CRC_Type)1 << (Bits - 1);
     crc_mask = ( (top_bit - 1) << 1) | 1;
+
+
+    if(Bits > 8)
+        shift = (Bits - 8);
+    else
+        shift = (8 - Bits);
 
 
     if(RefIn)
