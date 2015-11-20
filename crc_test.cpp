@@ -1045,6 +1045,26 @@ int test_ucrc16_2(struct test_info_t  *test_info)
 
 
 
+//width=16  poly=0x8005  init=0x0000  refin=false  refout=false  xorout=0x0000  check=0xfee8  name="CRC-16/BUYPASS"
+int test_ucrc16_3(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint16_t crc;
+
+    Universal_CRC<16, 0x8005, 0x0, false, false, 0x0>  ucrc;
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0xfee8 )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -1118,7 +1138,8 @@ ptest_func tests[] =
     test_ucrc15_2,
 
     test_ucrc16,
-    test_ucrc16_2
+    test_ucrc16_2,
+    test_ucrc16_3
 };
 
 
