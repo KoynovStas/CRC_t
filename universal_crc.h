@@ -77,7 +77,8 @@ class Universal_CRC
         bool      get_ref_out() const { return RefOut;}
 
         CRC_Type  get_crc_init()const { return init;    } //init = reflect(Init, Bits) if RefIn, else = Init
-        CRC_Type  get_top_bit()const  { return top_bit; }
+        CRC_Type  get_top_bit() const { return top_bit; }
+        CRC_Type  get_crc_mask()const { return crc_mask;}
 
 
     private:
