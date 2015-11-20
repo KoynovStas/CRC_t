@@ -74,6 +74,7 @@ class Universal_CRC
         CRC_Type  get_init()    const { return Init;  }
         CRC_Type  get_xor_out() const { return XorOut;}
         bool      get_ref_in()  const { return RefIn; }
+        bool      get_ref_out() const { return RefOut;}
 
 
     private:
