@@ -80,6 +80,9 @@ class Universal_CRC
         CRC_Type  get_top_bit() const { return top_bit; }
         CRC_Type  get_crc_mask()const { return crc_mask;}
 
+        CRC_Type get_crc(const char* buf, size_t len);
+        CRC_Type get_crc(CRC_Type crc, const char* buf, size_t len); //for first byte crc = init (must be)
+
 
     private:
 
@@ -119,6 +122,51 @@ Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::Universal_CRC(const std:
 
 
     init_crc_table();
+}
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
+CRC_TYPE Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(const char* buf, size_t len)
+{
+
+    CRC_Type crc = get_crc(init, buf, len);
+
+    if(RefOut^RefIn) crc = reflect(crc, Bits);
+
+    crc ^= XorOut;
+    crc &= crc_mask; //for CRC not power 2
+
+    return crc;
+}
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
+CRC_TYPE Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type crc, const char* buf, size_t len)
+{
+
+    if(Bits > 8)
+    {
+        if(RefIn)
+            while (len--)
+                crc = (crc >> 8) ^ crc_table[ (crc ^ *buf++) & 0xff ];
+        else
+            while (len--)
+                crc = (crc << 8) ^ crc_table[ ((crc >> shift) & 0xff) ^ *buf++ ];
+    }
+    else
+    {
+        if (RefIn)
+            while (len--)
+                crc = crc_table[ crc ^ *buf++ ];
+        else
+            while (len--)
+                crc = crc_table[ (crc << shift) ^ *buf++ ];
+    }
+
+
+    return crc;
 }
 
 
