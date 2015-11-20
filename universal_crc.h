@@ -84,11 +84,13 @@ class Universal_CRC
     private:
 
         CRC_Type reflect(CRC_Type data, uint8_t num_bits);
+        void init_crc_table();
 
         uint8_t  shift;
         CRC_Type init;
         CRC_Type top_bit;
         CRC_Type crc_mask;
+        CRC_Type crc_table[256];
 };
 
 
@@ -114,6 +116,9 @@ Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::Universal_CRC(const std:
         init = reflect(Init, Bits);
     else
         init = Init;
+
+
+    init_crc_table();
 }
 
 
@@ -134,6 +139,45 @@ CRC_TYPE Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::reflect(CRC_Typ
     }
 
     return reflection;
+}
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
+void Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_crc_table()
+{
+    int i;
+    CRC_Type crc;
+
+
+    for(i = 0; i < 256; i++)
+    {
+
+        crc = 0;
+
+        for(uint8_t mask = 0x80; mask; mask >>= 1)
+        {
+
+            if ( i & mask )
+                crc ^= top_bit;
+
+
+            if (crc & top_bit)
+            {
+                crc <<= 1;
+                crc ^= Poly;
+            }
+            else
+                crc <<= 1;
+        }
+
+        crc &= crc_mask; //for CRC not power 2
+
+        if(RefIn)
+            crc_table[reflect(i, 8)] = reflect(crc, Bits);
+        else
+            crc_table[i] = crc;
+     }
 }
 
 
