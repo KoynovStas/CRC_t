@@ -1525,6 +1525,27 @@ int test_ucrc24_3(struct test_info_t  *test_info)
 
 
 
+//width=31 poly=0x04c11db7 init=0x7fffffff refin=false refout=false xorout=0x7fffffff check=0x0ce9e46c name="CRC-31/PHILIPS"
+int test_ucrc31(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint32_t crc;
+
+    Universal_CRC<31, 0x04c11db7, 0x7fffffff, false, false, 0x7fffffff>  ucrc;
+
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0x0ce9e46c )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -1623,7 +1644,9 @@ ptest_func tests[] =
 
     test_ucrc24,
     test_ucrc24_2,
-    test_ucrc24_3
+    test_ucrc24_3,
+
+    test_ucrc31
 };
 
 
