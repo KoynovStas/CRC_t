@@ -77,6 +77,7 @@ class Universal_CRC
         bool      get_ref_out() const { return RefOut;}
 
         CRC_Type  get_crc_init()const { return init;    } //init = reflect(Init, Bits) if RefIn, else = Init
+        CRC_Type  get_top_bit()const  { return top_bit; }
 
 
     private:
@@ -84,6 +85,8 @@ class Universal_CRC
         CRC_Type reflect(CRC_Type data, uint8_t num_bits);
 
         CRC_Type init;
+        CRC_Type top_bit;
+        CRC_Type crc_mask;
 };
 
 
@@ -94,6 +97,10 @@ template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, C
 Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::Universal_CRC(const std::string crc_name) :
     name(crc_name)
 {
+
+    top_bit  = (CRC_Type)1 << (Bits - 1);
+    crc_mask = ( (top_bit - 1) << 1) | 1;
+
 
     if(RefIn)
         init = reflect(Init, Bits);
