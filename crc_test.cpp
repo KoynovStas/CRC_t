@@ -1706,6 +1706,26 @@ int test_ucrc32_8(struct test_info_t  *test_info)
 
 
 
+//width=32 poly=0x000000af init=0x00000000 refin=false refout=false xorout=0x00000000 check=0xbd0be338 name="CRC-32/XFER"
+int test_ucrc32_9(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint32_t crc;
+
+    Universal_CRC<32, 0x000000af, 0x0, false, false, 0x0>  ucrc;
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0xbd0be338 )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -1815,7 +1835,8 @@ ptest_func tests[] =
     test_ucrc32_5,
     test_ucrc32_6,
     test_ucrc32_7,
-    test_ucrc32_8
+    test_ucrc32_8,
+    test_ucrc32_9
 };
 
 
