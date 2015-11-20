@@ -4,6 +4,9 @@
 
 
 
+//------------- tests for CRC_Type_helper -------------
+
+
 
 int test_crc_type_helper_uint8(struct test_info_t  *test_info)
 {
@@ -101,6 +104,48 @@ int test_crc_type_helper_uint64(struct test_info_t  *test_info)
 
 
 
+//------------- tests for Universal_CRC methods -------------
+
+
+
+int test_universal_crc_name(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+
+    Universal_CRC<1, 0, 0, true, true, 0>  ucrc;
+
+
+    if( ucrc.name != "" )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
+int test_universal_crc_name_2(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    const char* name = "some_name";
+
+    Universal_CRC<1, 0, 0, true, true, 0>  ucrc(name);
+
+
+    if( ucrc.name != name )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
+
 ptest_func tests[] =
 {
 
@@ -108,7 +153,12 @@ ptest_func tests[] =
     test_crc_type_helper_uint8,
     test_crc_type_helper_uint16,
     test_crc_type_helper_uint32,
-    test_crc_type_helper_uint64
+    test_crc_type_helper_uint64,
+
+
+    //Universal_CRC methods
+    test_universal_crc_name,
+    test_universal_crc_name_2
 };
 
 
