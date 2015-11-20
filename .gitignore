@@ -1,0 +1,50 @@
+# Object files
+*.o
+*.o.*
+*.ko
+*.obj
+*.elf
+
+
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+
+
+# Binary files
+crc_test
+
+
+
+#log files
+*.log*
+
+
+# Temp files
+*.*~
+
+
+
+# Configs for QT_Creator (I use QT_Creator as IDE)
+*.config
+*.creator
+*.creator.user
+*.files
+*.includes
+
+
+
+# Files that we don't want to ignore
+!.gitignore
