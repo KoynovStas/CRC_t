@@ -1787,6 +1787,27 @@ int test_ucrc64_2(struct test_info_t  *test_info)
 
 
 
+//width=64 poly=0x42f0e1eba9ea3693 init=0xffffffffffffffff refin=true refout=true
+//xorout=0xffffffffffffffff check=0x995dc9bbdf1939fa name="CRC-64/XZ"
+int test_ucrc64_3(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint64_t crc;
+
+    Universal_CRC<64, 0x42f0e1eba9ea3693, 0xFFFFFFFFFFFFFFFF, true, true, 0xFFFFFFFFFFFFFFFF>  ucrc;
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0x995dc9bbdf1939fa )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -1902,7 +1923,8 @@ ptest_func tests[] =
     test_ucrc40,
 
     test_ucrc64,
-    test_ucrc64_2
+    test_ucrc64_2,
+    test_ucrc64_3
 };
 
 
