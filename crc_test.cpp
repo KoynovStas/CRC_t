@@ -1285,6 +1285,25 @@ int test_ucrc16_14(struct test_info_t  *test_info)
 
 
 
+//width=16  poly=0x8bb7  init=0x0000  refin=false  refout=false  xorout=0x0000  check=0xd0db  name="CRC-16/T10-DIF"
+int test_ucrc16_15(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint16_t crc;
+
+    Universal_CRC<16, 0x8bb7, 0x0, false, false, 0x0>  ucrc;
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0xd0db )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
 ptest_func tests[] =
 {
 
@@ -1370,7 +1389,8 @@ ptest_func tests[] =
     test_ucrc16_11,
     test_ucrc16_12,
     test_ucrc16_13,
-    test_ucrc16_14
+    test_ucrc16_14,
+    test_ucrc16_15
 };
 
 
