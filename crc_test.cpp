@@ -341,6 +341,30 @@ int test_universal_crc_get_crc_mask(struct test_info_t  *test_info)
 
 
 
+//------------- tests for Calculate CRC  -------------
+
+
+
+//width=3 poly=0x3 init=0x7 refin=true refout=true xorout=0x0 check=0x6 name="CRC-3/ROHC"
+int test_ucrc3(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint8_t crc;
+
+    Universal_CRC<3, 0x3, 0x7, true, true, 0x0>  ucrc;
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0x6 )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -364,7 +388,10 @@ ptest_func tests[] =
 
     test_universal_crc_get_crc_init,
     test_universal_crc_get_top_bit,
-    test_universal_crc_get_crc_mask
+    test_universal_crc_get_crc_mask,
+
+    //CRC
+    test_ucrc3
 };
 
 
