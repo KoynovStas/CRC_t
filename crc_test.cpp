@@ -145,6 +145,23 @@ int test_universal_crc_name_2(struct test_info_t  *test_info)
 
 
 
+int test_universal_crc_get_bits(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+
+    Universal_CRC<1, 0, 0, true, true, 0>  ucrc_1;
+
+
+    if( ucrc_1.get_bits() != 1 )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
 
 ptest_func tests[] =
 {
@@ -158,7 +175,9 @@ ptest_func tests[] =
 
     //Universal_CRC methods
     test_universal_crc_name,
-    test_universal_crc_name_2
+    test_universal_crc_name_2,
+
+    test_universal_crc_get_bits
 };
 
 
