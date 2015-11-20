@@ -76,10 +76,16 @@ class Universal_CRC
         bool      get_ref_in()  const { return RefIn; }
         bool      get_ref_out() const { return RefOut;}
 
+        CRC_Type  get_crc_init()const { return init;    } //init = reflect(Init, Bits) if RefIn, else = Init
+
 
     private:
 
+        CRC_Type reflect(CRC_Type data, uint8_t num_bits);
+
+        CRC_Type init;
 };
+
 
 
 
@@ -89,6 +95,30 @@ Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::Universal_CRC(const std:
     name(crc_name)
 {
 
+    if(RefIn)
+        init = reflect(Init, Bits);
+    else
+        init = Init;
+}
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
+CRC_TYPE Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::reflect(CRC_Type data, uint8_t num_bits)
+{
+
+    CRC_Type reflection = 0;
+    CRC_Type one = 1;
+
+    for ( size_t i = 0; i < num_bits; ++i, data >>= 1 )
+    {
+        if ( data & one )
+        {
+            reflection |= ( one << (num_bits - one - i) );
+        }
+    }
+
+    return reflection;
 }
 
 
