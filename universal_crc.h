@@ -73,6 +73,7 @@ class Universal_CRC
         CRC_Type  get_poly()    const { return Poly;  }
         CRC_Type  get_init()    const { return Init;  }
         CRC_Type  get_xor_out() const { return XorOut;}
+        bool      get_ref_in()  const { return RefIn; }
 
 
     private:
