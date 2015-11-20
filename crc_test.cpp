@@ -924,6 +924,26 @@ int test_ucrc12_3(struct test_info_t  *test_info)
 
 
 
+//width=13 poly=0x1cf5 init=0x0000 refin=false refout=false xorout=0x0000 check=0x04fa name="CRC-13/BBC"
+int test_ucrc13(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint16_t crc;
+
+    Universal_CRC<13, 0x1cf5, 0x0, false, false, 0x0>  ucrc;
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0x04FA )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -987,7 +1007,9 @@ ptest_func tests[] =
 
     test_ucrc12,
     test_ucrc12_2,
-    test_ucrc12_3
+    test_ucrc12_3,
+
+    test_ucrc13
 };
 
 
