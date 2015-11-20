@@ -424,6 +424,26 @@ int test_ucrc5(struct test_info_t  *test_info)
 
 
 
+//width=5 poly=0x15 init=0x00 refin=true refout=true xorout=0x00 check=0x07 name="CRC-5/ITU"
+int test_ucrc5_2(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint8_t crc;
+
+    Universal_CRC<5, 0x15, 0x00, true, true, 0x0>  ucrc;
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0x07 )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -456,7 +476,8 @@ ptest_func tests[] =
     test_ucrc4,
     test_ucrc4_2,
 
-    test_ucrc5
+    test_ucrc5,
+    test_ucrc5_2
 };
 
 
