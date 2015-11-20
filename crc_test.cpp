@@ -306,6 +306,41 @@ int test_universal_crc_get_top_bit(struct test_info_t  *test_info)
 
 
 
+int test_universal_crc_get_crc_mask(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    Universal_CRC<1, 0, 0, true, false, 0>  ucrc1;
+    if( ucrc1.get_crc_mask() != 0x0001 )
+        return TEST_BROKEN;
+
+
+    Universal_CRC<5, 0, 0, true, false, 0>  ucrc5;
+    if( ucrc5.get_crc_mask() != 0x1f )
+        return TEST_BROKEN;
+
+
+    Universal_CRC<8, 0, 0, true, false, 0>  ucrc8;
+    if( ucrc8.get_crc_mask() != 0xff )
+        return TEST_BROKEN;
+
+
+    Universal_CRC<16, 0, 0, true, false, 0>  ucrc16;
+    if( ucrc16.get_crc_mask() != 0xffff )
+        return TEST_BROKEN;
+
+
+    Universal_CRC<24, 0, 0, true, false, 0>  ucrc24;
+    if( ucrc24.get_crc_mask() != 0xffffff )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -328,7 +363,8 @@ ptest_func tests[] =
     test_universal_crc_get_ref_out,
 
     test_universal_crc_get_crc_init,
-    test_universal_crc_get_top_bit
+    test_universal_crc_get_top_bit,
+    test_universal_crc_get_crc_mask
 };
 
 
