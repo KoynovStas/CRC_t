@@ -71,6 +71,7 @@ class Universal_CRC
 
         uint8_t   get_bits()    const { return Bits;  }
         CRC_Type  get_poly()    const { return Poly;  }
+        CRC_Type  get_init()    const { return Init;  }
 
 
     private:
