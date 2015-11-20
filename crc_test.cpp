@@ -663,6 +663,26 @@ int test_ucrc8_4(struct test_info_t  *test_info)
 
 
 
+//width=8 poly=0xd5 init=0x00 refin=false refout=false xorout=0x00 check=0xbc name="CRC-8/DVB-S2"
+int test_ucrc8_5(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint8_t crc;
+
+    Universal_CRC<8, 0xd5, 0x0, false, false, 0x0>  ucrc;
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0xBC )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -710,7 +730,8 @@ ptest_func tests[] =
     test_ucrc8,
     test_ucrc8_2,
     test_ucrc8_3,
-    test_ucrc8_4
+    test_ucrc8_4,
+    test_ucrc8_5
 };
 
 
