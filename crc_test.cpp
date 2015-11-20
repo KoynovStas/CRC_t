@@ -1425,6 +1425,26 @@ int test_ucrc16_21(struct test_info_t  *test_info)
 
 
 
+//width=16  poly=0x1021  init=0xffff  refin=true  refout=true  xorout=0xffff  check=0x906e  name="CRC-16/X-25"
+int test_ucrc16_22(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint16_t crc;
+
+    Universal_CRC<16, 0x1021, 0xffff, true, true, 0xffff>  ucrc;
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0x906e )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -1517,7 +1537,8 @@ ptest_func tests[] =
     test_ucrc16_18,
     test_ucrc16_19,
     test_ucrc16_20,
-    test_ucrc16_21
+    test_ucrc16_21,
+    test_ucrc16_22
 };
 
 
