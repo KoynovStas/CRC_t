@@ -247,6 +247,30 @@ int test_universal_crc_get_ref_out(struct test_info_t  *test_info)
 
 
 
+int test_universal_crc_get_crc_init(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    Universal_CRC<16, 0, 0x1234, false, false, 0>  ucrc;
+
+
+    if( ucrc.get_crc_init() != 0x1234 )
+        return TEST_BROKEN;
+
+
+    Universal_CRC<16, 0, 0x1234, true, false, 0>  ucrc1;
+
+
+    if( ucrc1.get_crc_init() != 0x2c48 )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -266,7 +290,9 @@ ptest_func tests[] =
     test_universal_crc_get_init,
     test_universal_crc_get_xor_out,
     test_universal_crc_get_ref_in,
-    test_universal_crc_get_ref_out
+    test_universal_crc_get_ref_out,
+
+    test_universal_crc_get_crc_init
 };
 
 
