@@ -903,6 +903,27 @@ int test_ucrc12_2(struct test_info_t  *test_info)
 
 
 
+//width=12 poly=0x80f init=0x000 refin=false refout=false xorout=0x000 check=0xf5b name="CRC-12/DECT"
+int test_ucrc12_3(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint16_t crc;
+
+    Universal_CRC<12, 0x80f, 0x0, false, false, 0x0>  ucrc;
+
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0xF5B )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -965,7 +986,8 @@ ptest_func tests[] =
     test_ucrc11,
 
     test_ucrc12,
-    test_ucrc12_2
+    test_ucrc12_2,
+    test_ucrc12_3
 };
 
 
