@@ -1686,6 +1686,26 @@ int test_ucrc32_7(struct test_info_t  *test_info)
 
 
 
+//width=32 poly=0x04c11db7 init=0xffffffff refin=true refout=true xorout=0x00000000 check=0x340bc6d9 name="JAMCRC"
+int test_ucrc32_8(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint32_t crc;
+
+    Universal_CRC<32, 0x04c11db7, 0xffffffff, true, true, 0x0>  ucrc;
+
+    crc = ucrc.get_crc("123456789", 9);
+    if( crc != 0x340bc6d9 )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -1794,7 +1814,8 @@ ptest_func tests[] =
     test_ucrc32_4,
     test_ucrc32_5,
     test_ucrc32_6,
-    test_ucrc32_7
+    test_ucrc32_7,
+    test_ucrc32_8
 };
 
 
