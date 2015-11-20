@@ -35,6 +35,7 @@
 #define UNIVERSAL_CRC_H
 
 #include <stdint.h>
+#include <string>
 
 
 
@@ -46,6 +47,42 @@ template<> struct CRC_Type_helper<0> { typedef uint8_t  value_type; }; //for Bit
 template<> struct CRC_Type_helper<1> { typedef uint16_t value_type; }; //for Bits 9..16
 template<> struct CRC_Type_helper<2> { typedef uint32_t value_type; }; //for Bits 17..24
 template<> struct CRC_Type_helper<3> { typedef uint32_t value_type; }; //for Bits 25..32
+
+
+#define CRC_TYPE typename CRC_Type_helper< (Bits-1)/8 >::value_type
+
+
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
+class Universal_CRC
+{
+
+
+    public:
+
+        typedef CRC_TYPE CRC_Type;
+
+        explicit Universal_CRC(const std::string crc_name = "");
+
+
+        std::string name;
+
+
+    private:
+
+};
+
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
+Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::Universal_CRC(const std::string crc_name) :
+    name(crc_name)
+{
+
+}
 
 
 
