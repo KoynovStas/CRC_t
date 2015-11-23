@@ -10,6 +10,7 @@ Universal_CRC is C++ template for calculation CRC sizes 1-64 bits.
  -  The code uses only the standard **C++03 not C++11** -> This allows you to use the template in the oldest projects with older compilers.
  - In the code not uses the library boost.
  - The code has no dependencies, and imprisoned in the one file.
+ - For **any** bit-depth (width) of CRC will be use the standard table method for calculation. Will be calculated standart table for byte (table size 256 elements)
 
 
 Template parameters is the standard Specifications algorithms CRC as described in Ross N. Williams [A PAINLESS GUIDE TO CRC ERROR DETECTION ALGORITHMS.](http://www.ross.net/crc/download/crc_v3.txt)
@@ -119,9 +120,9 @@ uint32_t crc;
 
 Universal_CRC<32, 0x04C11DB7, 0xFFFFFFFF, true, true, 0xFFFFFFFF>  ucrc;
 
-int res = ucrc.get_crc(&crc, "standard_check_file");
+int res = ucrc.get_crc(&crc, "standard_check_file"); // res == -1 (error); res == 0 (good)
 
-if( res != 0 )
+if( res != -1 )
     //uses crc
 ```
 
