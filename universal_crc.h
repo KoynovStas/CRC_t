@@ -175,26 +175,6 @@ CRC_TYPE Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Typ
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::reflect(CRC_Type data, uint8_t num_bits)
-{
-
-    CRC_Type reflection = 0;
-    CRC_Type one = 1;
-
-    for ( size_t i = 0; i < num_bits; ++i, data >>= 1 )
-    {
-        if ( data & one )
-        {
-            reflection |= ( one << (num_bits - one - i) );
-        }
-    }
-
-    return reflection;
-}
-
-
-
-template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
 int Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type *crc, const char *file_name)
 {
 
@@ -228,6 +208,26 @@ int Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type *cr
 
 
     return 0; //good  job
+}
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
+CRC_TYPE Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::reflect(CRC_Type data, uint8_t num_bits)
+{
+
+    CRC_Type reflection = 0;
+    CRC_Type one = 1;
+
+    for ( size_t i = 0; i < num_bits; ++i, data >>= 1 )
+    {
+        if ( data & one )
+        {
+            reflection |= ( one << (num_bits - one - i) );
+        }
+    }
+
+    return reflection;
 }
 
 
