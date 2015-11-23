@@ -1852,6 +1852,37 @@ int test_ucrc32_file_2(struct test_info_t  *test_info)
 
 
 
+//------------- tests for Calculate CRC for cunks -------------
+
+
+
+int test_ucrc32_cunks(struct test_info_t  *test_info)
+{
+
+    TEST_INIT;
+
+    uint32_t crc;
+
+    char buf[]  = "1234";
+    char buf2[] = "56789";
+
+    Universal_CRC<32, 0x04C11DB7, 0xFFFFFFFF, true, true, 0xFFFFFFFF>  ucrc;
+
+    crc = ucrc.get_crc_init();
+    crc = ucrc.get_raw_crc(crc, buf, 4);
+    crc = ucrc.get_raw_crc(crc, buf2, 5);
+    crc = ucrc.get_final_crc(crc);
+
+
+    if( crc != 0xCBF43926 )
+        return TEST_BROKEN;
+
+
+    return TEST_PASSED;
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -1971,7 +2002,9 @@ ptest_func tests[] =
     test_ucrc64_3,
 
     test_ucrc32_file,
-    test_ucrc32_file_2
+    test_ucrc32_file_2,
+
+    test_ucrc32_cunks
 };
 
 
