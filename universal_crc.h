@@ -70,21 +70,20 @@ class Universal_CRC
 
         std::string name;
 
-        uint8_t   get_bits()    const { return Bits;  }
-        CRC_Type  get_poly()    const { return Poly;  }
-        CRC_Type  get_init()    const { return Init;  }
-        CRC_Type  get_xor_out() const { return XorOut;}
-        bool      get_ref_in()  const { return RefIn; }
-        bool      get_ref_out() const { return RefOut;}
+        uint8_t  get_bits()    const { return Bits;  }
+        CRC_Type get_poly()    const { return Poly;  }
+        CRC_Type get_init()    const { return Init;  }
+        CRC_Type get_xor_out() const { return XorOut;}
+        bool     get_ref_in()  const { return RefIn; }
+        bool     get_ref_out() const { return RefOut;}
 
-        CRC_Type  get_crc_init()const { return init;    } //init = reflect(Init, Bits) if RefIn, else = Init
-        CRC_Type  get_top_bit() const { return top_bit; }
-        CRC_Type  get_crc_mask()const { return crc_mask;}
+        CRC_Type get_crc_init()const { return init;    } //init = reflect(Init, Bits) if RefIn, else = Init
+        CRC_Type get_top_bit() const { return top_bit; }
+        CRC_Type get_crc_mask()const { return crc_mask;}
 
         CRC_Type get_crc(const char* buf, size_t len);
         CRC_Type get_crc(CRC_Type crc, const char* buf, size_t len); //for first byte crc = init (must be)
-
-        int get_crc(CRC_Type *crc, const char *file_name);
+        int      get_crc(CRC_Type *crc, const char *file_name);
 
 
     private:
