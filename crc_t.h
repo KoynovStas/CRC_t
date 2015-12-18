@@ -1,5 +1,5 @@
 /*
- * universal_crc.h
+ * crc_t.h
  *
  *
  * Copyright (c) 2015, Koynov Stas - skojnov@yandex.ru
@@ -31,8 +31,8 @@
  *
  */
 
-#ifndef UNIVERSAL_CRC_H
-#define UNIVERSAL_CRC_H
+#ifndef CRC_T_H
+#define CRC_T_H
 
 #include <stdint.h>
 #include <string>
@@ -57,7 +57,7 @@ template<> struct CRC_Type_helper<3> { typedef uint32_t value_type; }; //for Bit
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-class Universal_CRC
+class CRC_t
 {
 
 
@@ -65,7 +65,7 @@ class Universal_CRC
 
         typedef CRC_TYPE CRC_Type;
 
-        explicit Universal_CRC(const std::string crc_name = "");
+        explicit CRC_t(const std::string crc_name = "");
 
 
         std::string name;
@@ -106,7 +106,7 @@ class Universal_CRC
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::Universal_CRC(const std::string crc_name) :
+CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRC_t(const std::string crc_name) :
     name(crc_name)
 {
 
@@ -132,7 +132,7 @@ Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::Universal_CRC(const std:
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(const char* buf, size_t len)
+CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(const char* buf, size_t len)
 {
 
     CRC_Type crc = get_raw_crc(init, buf, len);
@@ -143,7 +143,7 @@ CRC_TYPE Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(const c
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-int Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type *crc, const char *file_name)
+int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type *crc, const char *file_name)
 {
 
     if( !file_name || !crc )
@@ -178,7 +178,7 @@ int Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type *cr
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(CRC_Type crc, const char* buf, size_t len)
+CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(CRC_Type crc, const char* buf, size_t len)
 {
 
     if(Bits > 8)
@@ -207,7 +207,7 @@ CRC_TYPE Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(CRC
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_final_crc(CRC_Type raw_crc)
+CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_final_crc(CRC_Type raw_crc)
 {
 
     if(RefOut^RefIn) raw_crc = reflect(raw_crc, Bits);
@@ -221,7 +221,7 @@ CRC_TYPE Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_final_crc(C
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::reflect(CRC_Type data, uint8_t num_bits)
+CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::reflect(CRC_Type data, uint8_t num_bits)
 {
 
     CRC_Type reflection = 0;
@@ -241,7 +241,7 @@ CRC_TYPE Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::reflect(CRC_Typ
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-void Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_crc_table()
+void CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_crc_table()
 {
     int i;
     CRC_Type crc;
@@ -281,4 +281,4 @@ void Universal_CRC<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_crc_table()
 
 
 
-#endif // UNIVERSAL_CRC_H
+#endif // CRC_T_H
