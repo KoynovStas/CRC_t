@@ -1869,8 +1869,8 @@ int test_ucrc32_cunks(struct test_info_t  *test_info)
     CRC_t<32, 0x04C11DB7, 0xFFFFFFFF, true, true, 0xFFFFFFFF>  ucrc;
 
     crc = ucrc.get_crc_init();
-    crc = ucrc.get_raw_crc(crc, buf, 4);
-    crc = ucrc.get_raw_crc(crc, buf2, 5);
+    crc = ucrc.get_raw_crc(buf, 4, crc);
+    crc = ucrc.get_raw_crc(buf2, 5, crc);
     crc = ucrc.get_final_crc(crc);
 
 

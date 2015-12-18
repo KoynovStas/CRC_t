@@ -89,7 +89,7 @@ class CRC_t
 
 
         // Calculate for chunks of data
-        CRC_Type get_raw_crc(CRC_Type crc, const char* buf, size_t len) const; //for first byte crc = init (must be)
+        CRC_Type get_raw_crc(const char* buf, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
         CRC_Type get_final_crc(CRC_Type raw_crc) const;
 
 
@@ -140,7 +140,7 @@ template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, C
 CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(const char* buf, size_t len) const
 {
 
-    CRC_Type crc = get_raw_crc(init, buf, len);
+    CRC_Type crc = get_raw_crc(buf, len, init);
 
     return get_final_crc(crc);
 }
@@ -167,7 +167,7 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type *crc, const
     while( !feof(stream) )
     {
        size_t len = fread(buf, 1, sizeof(buf), stream);
-       *crc = get_raw_crc(*crc, buf, len);
+       *crc = get_raw_crc(buf, len, *crc);
     }
 
 
@@ -183,7 +183,7 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type *crc, const
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(CRC_Type crc, const char* buf, size_t len) const
+CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(const char* buf, size_t len, CRC_Type crc) const
 {
 
     if(Bits > 8)
