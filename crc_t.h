@@ -37,6 +37,7 @@
 #include <stdint.h>
 #include <string>
 #include <cstdio>
+#include <errno.h>
 
 
 
@@ -85,7 +86,10 @@ class CRC_t
 
         // Calculate methods
         CRC_Type get_crc(const char* buf, size_t len) const;
-        int      get_crc(CRC_Type *crc, const char *file_name) const;
+        int      get_crc(CRC_Type &crc, const char* file_name) const;
+        int      get_crc(CRC_Type &crc, FILE* pfile) const;
+        int      get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const;
+        int      get_crc(CRC_Type &crc, FILE* pfile, void* buf, size_t size_buf) const;
 
 
         // Calculate for chunks of data
@@ -148,15 +152,36 @@ CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(const char* buf
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type *crc, const char *file_name) const
+int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, const char *file_name) const
 {
 
-    if( !file_name || !crc )
-        return -1; //Bad param
+    char buf[4096];
 
-    *crc = init;
+    return get_crc(crc, file_name, buf, sizeof(buf));
+}
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
+int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, FILE* pfile) const
+{
 
     char buf[4096];
+
+    return get_crc(crc, pfile, buf, sizeof(buf));
+}
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
+int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const
+{
+
+    if( !file_name )
+    {
+        errno = EINVAL;
+        return -1;
+    }
 
 
     FILE *stream = fopen(file_name, "rb");
@@ -164,17 +189,39 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type *crc, const
         return -1; //Cant open file
 
 
-    while( !feof(stream) )
-    {
-       size_t len = fread(buf, 1, sizeof(buf), stream);
-       *crc = get_raw_crc(buf, len, *crc);
-    }
+    int res = get_crc(crc, stream, buf, size_buf);
 
 
     fclose(stream);
 
 
-    *crc = get_final_crc(*crc);
+    return res;
+}
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
+int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, FILE* pfile, void* buf, size_t size_buf) const
+{
+
+    if( !pfile || !buf || (size_buf == 0) )
+    {
+        errno = EINVAL;
+        return -1;
+    }
+
+
+    crc = init;
+
+
+    while( !feof(pfile) )
+    {
+       size_t len = fread(buf, 1, size_buf, pfile);
+       crc = get_raw_crc((char *)buf, len, crc);
+    }
+
+
+    crc = get_final_crc(crc);
 
 
     return 0; //good  job
