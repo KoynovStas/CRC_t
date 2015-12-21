@@ -211,7 +211,9 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, FILE*
     }
 
 
-    crc = init;
+    crc          = init;
+    long cur_pos = ftell(pfile);
+    rewind(pfile);
 
 
     while( !feof(pfile) )
@@ -220,6 +222,8 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, FILE*
        crc = get_raw_crc((char *)buf, len, crc);
     }
 
+
+    fseek(pfile, cur_pos, SEEK_SET);
 
     crc = get_final_crc(crc);
 
