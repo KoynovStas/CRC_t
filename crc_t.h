@@ -2,6 +2,9 @@
  * crc_t.h
  *
  *
+ * version 1.0
+ *
+ *
  * Copyright (c) 2015, Koynov Stas - skojnov@yandex.ru
  *
  * All rights reserved.
