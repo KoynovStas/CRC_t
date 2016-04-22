@@ -222,7 +222,7 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, FILE*
     while( !feof(pfile) )
     {
        size_t len = fread(buf, 1, size_buf, pfile);
-       crc = get_raw_crc((char *)buf, len, crc);
+       crc = get_raw_crc(buf, len, crc);
     }
 
 
@@ -271,7 +271,8 @@ template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, C
 CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_final_crc(CRC_Type raw_crc) const
 {
 
-    if(RefOut^RefIn) raw_crc = reflect(raw_crc, Bits);
+    if(RefOut^RefIn)
+        raw_crc = reflect(raw_crc, Bits);
 
     raw_crc ^= XorOut;
     raw_crc &= crc_mask; //for CRC not power 2
@@ -304,14 +305,12 @@ CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::reflect(CRC_Type data, 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
 void CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_crc_table()
 {
-    int i;
-    CRC_Type crc;
 
-
-    for(i = 0; i < 256; i++)
+    //Calculation of the standard CRC table for byte.
+    for(int i = 0; i < 256; i++)
     {
 
-        crc = 0;
+        CRC_Type crc = 0;
 
         for(uint8_t mask = 0x80; mask; mask >>= 1)
         {
