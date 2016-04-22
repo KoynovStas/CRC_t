@@ -82,7 +82,7 @@ class CRC_t
         bool     get_ref_in()  const { return RefIn; }
         bool     get_ref_out() const { return RefOut;}
 
-        CRC_Type get_crc_init()const { return init;    } //init = reflect(Init, Bits) if RefIn, else = Init
+        CRC_Type get_crc_init()const { return crc_init;} //crc_init = reflect(Init, Bits) if RefIn, else = Init
         CRC_Type get_top_bit() const { return top_bit; }
         CRC_Type get_crc_mask()const { return crc_mask;}
 
@@ -107,7 +107,7 @@ class CRC_t
         void init_crc_table();
 
         uint8_t  shift;
-        CRC_Type init;
+        CRC_Type crc_init;
         CRC_Type top_bit;
         CRC_Type crc_mask;
         CRC_Type crc_table[256];
@@ -133,9 +133,9 @@ CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRC_t(const std::string crc_name
 
 
     if(RefIn)
-        init = reflect(Init, Bits);
+        crc_init = reflect(Init, Bits);
     else
-        init = Init;
+        crc_init = Init;
 
 
     init_crc_table();
@@ -147,7 +147,7 @@ template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, C
 CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(const void* data, size_t len) const
 {
 
-    CRC_Type crc = get_raw_crc(data, len, init);
+    CRC_Type crc = get_raw_crc(data, len, crc_init);
 
     return get_final_crc(crc);
 }
@@ -214,7 +214,7 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, FILE*
     }
 
 
-    crc          = init;
+    crc          = crc_init;
     long cur_pos = ftell(pfile);
     rewind(pfile);
 
