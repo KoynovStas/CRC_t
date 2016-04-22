@@ -17,9 +17,9 @@ all: clean  $(TESTS)
 
 .PHONY: clean
 clean:
-	-@rm  *.o
-	-@rm  *.*~
-	-@rm  $(TESTS)
+	-@rm -f *.o
+	-@rm -f *.*~
+	-@rm -f $(TESTS)
 
 
 
