@@ -88,7 +88,7 @@ class CRC_t
 
 
         // Calculate methods
-        CRC_Type get_crc(const char* buf, size_t len) const;
+        CRC_Type get_crc(const void* data, size_t len) const;
         int      get_crc(CRC_Type &crc, const char* file_name) const;
         int      get_crc(CRC_Type &crc, FILE* pfile) const;
         int      get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const;
@@ -96,7 +96,7 @@ class CRC_t
 
 
         // Calculate for chunks of data
-        CRC_Type get_raw_crc(const char* buf, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
+        CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
         CRC_Type get_final_crc(CRC_Type raw_crc) const;
 
 
@@ -144,10 +144,10 @@ CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRC_t(const std::string crc_name
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(const char* buf, size_t len) const
+CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(const void* data, size_t len) const
 {
 
-    CRC_Type crc = get_raw_crc(buf, len, init);
+    CRC_Type crc = get_raw_crc(data, len, init);
 
     return get_final_crc(crc);
 }
@@ -237,8 +237,10 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, FILE*
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(const char* buf, size_t len, CRC_Type crc) const
+CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(const void* data, size_t len, CRC_Type crc) const
 {
+    register const uint8_t* buf = static_cast< const uint8_t* >(data);
+
 
     if(Bits > 8)
     {
