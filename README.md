@@ -105,7 +105,7 @@ CRC_Type get_crc_mask()const { return crc_mask;}
 
 
 // Calculate methods
-CRC_Type get_crc(const char* buf, size_t len) const;
+CRC_Type get_crc(const void* data, size_t len) const;
 int      get_crc(CRC_Type &crc, const char* file_name) const;
 int      get_crc(CRC_Type &crc, FILE* pfile) const;
 int      get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const;
@@ -113,7 +113,7 @@ int      get_crc(CRC_Type &crc, FILE* pfile, void* buf, size_t size_buf) const;
 
 
 // Calculate for chunks of data
-CRC_Type get_raw_crc(const char* buf, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
+CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
 CRC_Type get_final_crc(CRC_Type raw_crc) const;
 ```
 
@@ -208,8 +208,8 @@ uint32_t crc;
 CRC_t<32, 0x04C11DB7, 0xFFFFFFFF, true, true, 0xFFFFFFFF>  ucrc;
 
 crc = ucrc.get_crc_init();
-crc = ucrc.get_raw_crc(crc, buf,  len_of_buf);   //first chunk
-crc = ucrc.get_raw_crc(crc, buf2, len_of_buf2);  //second chunk
+crc = ucrc.get_raw_crc(buf,  len_of_buf,  crc);  //first chunk
+crc = ucrc.get_raw_crc(buf2, len_of_buf2, crc);  //second chunk
 crc = get_final_crc(crc);
 //uses crc
 ```
@@ -225,8 +225,8 @@ CRC_t<32, 0x04C11DB7, 0xFFFFFFFF, true, true, 0xFFFFFFFF>::CRC_Type crc;
 CRC_t<32, 0x04C11DB7, 0xFFFFFFFF, true, true, 0xFFFFFFFF>  ucrc;
 
 crc = ucrc.get_crc_init();
-crc = ucrc.get_raw_crc(crc, buf,  len_of_buf);   //first chunk
-crc = ucrc.get_raw_crc(crc, buf2, len_of_buf2);  //second chunk
+crc = ucrc.get_raw_crc(buf,  len_of_buf,  crc);  //first chunk
+crc = ucrc.get_raw_crc(buf2, len_of_buf2, crc);  //second chunk
 crc = get_final_crc(crc);
 //uses crc
 ```
