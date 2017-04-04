@@ -46,6 +46,34 @@
 
 
 
+// For GCC 4.6 or higher, in C++ you can use a standard
+// static_assert(exp, msg) in *.c and in *.h files.
+// For GCC 4.6 is required to add CFLAGS += -std="c++0x"
+// A lot of variants, it is the most simple and intuitive
+// It can be used in *.c and in *.h files.
+// (macros that use function style can be used in *.c files only)
+//
+// Disadvantages: you can not be set msg to display the console when compiling
+//
+// Example:
+//
+//  CRC_STATIC_ASSERT( sizeof(char) == 1)  //good job
+//  CRC_STATIC_ASSERT( sizeof(char) != 1)  //You will get a compilation error
+//
+#define CRC_ASSERT_CONCAT_(a, b) a##b
+#define CRC_ASSERT_CONCAT(a, b) CRC_ASSERT_CONCAT_(a, b)
+#define CRC_STATIC_ASSERT(expr) \
+    enum { CRC_ASSERT_CONCAT(assert_line_, __LINE__) = 1/(int)(!!(expr)) }
+
+
+
+
+
+
+
+
+
+
 template<uint8_t Bits_minus_1_div_8> struct CRC_Type_helper{ typedef uint64_t value_type; }; // default
 
 template<> struct CRC_Type_helper<0> { typedef uint8_t  value_type; }; //for Bits 1..8
@@ -63,6 +91,10 @@ template<> struct CRC_Type_helper<3> { typedef uint32_t value_type; }; //for Bit
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
 class CRC_t
 {
+
+    CRC_STATIC_ASSERT(Bits >= 1);
+    CRC_STATIC_ASSERT(Bits <= 64);
+
 
 
     public:
