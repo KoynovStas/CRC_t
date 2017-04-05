@@ -219,6 +219,7 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
     ADD_CRC_TO_LIST("CRC-16/BUYPASS",     16, 0x8005, 0x0,    false, false, 0x0,    0xFEE8);
     ADD_CRC_TO_LIST("CRC-16/CCITT-FALSE", 16, 0x1021, 0xFFFF, false, false, 0x0,    0x29B1);
     ADD_CRC_TO_LIST("CRC-16/CDMA2000",    16, 0xC867, 0xFFFF, false, false, 0x0,    0x4C06);
+    ADD_CRC_TO_LIST("CRC-16/CMS",         16, 0x8005, 0xFFFF, false, false, 0x0,    0xAEE7);
     ADD_CRC_TO_LIST("CRC-16/DDS-110",     16, 0x8005, 0x800D, false, false, 0x0,    0x9ECF);
     ADD_CRC_TO_LIST("CRC-16/DECT-R",      16, 0x589,  0x0,    false, false, 0x1,    0x7E);
     ADD_CRC_TO_LIST("CRC-16/DECT-X",      16, 0x589,  0x0,    false, false, 0x0,    0x7F);
