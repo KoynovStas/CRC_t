@@ -184,6 +184,7 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
     ADD_CRC_TO_LIST("CRC-8/MAXIM",      8, 0x31, 0x0,  true,  true,  0x0,  0xA1);
     ADD_CRC_TO_LIST("CRC-8/OPENSAFETY", 8, 0x2F, 0x0,  false, false, 0x0,  0x3E);
     ADD_CRC_TO_LIST("CRC-8/ROHC",       8, 0x7,  0xFF, true,  true,  0x0,  0xD0);
+    ADD_CRC_TO_LIST("CRC-8/SAE-J1850",  8, 0x1D, 0xFF, false, false, 0xFF, 0x4B);
     ADD_CRC_TO_LIST("CRC-8/WCDMA",      8, 0x9B, 0x0,  true,  true,  0x0,  0x25);
 
     // CRC-10
