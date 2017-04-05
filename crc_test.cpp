@@ -167,6 +167,7 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
     // CRC-7
     ADD_CRC_TO_LIST("CRC-7",      7, 0x9,  0x0,  false, false, 0x0, 0x75);
     ADD_CRC_TO_LIST("CRC-7/ROHC", 7, 0x4F, 0x7F, true,  true,  0x0, 0x53);
+    ADD_CRC_TO_LIST("CRC-7/UMTS", 7, 0x45, 0x0,  false, false, 0x0, 0x61);
 
     // CRC-8
     ADD_CRC_TO_LIST("CRC-8",          8, 0x7,  0x0,  false, false, 0x0, 0xF4);
