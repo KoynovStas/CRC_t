@@ -261,6 +261,7 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
 
     // CRC-32
     ADD_CRC_TO_LIST("CRC-32",        32, 0x4C11DB7,  0xFFFFFFFF, true,  true,  0xFFFFFFFF, 0xCBF43926);
+    ADD_CRC_TO_LIST("CRC-32/AUTOSAR",32, 0xF4ACFB13, 0xFFFFFFFF, true,  true,  0xFFFFFFFF, 0x1697D06A);
     ADD_CRC_TO_LIST("CRC-32/BZIP2",  32, 0x4C11DB7,  0xFFFFFFFF, false, false, 0xFFFFFFFF, 0xFC891918);
     ADD_CRC_TO_LIST("CRC-32C",       32, 0x1EDC6F41, 0xFFFFFFFF, true,  true,  0xFFFFFFFF, 0xE3069283);
     ADD_CRC_TO_LIST("CRC-32D",       32, 0xA833982B, 0xFFFFFFFF, true,  true,  0xFFFFFFFF, 0x87315576);
