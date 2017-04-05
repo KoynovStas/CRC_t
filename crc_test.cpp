@@ -226,6 +226,7 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
     ADD_CRC_TO_LIST("CRC-16/DNP",         16, 0x3D65, 0x0,    true,  true,  0xFFFF, 0xEA82);
     ADD_CRC_TO_LIST("CRC-16/EN-13757",    16, 0x3D65, 0x0,    false, false, 0xFFFF, 0xC2B7);
     ADD_CRC_TO_LIST("CRC-16/GENIBUS",     16, 0x1021, 0xFFFF, false, false, 0xFFFF, 0xD64E);
+    ADD_CRC_TO_LIST("CRC-16/GSM",         16, 0x1021, 0x0,    false, false, 0xFFFF, 0xCE3C);
     ADD_CRC_TO_LIST("CRC-16/MAXIM",       16, 0x8005, 0x0,    true,  true,  0xFFFF, 0x44C2);
     ADD_CRC_TO_LIST("CRC-16/MCRF4XX",     16, 0x1021, 0xFFFF, true,  true,  0x0,    0x6F91);
     ADD_CRC_TO_LIST("CRC-16/RIELLO",      16, 0x1021, 0xB2AA, true,  true,  0x0,    0x63D0);
