@@ -232,6 +232,7 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
     ADD_CRC_TO_LIST("CRC-16/MCRF4XX",     16, 0x1021, 0xFFFF, true,  true,  0x0,    0x6F91);
     ADD_CRC_TO_LIST("CRC-16/OPENSAFETY-A",16, 0x5935, 0x0,    false, false, 0x0,    0x5D38);
     ADD_CRC_TO_LIST("CRC-16/OPENSAFETY-B",16, 0x755B, 0x0,    false, false, 0x0,    0x20FE);
+    ADD_CRC_TO_LIST("CRC-16/PROFIBUS",    16, 0x1DCF, 0xFFFF, false, false, 0xFFFF, 0xA819);
     ADD_CRC_TO_LIST("CRC-16/RIELLO",      16, 0x1021, 0xB2AA, true,  true,  0x0,    0x63D0);
     ADD_CRC_TO_LIST("CRC-16/T10-DIF",     16, 0x8BB7, 0x0,    false, false, 0x0,    0xD0DB);
     ADD_CRC_TO_LIST("CRC-16/TELEDISK",    16, 0xA097, 0x0,    false, false, 0x0,    0xFB3);
