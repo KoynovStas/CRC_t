@@ -149,7 +149,8 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
     ADD_CRC_TO_LIST("CRC-3/ROHC", 3, 0x3, 0x7, true,  true,  0x0, 0x6);
 
     // CRC-4
-    ADD_CRC_TO_LIST("CRC-4/ITU", 4, 0x3, 0x0, true, true, 0x0, 0x7);
+    ADD_CRC_TO_LIST("CRC-4/ITU",        4, 0x3, 0x0, true,  true,  0x0, 0x7);
+    ADD_CRC_TO_LIST("CRC-4/INTERLAKEN", 4, 0x3, 0xF, false, false, 0xF, 0xB);
 
     // CRC-5
     ADD_CRC_TO_LIST("CRC-5/EPC", 5, 0x09, 0x09, false, false, 0x00, 0x00);
