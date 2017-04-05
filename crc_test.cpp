@@ -180,6 +180,7 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
     ADD_CRC_TO_LIST("CRC-8/GSM-B",    8, 0x49, 0x0,  false, false, 0xFF,0x94);
     ADD_CRC_TO_LIST("CRC-8/I-CODE",   8, 0x1D, 0xFD, false, false, 0x0, 0x7E);
     ADD_CRC_TO_LIST("CRC-8/ITU",      8, 0x7,  0x0,  false, false, 0x55,0xA1);
+    ADD_CRC_TO_LIST("CRC-8/LTE",      8, 0x9B, 0x0,  false, false, 0x0, 0xEA);
     ADD_CRC_TO_LIST("CRC-8/MAXIM",    8, 0x31, 0x0,  true,  true,  0x0, 0xA1);
     ADD_CRC_TO_LIST("CRC-8/ROHC",     8, 0x7,  0xFF, true,  true,  0x0, 0xD0);
     ADD_CRC_TO_LIST("CRC-8/WCDMA",    8, 0x9B, 0x0,  true,  true,  0x0, 0x25);
