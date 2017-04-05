@@ -206,7 +206,8 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
     ADD_CRC_TO_LIST("CRC-13/BBC", 13, 0x1CF5, 0x0, false, false, 0x0, 0x4FA);
 
     // CRC-14
-    ADD_CRC_TO_LIST("CRC-14/DARC", 14, 0x805, 0x0, true, true, 0x0, 0x82D);
+    ADD_CRC_TO_LIST("CRC-14/DARC", 14, 0x805,  0x0, true,  true,  0x0,    0x82D);
+    ADD_CRC_TO_LIST("CRC-14/GSM",  14, 0x202D, 0x0, false, false, 0x3FFF, 0x30AE);
 
     // CRC-15
     ADD_CRC_TO_LIST("CRC-15",         15, 0x4599, 0x0, false, false, 0x0, 0x59E);
