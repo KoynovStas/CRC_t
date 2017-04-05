@@ -142,8 +142,11 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
     std::vector<AbstractProxy_CRC_t *> CRC_List;
 
 
+    // CRC list from: http://reveng.sourceforge.net/crc-catalogue/all.htm
+
     // CRC-3
-    ADD_CRC_TO_LIST("CRC-3/ROHC", 3, 0x3, 0x7, true, true, 0x0, 0x6);
+    ADD_CRC_TO_LIST("CRC-3/GSM",  3, 0x3, 0,   false, false, 0x7, 0x4);
+    ADD_CRC_TO_LIST("CRC-3/ROHC", 3, 0x3, 0x7, true,  true,  0x0, 0x6);
 
     // CRC-4
     ADD_CRC_TO_LIST("CRC-4/ITU", 4, 0x3, 0x0, true, true, 0x0, 0x7);
