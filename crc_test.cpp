@@ -158,10 +158,11 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
     ADD_CRC_TO_LIST("CRC-5/USB", 5, 0x05, 0x1F, true,  true,  0x1F, 0x19);
 
     // CRC-6
-    ADD_CRC_TO_LIST("CRC-6/CDMA2000-A", 6, 0x27, 0x3F, false, false, 0x0, 0x0D);
-    ADD_CRC_TO_LIST("CRC-6/CDMA2000-B", 6, 0x07, 0x3F, false, false, 0x0, 0x3B);
-    ADD_CRC_TO_LIST("CRC-6/DARC",       6, 0x19, 0x00, true,  true,  0x0, 0x26);
-    ADD_CRC_TO_LIST("CRC-6/ITU",        6, 0x03, 0x00, true,  true,  0x0, 0x06);
+    ADD_CRC_TO_LIST("CRC-6/CDMA2000-A", 6, 0x27, 0x3F, false, false, 0x0,  0x0D);
+    ADD_CRC_TO_LIST("CRC-6/CDMA2000-B", 6, 0x07, 0x3F, false, false, 0x0,  0x3B);
+    ADD_CRC_TO_LIST("CRC-6/DARC",       6, 0x19, 0x00, true,  true,  0x0,  0x26);
+    ADD_CRC_TO_LIST("CRC-6/ITU",        6, 0x03, 0x00, true,  true,  0x0,  0x06);
+    ADD_CRC_TO_LIST("CRC-6/GSM",        6, 0x2F, 0x00, false, false, 0x3F, 0x13);
 
     // CRC-7
     ADD_CRC_TO_LIST("CRC-7",      7, 0x9,  0x0,  false, false, 0x0, 0x75);
