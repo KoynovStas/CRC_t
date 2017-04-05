@@ -170,20 +170,21 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
     ADD_CRC_TO_LIST("CRC-7/UMTS", 7, 0x45, 0x0,  false, false, 0x0, 0x61);
 
     // CRC-8
-    ADD_CRC_TO_LIST("CRC-8",          8, 0x7,  0x0,  false, false, 0x0, 0xF4);
-    ADD_CRC_TO_LIST("CRC-8/AUTOSAR",  8, 0x2F, 0xFF, false, false, 0xFF,0xDF);
-    ADD_CRC_TO_LIST("CRC-8/CDMA2000", 8, 0x9B, 0xFF, false, false, 0x0, 0xDA);
-    ADD_CRC_TO_LIST("CRC-8/DARC",     8, 0x39, 0x0,  true,  true,  0x0, 0x15);
-    ADD_CRC_TO_LIST("CRC-8/DVB-S2",   8, 0xD5, 0x0,  false, false, 0x0, 0xBC);
-    ADD_CRC_TO_LIST("CRC-8/EBU",      8, 0x1D, 0xFF, true,  true,  0x0, 0x97);
-    ADD_CRC_TO_LIST("CRC-8/GSM-A",    8, 0x1D, 0x0,  false, false, 0x0, 0x37);
-    ADD_CRC_TO_LIST("CRC-8/GSM-B",    8, 0x49, 0x0,  false, false, 0xFF,0x94);
-    ADD_CRC_TO_LIST("CRC-8/I-CODE",   8, 0x1D, 0xFD, false, false, 0x0, 0x7E);
-    ADD_CRC_TO_LIST("CRC-8/ITU",      8, 0x7,  0x0,  false, false, 0x55,0xA1);
-    ADD_CRC_TO_LIST("CRC-8/LTE",      8, 0x9B, 0x0,  false, false, 0x0, 0xEA);
-    ADD_CRC_TO_LIST("CRC-8/MAXIM",    8, 0x31, 0x0,  true,  true,  0x0, 0xA1);
-    ADD_CRC_TO_LIST("CRC-8/ROHC",     8, 0x7,  0xFF, true,  true,  0x0, 0xD0);
-    ADD_CRC_TO_LIST("CRC-8/WCDMA",    8, 0x9B, 0x0,  true,  true,  0x0, 0x25);
+    ADD_CRC_TO_LIST("CRC-8",            8, 0x7,  0x0,  false, false, 0x0,  0xF4);
+    ADD_CRC_TO_LIST("CRC-8/AUTOSAR",    8, 0x2F, 0xFF, false, false, 0xFF, 0xDF);
+    ADD_CRC_TO_LIST("CRC-8/CDMA2000",   8, 0x9B, 0xFF, false, false, 0x0,  0xDA);
+    ADD_CRC_TO_LIST("CRC-8/DARC",       8, 0x39, 0x0,  true,  true,  0x0,  0x15);
+    ADD_CRC_TO_LIST("CRC-8/DVB-S2",     8, 0xD5, 0x0,  false, false, 0x0,  0xBC);
+    ADD_CRC_TO_LIST("CRC-8/EBU",        8, 0x1D, 0xFF, true,  true,  0x0,  0x97);
+    ADD_CRC_TO_LIST("CRC-8/GSM-A",      8, 0x1D, 0x0,  false, false, 0x0,  0x37);
+    ADD_CRC_TO_LIST("CRC-8/GSM-B",      8, 0x49, 0x0,  false, false, 0xFF, 0x94);
+    ADD_CRC_TO_LIST("CRC-8/I-CODE",     8, 0x1D, 0xFD, false, false, 0x0,  0x7E);
+    ADD_CRC_TO_LIST("CRC-8/ITU",        8, 0x7,  0x0,  false, false, 0x55, 0xA1);
+    ADD_CRC_TO_LIST("CRC-8/LTE",        8, 0x9B, 0x0,  false, false, 0x0,  0xEA);
+    ADD_CRC_TO_LIST("CRC-8/MAXIM",      8, 0x31, 0x0,  true,  true,  0x0,  0xA1);
+    ADD_CRC_TO_LIST("CRC-8/OPENSAFETY", 8, 0x2F, 0x0,  false, false, 0x0,  0x3E);
+    ADD_CRC_TO_LIST("CRC-8/ROHC",       8, 0x7,  0xFF, true,  true,  0x0,  0xD0);
+    ADD_CRC_TO_LIST("CRC-8/WCDMA",      8, 0x9B, 0x0,  true,  true,  0x0,  0x25);
 
     // CRC-10
     ADD_CRC_TO_LIST("CRC-10",          10, 0x233, 0x0,   false, false, 0x0, 0x199);
