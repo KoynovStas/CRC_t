@@ -3,7 +3,7 @@
 
 ## Description
 
-CRC_t is C++ template for calculation CRC sizes(width) 1-64 bits.
+`CRC_t` is C++ template for calculation CRC sizes(width) 1-64 bits.
 
 #### Features of the implementation:
 
@@ -19,7 +19,7 @@ CRC_t is C++ template for calculation CRC sizes(width) 1-64 bits.
 - After the parameterization of the template, you cannot change the parameters of the CRC.
 
 
-If you need a class to work with different CRC algorithms, which can change the algorithm parameters in the dynamics (Run-Time) see: 
+If you need a class to work with different CRC algorithms, which can change the algorithm parameters in the dynamics (Run-Time) see:
 [CRC_CPP_Class](https://github.com/KoynovStas/CRC_CPP_Class)
 
 
@@ -86,7 +86,7 @@ template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, C
 ```C++
 typedef CRC_TYPE CRC_Type;
 
-explicit CRC_t(const std::string crc_name = "");
+explicit CRC_t(const std::string& crc_name = "");
 
 
 std::string name;
@@ -99,9 +99,10 @@ CRC_Type get_xor_out() const { return XorOut;}
 bool     get_ref_in()  const { return RefIn; }
 bool     get_ref_out() const { return RefOut;}
 
-CRC_Type get_crc_init()const { return init;    } //init = reflect(Init, Bits) if RefIn, else = Init
+CRC_Type get_crc_init()const { return crc_init;} //crc_init = reflect(Init, Bits) if RefIn, else = Init
 CRC_Type get_top_bit() const { return top_bit; }
 CRC_Type get_crc_mask()const { return crc_mask;}
+CRC_Type get_check()   const;                    //crc for ASCII string "123456789" (i.e. 313233... (hexadecimal)).
 
 
 // Calculate methods
@@ -119,7 +120,7 @@ CRC_Type get_final_crc(CRC_Type raw_crc) const;
 
 More details see: **[crc_t.h](./crc_t.h)**
 
-<br/>
+
 ## Usage
 
 **To start working, perform the following steps:**
@@ -127,7 +128,7 @@ More details see: **[crc_t.h](./crc_t.h)**
 1. You need to include **[crc_t.h](./crc_t.h)** file in your **.cpp** file.
 2. Parameterize a template (see an examples)
 
-<br/>
+
 ## Examples
 
 **Get CRC32 for file:**
@@ -150,8 +151,8 @@ if( res != -1 )
 int      get_crc(CRC_Type &crc, const char* file_name) const;
 int      get_crc(CRC_Type &crc, FILE* pfile) const;
 ```
-These methods are reentrant. They use a buffer on the stack. 
-The buffer size is 4 Kib (4096 bytes) - which is optimal for most systems. 
+These methods are reentrant. They use a buffer on the stack.
+The buffer size is 4 Kib (4096 bytes) - which is optimal for most systems.
 If you have a buffer or needs aligned buffer, you can use the following methods:
 
 ```C++
@@ -159,8 +160,8 @@ int      get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_bu
 int      get_crc(CRC_Type &crc, FILE* pfile, void* buf, size_t size_buf) const;
 ```
 
-The method which uses FILE* set the file pointer(pos) to the beginning. 
-After work, the file position is returned to the original position before the work function get_crc().
+The method which uses FILE* set the file pointer(pos) to the beginning.
+After work, the file position is returned to the original position before the work function `get_crc()`.
 
 
 
@@ -196,8 +197,8 @@ crc = ucrc.get_crc(buf, len_of_buf);
 **Get CRC32 for buf(s) (chunks):**
 
 **Note:**
-when the method is used CRC_Type get_raw_crc(CRC_Type crc, const char* buf, size_t len)
-for the first byte (or chunk of data) **crc** param must be obtained through a method **get_crc_init()** and in the final you need to call the method: **get_final_crc():**
+when the method is used `CRC_Type get_raw_crc(CRC_Type crc, const char* buf, size_t len)`
+for the first byte (or chunk of data) **crc** param must be obtained through a method `get_crc_init()` and in the final you need to call the method: `get_final_crc()`:
 
 ```C++
 char buf[len_of_buf];   //bla bla
@@ -236,7 +237,7 @@ More details can be found in the test application: **[crc_test.cpp](./crc_test.c
 
 
 
-<br/>
+
 ## License
 
-[BSD](./LICENSE).
+[BSD-3-Clause](./LICENSE).
