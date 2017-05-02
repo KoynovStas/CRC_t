@@ -101,7 +101,7 @@ class CRC_t
 
         typedef CRC_TYPE CRC_Type;
 
-        explicit CRC_t(const std::string crc_name = "");
+        explicit CRC_t(const std::string& crc_name = "");
 
 
         std::string name;
@@ -117,6 +117,7 @@ class CRC_t
         CRC_Type get_crc_init()const { return crc_init;} //crc_init = reflect(Init, Bits) if RefIn, else = Init
         CRC_Type get_top_bit() const { return top_bit; }
         CRC_Type get_crc_mask()const { return crc_mask;}
+        CRC_Type get_check()   const;                    //crc for ASCII string "123456789" (i.e. 313233... (hexadecimal)).
 
 
         // Calculate methods
@@ -150,7 +151,7 @@ class CRC_t
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRC_t(const std::string crc_name) :
+CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRC_t(const std::string& crc_name) :
     name(crc_name)
 {
 
@@ -171,6 +172,16 @@ CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRC_t(const std::string crc_name
 
 
     init_crc_table();
+}
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
+CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_check() const
+{
+    const uint8_t data[] = {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39};
+
+    return get_crc(data, sizeof(data));
 }
 
 

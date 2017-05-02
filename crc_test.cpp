@@ -42,6 +42,7 @@ class AbstractProxy_CRC_t
         virtual uint64_t get_crc_init() = 0;
         virtual uint64_t get_top_bit()  = 0;
         virtual uint64_t get_crc_mask() = 0;
+        virtual uint64_t get_check()    = 0;
 
         // Calculate methods
         virtual uint64_t get_crc(const void* data, size_t len) = 0;
@@ -79,6 +80,7 @@ class Proxy_CRC_t : public AbstractProxy_CRC_t
         virtual uint64_t get_crc_init() { return _crc.get_crc_init();}
         virtual uint64_t get_top_bit()  { return _crc.get_top_bit(); }
         virtual uint64_t get_crc_mask() { return _crc.get_crc_mask();}
+        virtual uint64_t get_check()    { return _crc.get_check();}
 
 
         // Calculate methods
@@ -288,6 +290,9 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
 
 const std::vector<AbstractProxy_CRC_t *> CRC_List = get_crc_list();
 
+
+
+const uint8_t std_check_data[] = {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39};
 
 
 
@@ -678,12 +683,20 @@ int test_crc_std_check(struct test_info_t  *test_info)
     for( size_t i = 0; i < CRC_List.size(); i++)
     {
 
-        crc = CRC_List[i]->get_crc("123456789", 9);
+        crc = CRC_List[i]->get_crc(std_check_data, sizeof(std_check_data));
 
         if( crc != CRC_List[i]->check )
         {
             std::cout << std::hex;
             std::cout << "For CRC: " << CRC_List[i]->name <<  " std check: 0x" << CRC_List[i]->check << " but get: 0x" << crc << "\n";
+            return TEST_BROKEN;
+        }
+
+
+        if( CRC_List[i]->get_check() != CRC_List[i]->check )
+        {
+            std::cout << std::hex;
+            std::cout << "For CRC: " << CRC_List[i]->name <<  " std check: 0x" << CRC_List[i]->check << " but get_check: 0x" << CRC_List[i]->get_check() << "\n";
             return TEST_BROKEN;
         }
     }
