@@ -118,7 +118,8 @@ class Proxy_CRC_t : public AbstractProxy_CRC_t
 
 #define ADD_CRC_TO_LIST(Name, Bits, Poly, Init, RefIn, RefOut, XorOut, Check)                                            \
 {                                                                                                                        \
-    AbstractProxy_CRC_t *ptr = (AbstractProxy_CRC_t *)new Proxy_CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Check>(); \
+    AbstractProxy_CRC_t *ptr = static_cast<AbstractProxy_CRC_t *>                                                        \
+                               ( new Proxy_CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Check>() );                    \
     if( !ptr )                                                                                                           \
     {                                                                                                                    \
         std::cerr << "Can't get MEM for Proxy_CRC_t<" << Bits << "," << Poly << "," << Init << "," << RefIn << ","       \
@@ -717,13 +718,12 @@ int test_crc_std_check_file(struct test_info_t  *test_info)
     TEST_INIT;
 
     uint64_t crc;
-    int res;
 
 
     for( size_t i = 0; i < CRC_List.size(); i++)
     {
         crc = 0;
-        res = CRC_List[i]->get_crc(crc, "std_file_to_test_crc");
+        int res = CRC_List[i]->get_crc(crc, "std_file_to_test_crc");
 
         if( (res != 0) ||  (crc != CRC_List[i]->check) )
         {
@@ -745,13 +745,12 @@ int test_crc_no_file(struct test_info_t  *test_info)
     TEST_INIT;
 
     uint64_t crc;
-    int res;
 
 
     for( size_t i = 0; i < CRC_List.size(); i++)
     {
         crc = 0;
-        res = CRC_List[i]->get_crc(crc, "");
+        int res = CRC_List[i]->get_crc(crc, "");
 
         if( (res != -1) || (crc != 0) )
         {
@@ -778,15 +777,12 @@ int test_crc_for_cunks(struct test_info_t  *test_info)
 
     uint64_t crc;
 
-    char buf[]  = "1234";
-    char buf2[] = "56789";
-
 
     for( size_t i = 0; i < CRC_List.size(); i++)
     {
         crc = CRC_List[i]->get_crc_init();
-        crc = CRC_List[i]->get_raw_crc(buf,  4, crc);
-        crc = CRC_List[i]->get_raw_crc(buf2, 5, crc);
+        crc = CRC_List[i]->get_raw_crc(&std_check_data[0], 4, crc);
+        crc = CRC_List[i]->get_raw_crc(&std_check_data[4], 5, crc);
         crc = CRC_List[i]->get_final_crc(crc);
 
         if( crc != CRC_List[i]->check )
