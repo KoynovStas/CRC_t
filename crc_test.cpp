@@ -80,7 +80,7 @@ class Proxy_CRC_t : public AbstractProxy_CRC_t
         virtual uint64_t get_crc_init() { return _crc.get_crc_init();}
         virtual uint64_t get_top_bit()  { return _crc.get_top_bit(); }
         virtual uint64_t get_crc_mask() { return _crc.get_crc_mask();}
-        virtual uint64_t get_check()    { return _crc.get_check();}
+        virtual uint64_t get_check()    { return _crc.get_check();   }
 
 
         // Calculate methods
