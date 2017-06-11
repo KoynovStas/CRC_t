@@ -29,7 +29,7 @@ clean:
 $(TESTS):
 	$(CPP)  $@.cpp -o $@  $(CPPFLAGS)
 	@echo "  ---- Compiled $@ ----"
-	@./crc_test
+	@./$@
 
 
 
@@ -48,4 +48,3 @@ help:
 	@echo "   all     -  clean and build all tests"
 	@echo "   asm     -  get ASM listing"
 	@echo "   help    -  This help"
-
