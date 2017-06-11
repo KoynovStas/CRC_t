@@ -1,4 +1,6 @@
-CPPFLAGS += -O2 -Wall
+CPPFLAGS += -O2  -s  -Wall
+CPPFLAGS += -D__USE_MINGW_ANSI_STDIO=1  #-DWITHOUT_COLOR_COLOR
+CPPFLAGS += -I..
 CPP       =  g++
 #CPP       =  arm-gcc_4.9.2_cortex_a15-linux-uclibcgnueabi-g++
 
@@ -27,11 +29,7 @@ clean:
 $(TESTS):
 	$(CPP)  $@.cpp unit_tests.cpp -o $@  $(CPPFLAGS)
 	@echo "  ---- Compiled $@ ----"
-	@echo ""
-	@echo "  ---- Start tests ----"
-	@echo ""
 	@./crc_test
-	@echo ""
 
 
 
