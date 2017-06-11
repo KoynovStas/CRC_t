@@ -24,6 +24,7 @@
 
 
 # Binary files
+*.exe
 crc_test
 
 
