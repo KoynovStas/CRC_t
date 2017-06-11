@@ -233,7 +233,7 @@ crc = get_final_crc(crc);
 ```
 
 
-More details can be found in the test application: **[crc_test.cpp](./crc_test.cpp)**
+More details can be found in the test application: **[crc_test.cpp](./tests/crc_test.cpp)**
 
 
 
