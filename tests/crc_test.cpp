@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 
-#include "unit_tests.h"
+#include "stest.h"
 #include "crc_t.h"
 
 
@@ -301,11 +301,8 @@ const uint8_t std_check_data[] = {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38
 
 
 
-int test_crc_type_helper_uint8(struct test_info_t  *test_info)
+TEST(test_crc_type_helper_uint8)
 {
-
-    TEST_INIT;
-
 
     if(
         sizeof(CRC_Type_helper< (1-1)/8 >::value_type) != sizeof(uint8_t) ||
@@ -317,19 +314,16 @@ int test_crc_type_helper_uint8(struct test_info_t  *test_info)
         sizeof(CRC_Type_helper< (7-1)/8 >::value_type) != sizeof(uint8_t) ||
         sizeof(CRC_Type_helper< (8-1)/8 >::value_type) != sizeof(uint8_t)
       )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
 
-int test_crc_type_helper_uint16(struct test_info_t  *test_info)
+TEST(test_crc_type_helper_uint16)
 {
-
-    TEST_INIT;
-
 
     if(
         sizeof(CRC_Type_helper< (9 -1)/8 >::value_type) != sizeof(uint16_t) ||
@@ -341,19 +335,16 @@ int test_crc_type_helper_uint16(struct test_info_t  *test_info)
         sizeof(CRC_Type_helper< (15-1)/8 >::value_type) != sizeof(uint16_t) ||
         sizeof(CRC_Type_helper< (16-1)/8 >::value_type) != sizeof(uint16_t)
       )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
 
-int test_crc_type_helper_uint32(struct test_info_t  *test_info)
+TEST(test_crc_type_helper_uint32)
 {
-
-    TEST_INIT;
-
 
     if(
         sizeof(CRC_Type_helper< (17-1)/8 >::value_type) != sizeof(uint32_t) ||
@@ -373,26 +364,23 @@ int test_crc_type_helper_uint32(struct test_info_t  *test_info)
         sizeof(CRC_Type_helper< (31-1)/8 >::value_type) != sizeof(uint32_t) ||
         sizeof(CRC_Type_helper< (32-1)/8 >::value_type) != sizeof(uint32_t)
       )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
 
-int test_crc_type_helper_uint64(struct test_info_t  *test_info)
+TEST(test_crc_type_helper_uint64)
 {
-
-    TEST_INIT;
-
 
     //Template CRC_Type_helper default is uint64_t
     if( sizeof(CRC_Type_helper<100>::value_type) != sizeof(uint64_t) )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
@@ -401,28 +389,23 @@ int test_crc_type_helper_uint64(struct test_info_t  *test_info)
 
 
 
-int test_universal_crc_name(struct test_info_t  *test_info)
+TEST(test_universal_crc_name)
 {
-
-    TEST_INIT;
-
 
     CRC_t<1, 0, 0, true, true, 0>  ucrc;
 
 
     if( ucrc.name != "" )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
 
-int test_universal_crc_name_2(struct test_info_t  *test_info)
+TEST(test_universal_crc_name_2)
 {
-
-    TEST_INIT;
 
     const char* name = "some_name";
 
@@ -430,19 +413,16 @@ int test_universal_crc_name_2(struct test_info_t  *test_info)
 
 
     if( ucrc.name != name )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
 
-int test_universal_crc_get_bits(struct test_info_t  *test_info)
+TEST(test_universal_crc_get_bits)
 {
-
-    TEST_INIT;
-
 
     for( size_t i = 0; i < CRC_List.size(); i++)
     {
@@ -450,21 +430,18 @@ int test_universal_crc_get_bits(struct test_info_t  *test_info)
         if( CRC_List[i]->get_bits() != CRC_List[i]->bits )
         {
             std::cout << "For CRC: " << CRC_List[i]->name <<  " bits must be: " << CRC_List[i]->bits << " but get: " << CRC_List[i]->get_bits() << "\n";
-            return TEST_BROKEN;
+            TEST_FAIL(NULL);
         }
     }
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
 
-int test_universal_crc_get_poly(struct test_info_t  *test_info)
+TEST(test_universal_crc_get_poly)
 {
-
-    TEST_INIT;
-
 
     for( size_t i = 0; i < CRC_List.size(); i++)
     {
@@ -473,21 +450,18 @@ int test_universal_crc_get_poly(struct test_info_t  *test_info)
         {
             std::cout << std::hex;
             std::cout << "For CRC: " << CRC_List[i]->name <<  " poly must be: " << CRC_List[i]->poly << " but get: " << CRC_List[i]->get_poly() << "\n";
-            return TEST_BROKEN;
+            TEST_FAIL(NULL);
         }
     }
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
 
-int test_universal_crc_get_init(struct test_info_t  *test_info)
+TEST(test_universal_crc_get_init)
 {
-
-    TEST_INIT;
-
 
     for( size_t i = 0; i < CRC_List.size(); i++)
     {
@@ -496,21 +470,18 @@ int test_universal_crc_get_init(struct test_info_t  *test_info)
         {
             std::cout << std::hex;
             std::cout << "For CRC: " << CRC_List[i]->name <<  " Init must be: " << CRC_List[i]->init << " but get: " << CRC_List[i]->get_init() << "\n";
-            return TEST_BROKEN;
+            TEST_FAIL(NULL);
         }
     }
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
 
-int test_universal_crc_get_xor_out(struct test_info_t  *test_info)
+TEST(test_universal_crc_get_xor_out)
 {
-
-    TEST_INIT;
-
 
     for( size_t i = 0; i < CRC_List.size(); i++)
     {
@@ -519,21 +490,18 @@ int test_universal_crc_get_xor_out(struct test_info_t  *test_info)
         {
             std::cout << std::hex;
             std::cout << "For CRC: " << CRC_List[i]->name <<  " Xor_out must be: " << CRC_List[i]->xor_out << " but get: " << CRC_List[i]->get_xor_out() << "\n";
-            return TEST_BROKEN;
+            TEST_FAIL(NULL);
         }
     }
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
 
-int test_universal_crc_get_ref_in(struct test_info_t  *test_info)
+TEST(test_universal_crc_get_ref_in)
 {
-
-    TEST_INIT;
-
 
     for( size_t i = 0; i < CRC_List.size(); i++)
     {
@@ -542,21 +510,18 @@ int test_universal_crc_get_ref_in(struct test_info_t  *test_info)
         {
             std::cout << std::hex;
             std::cout << "For CRC: " << CRC_List[i]->name <<  " ref_in must be: " << CRC_List[i]->ref_in << " but get: " << CRC_List[i]->get_ref_in() << "\n";
-            return TEST_BROKEN;
+            TEST_FAIL(NULL);
         }
     }
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
 
-int test_universal_crc_get_ref_out(struct test_info_t  *test_info)
+TEST(test_universal_crc_get_ref_out)
 {
-
-    TEST_INIT;
-
 
     for( size_t i = 0; i < CRC_List.size(); i++)
     {
@@ -565,106 +530,97 @@ int test_universal_crc_get_ref_out(struct test_info_t  *test_info)
         {
             std::cout << std::hex;
             std::cout << "For CRC: " << CRC_List[i]->name <<  " ref_out must be: " << CRC_List[i]->ref_out << " but get: " << CRC_List[i]->get_ref_out() << "\n";
-            return TEST_BROKEN;
+            TEST_FAIL(NULL);
         }
     }
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
 
-int test_universal_crc_get_crc_init(struct test_info_t  *test_info)
+TEST(test_universal_crc_get_crc_init)
 {
-
-    TEST_INIT;
-
     CRC_t<16, 0, 0x1234, false, false, 0>  ucrc;
 
 
     if( ucrc.get_crc_init() != 0x1234 )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
     CRC_t<16, 0, 0x1234, true, false, 0>  ucrc1;
 
 
     if( ucrc1.get_crc_init() != 0x2c48 )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
 
-int test_universal_crc_get_top_bit(struct test_info_t  *test_info)
+TEST(test_universal_crc_get_top_bit)
 {
-
-    TEST_INIT;
-
     CRC_t<1, 0, 0, true, false, 0>  ucrc1;
     if( ucrc1.get_top_bit() != 0x1 )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
     CRC_t<5, 0, 0, true, false, 0>  ucrc5;
     if( ucrc5.get_top_bit() != 0x10 )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
     CRC_t<8, 0, 0, true, false, 0>  ucrc8;
     if( ucrc8.get_top_bit() != 0x80 )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
     CRC_t<16, 0, 0, true, false, 0>  ucrc16;
     if( ucrc16.get_top_bit() != 0x8000 )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
     CRC_t<24, 0, 0, true, false, 0>  ucrc24;
     if( ucrc24.get_top_bit() != 0x800000 )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
 
-int test_universal_crc_get_crc_mask(struct test_info_t  *test_info)
+TEST(test_universal_crc_get_crc_mask)
 {
-
-    TEST_INIT;
-
     CRC_t<1, 0, 0, true, false, 0>  ucrc1;
     if( ucrc1.get_crc_mask() != 0x0001 )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
     CRC_t<5, 0, 0, true, false, 0>  ucrc5;
     if( ucrc5.get_crc_mask() != 0x1f )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
     CRC_t<8, 0, 0, true, false, 0>  ucrc8;
     if( ucrc8.get_crc_mask() != 0xff )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
     CRC_t<16, 0, 0, true, false, 0>  ucrc16;
     if( ucrc16.get_crc_mask() != 0xffff )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
     CRC_t<24, 0, 0, true, false, 0>  ucrc24;
     if( ucrc24.get_crc_mask() != 0xffffff )
-        return TEST_BROKEN;
+        TEST_FAIL(NULL);
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
@@ -673,11 +629,8 @@ int test_universal_crc_get_crc_mask(struct test_info_t  *test_info)
 
 
 
-int test_crc_std_check(struct test_info_t  *test_info)
+TEST(test_crc_std_check)
 {
-
-    TEST_INIT;
-
     uint64_t crc;
 
 
@@ -690,7 +643,7 @@ int test_crc_std_check(struct test_info_t  *test_info)
         {
             std::cout << std::hex;
             std::cout << "For CRC: " << CRC_List[i]->name <<  " std check: 0x" << CRC_List[i]->check << " but get: 0x" << crc << "\n";
-            return TEST_BROKEN;
+            TEST_FAIL(NULL);
         }
 
 
@@ -698,12 +651,12 @@ int test_crc_std_check(struct test_info_t  *test_info)
         {
             std::cout << std::hex;
             std::cout << "For CRC: " << CRC_List[i]->name <<  " std check: 0x" << CRC_List[i]->check << " but get_check: 0x" << CRC_List[i]->get_check() << "\n";
-            return TEST_BROKEN;
+            TEST_FAIL(NULL);
         }
     }
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
@@ -712,11 +665,8 @@ int test_crc_std_check(struct test_info_t  *test_info)
 
 
 
-int test_crc_std_check_file(struct test_info_t  *test_info)
+TEST(test_crc_std_check_file)
 {
-
-    TEST_INIT;
-
     uint64_t crc;
 
 
@@ -729,21 +679,18 @@ int test_crc_std_check_file(struct test_info_t  *test_info)
         {
             std::cout << std::hex;
             std::cout << "For CRC: " << CRC_List[i]->name <<  " std check: 0x" << CRC_List[i]->check << " but get: 0x" << crc << "\n";
-            return TEST_BROKEN;
+            TEST_FAIL(NULL);
         }
     }
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
 
-int test_crc_no_file(struct test_info_t  *test_info)
+TEST(test_crc_no_file)
 {
-
-    TEST_INIT;
-
     uint64_t crc;
 
 
@@ -756,12 +703,12 @@ int test_crc_no_file(struct test_info_t  *test_info)
         {
             std::cout << std::hex;
             std::cout << "For CRC: " << CRC_List[i]->name <<  "no file but get_crc() ret:" << res << " crc:" << crc << "\n";
-            return TEST_BROKEN;
+            TEST_FAIL(NULL);
         }
     }
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
@@ -770,11 +717,8 @@ int test_crc_no_file(struct test_info_t  *test_info)
 
 
 
-int test_crc_for_cunks(struct test_info_t  *test_info)
+TEST(test_crc_for_cunks)
 {
-
-    TEST_INIT;
-
     uint64_t crc;
 
 
@@ -789,12 +733,12 @@ int test_crc_for_cunks(struct test_info_t  *test_info)
         {
             std::cout << std::hex;
             std::cout << "For CRC: " << CRC_List[i]->name <<  " std check: 0x" << CRC_List[i]->check << " but get: 0x" << crc << "\n";
-            return TEST_BROKEN;
+            TEST_FAIL(NULL);
         }
     }
 
 
-    return TEST_PASSED;
+    TEST_PASS(NULL);
 }
 
 
@@ -836,10 +780,4 @@ ptest_func tests[] =
 
 
 
-int main(void)
-{
-
-    RUN_TESTS(tests);
-
-    return 0;
-}
+MAIN_TESTS(tests)
