@@ -304,18 +304,14 @@ const uint8_t std_check_data[] = {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38
 TEST(test_crc_type_helper_uint8)
 {
 
-    if(
-        sizeof(CRC_Type_helper< (1-1)/8 >::value_type) != sizeof(uint8_t) ||
-        sizeof(CRC_Type_helper< (2-1)/8 >::value_type) != sizeof(uint8_t) ||
-        sizeof(CRC_Type_helper< (3-1)/8 >::value_type) != sizeof(uint8_t) ||
-        sizeof(CRC_Type_helper< (4-1)/8 >::value_type) != sizeof(uint8_t) ||
-        sizeof(CRC_Type_helper< (5-1)/8 >::value_type) != sizeof(uint8_t) ||
-        sizeof(CRC_Type_helper< (6-1)/8 >::value_type) != sizeof(uint8_t) ||
-        sizeof(CRC_Type_helper< (7-1)/8 >::value_type) != sizeof(uint8_t) ||
-        sizeof(CRC_Type_helper< (8-1)/8 >::value_type) != sizeof(uint8_t)
-      )
-        TEST_FAIL(NULL);
-
+    TEST_ASSERT(sizeof(CRC_Type_helper< (1-1)/8 >::value_type) == sizeof(uint8_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (2-1)/8 >::value_type) == sizeof(uint8_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (3-1)/8 >::value_type) == sizeof(uint8_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (4-1)/8 >::value_type) == sizeof(uint8_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (5-1)/8 >::value_type) == sizeof(uint8_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (6-1)/8 >::value_type) == sizeof(uint8_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (7-1)/8 >::value_type) == sizeof(uint8_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (8-1)/8 >::value_type) == sizeof(uint8_t));
 
     TEST_PASS(NULL);
 }
@@ -325,18 +321,14 @@ TEST(test_crc_type_helper_uint8)
 TEST(test_crc_type_helper_uint16)
 {
 
-    if(
-        sizeof(CRC_Type_helper< (9 -1)/8 >::value_type) != sizeof(uint16_t) ||
-        sizeof(CRC_Type_helper< (10-1)/8 >::value_type) != sizeof(uint16_t) ||
-        sizeof(CRC_Type_helper< (11-1)/8 >::value_type) != sizeof(uint16_t) ||
-        sizeof(CRC_Type_helper< (12-1)/8 >::value_type) != sizeof(uint16_t) ||
-        sizeof(CRC_Type_helper< (13-1)/8 >::value_type) != sizeof(uint16_t) ||
-        sizeof(CRC_Type_helper< (14-1)/8 >::value_type) != sizeof(uint16_t) ||
-        sizeof(CRC_Type_helper< (15-1)/8 >::value_type) != sizeof(uint16_t) ||
-        sizeof(CRC_Type_helper< (16-1)/8 >::value_type) != sizeof(uint16_t)
-      )
-        TEST_FAIL(NULL);
-
+    TEST_ASSERT(sizeof(CRC_Type_helper< (9 -1)/8 >::value_type) == sizeof(uint16_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (10-1)/8 >::value_type) == sizeof(uint16_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (11-1)/8 >::value_type) == sizeof(uint16_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (12-1)/8 >::value_type) == sizeof(uint16_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (13-1)/8 >::value_type) == sizeof(uint16_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (14-1)/8 >::value_type) == sizeof(uint16_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (15-1)/8 >::value_type) == sizeof(uint16_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (16-1)/8 >::value_type) == sizeof(uint16_t));
 
     TEST_PASS(NULL);
 }
@@ -346,26 +338,22 @@ TEST(test_crc_type_helper_uint16)
 TEST(test_crc_type_helper_uint32)
 {
 
-    if(
-        sizeof(CRC_Type_helper< (17-1)/8 >::value_type) != sizeof(uint32_t) ||
-        sizeof(CRC_Type_helper< (18-1)/8 >::value_type) != sizeof(uint32_t) ||
-        sizeof(CRC_Type_helper< (19-1)/8 >::value_type) != sizeof(uint32_t) ||
-        sizeof(CRC_Type_helper< (20-1)/8 >::value_type) != sizeof(uint32_t) ||
-        sizeof(CRC_Type_helper< (21-1)/8 >::value_type) != sizeof(uint32_t) ||
-        sizeof(CRC_Type_helper< (22-1)/8 >::value_type) != sizeof(uint32_t) ||
-        sizeof(CRC_Type_helper< (23-1)/8 >::value_type) != sizeof(uint32_t) ||
-        sizeof(CRC_Type_helper< (24-1)/8 >::value_type) != sizeof(uint32_t) ||
-        sizeof(CRC_Type_helper< (25-1)/8 >::value_type) != sizeof(uint32_t) ||
-        sizeof(CRC_Type_helper< (26-1)/8 >::value_type) != sizeof(uint32_t) ||
-        sizeof(CRC_Type_helper< (27-1)/8 >::value_type) != sizeof(uint32_t) ||
-        sizeof(CRC_Type_helper< (28-1)/8 >::value_type) != sizeof(uint32_t) ||
-        sizeof(CRC_Type_helper< (29-1)/8 >::value_type) != sizeof(uint32_t) ||
-        sizeof(CRC_Type_helper< (30-1)/8 >::value_type) != sizeof(uint32_t) ||
-        sizeof(CRC_Type_helper< (31-1)/8 >::value_type) != sizeof(uint32_t) ||
-        sizeof(CRC_Type_helper< (32-1)/8 >::value_type) != sizeof(uint32_t)
-      )
-        TEST_FAIL(NULL);
-
+    TEST_ASSERT(sizeof(CRC_Type_helper< (17-1)/8 >::value_type) == sizeof(uint32_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (18-1)/8 >::value_type) == sizeof(uint32_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (19-1)/8 >::value_type) == sizeof(uint32_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (20-1)/8 >::value_type) == sizeof(uint32_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (21-1)/8 >::value_type) == sizeof(uint32_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (22-1)/8 >::value_type) == sizeof(uint32_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (23-1)/8 >::value_type) == sizeof(uint32_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (24-1)/8 >::value_type) == sizeof(uint32_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (25-1)/8 >::value_type) == sizeof(uint32_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (26-1)/8 >::value_type) == sizeof(uint32_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (27-1)/8 >::value_type) == sizeof(uint32_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (28-1)/8 >::value_type) == sizeof(uint32_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (29-1)/8 >::value_type) == sizeof(uint32_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (30-1)/8 >::value_type) == sizeof(uint32_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (31-1)/8 >::value_type) == sizeof(uint32_t));
+    TEST_ASSERT(sizeof(CRC_Type_helper< (32-1)/8 >::value_type) == sizeof(uint32_t));
 
     TEST_PASS(NULL);
 }
@@ -374,11 +362,8 @@ TEST(test_crc_type_helper_uint32)
 
 TEST(test_crc_type_helper_uint64)
 {
-
     //Template CRC_Type_helper default is uint64_t
-    if( sizeof(CRC_Type_helper<100>::value_type) != sizeof(uint64_t) )
-        TEST_FAIL(NULL);
-
+    TEST_ASSERT(sizeof(CRC_Type_helper<100>::value_type) == sizeof(uint64_t));
 
     TEST_PASS(NULL);
 }
@@ -391,13 +376,9 @@ TEST(test_crc_type_helper_uint64)
 
 TEST(test_universal_crc_name)
 {
-
     CRC_t<1, 0, 0, true, true, 0>  ucrc;
 
-
-    if( ucrc.name != "" )
-        TEST_FAIL(NULL);
-
+    TEST_ASSERT(ucrc.name == "" );
 
     TEST_PASS(NULL);
 }
@@ -406,15 +387,11 @@ TEST(test_universal_crc_name)
 
 TEST(test_universal_crc_name_2)
 {
-
     const char* name = "some_name";
 
     CRC_t<1, 0, 0, true, true, 0>  ucrc(name);
 
-
-    if( ucrc.name != name )
-        TEST_FAIL(NULL);
-
+    TEST_ASSERT(ucrc.name == name );
 
     TEST_PASS(NULL);
 }
@@ -543,17 +520,11 @@ TEST(test_universal_crc_get_ref_out)
 TEST(test_universal_crc_get_crc_init)
 {
     CRC_t<16, 0, 0x1234, false, false, 0>  ucrc;
-
-
-    if( ucrc.get_crc_init() != 0x1234 )
-        TEST_FAIL(NULL);
+    TEST_ASSERT(ucrc.get_crc_init() == 0x1234);
 
 
     CRC_t<16, 0, 0x1234, true, false, 0>  ucrc1;
-
-
-    if( ucrc1.get_crc_init() != 0x2c48 )
-        TEST_FAIL(NULL);
+    TEST_ASSERT(ucrc1.get_crc_init() == 0x2c48 );
 
 
     TEST_PASS(NULL);
@@ -564,28 +535,23 @@ TEST(test_universal_crc_get_crc_init)
 TEST(test_universal_crc_get_top_bit)
 {
     CRC_t<1, 0, 0, true, false, 0>  ucrc1;
-    if( ucrc1.get_top_bit() != 0x1 )
-        TEST_FAIL(NULL);
+    TEST_ASSERT(ucrc1.get_top_bit() == 0x1);
 
 
     CRC_t<5, 0, 0, true, false, 0>  ucrc5;
-    if( ucrc5.get_top_bit() != 0x10 )
-        TEST_FAIL(NULL);
+    TEST_ASSERT(ucrc5.get_top_bit() == 0x10);
 
 
     CRC_t<8, 0, 0, true, false, 0>  ucrc8;
-    if( ucrc8.get_top_bit() != 0x80 )
-        TEST_FAIL(NULL);
+    TEST_ASSERT(ucrc8.get_top_bit() == 0x80);
 
 
     CRC_t<16, 0, 0, true, false, 0>  ucrc16;
-    if( ucrc16.get_top_bit() != 0x8000 )
-        TEST_FAIL(NULL);
+    TEST_ASSERT(ucrc16.get_top_bit() == 0x8000);
 
 
     CRC_t<24, 0, 0, true, false, 0>  ucrc24;
-    if( ucrc24.get_top_bit() != 0x800000 )
-        TEST_FAIL(NULL);
+    TEST_ASSERT(ucrc24.get_top_bit() == 0x800000);
 
 
     TEST_PASS(NULL);
@@ -596,28 +562,23 @@ TEST(test_universal_crc_get_top_bit)
 TEST(test_universal_crc_get_crc_mask)
 {
     CRC_t<1, 0, 0, true, false, 0>  ucrc1;
-    if( ucrc1.get_crc_mask() != 0x0001 )
-        TEST_FAIL(NULL);
+    TEST_ASSERT(ucrc1.get_crc_mask() == 0x0001 );
 
 
     CRC_t<5, 0, 0, true, false, 0>  ucrc5;
-    if( ucrc5.get_crc_mask() != 0x1f )
-        TEST_FAIL(NULL);
+    TEST_ASSERT(ucrc5.get_crc_mask() == 0x1f );
 
 
     CRC_t<8, 0, 0, true, false, 0>  ucrc8;
-    if( ucrc8.get_crc_mask() != 0xff )
-        TEST_FAIL(NULL);
+    TEST_ASSERT(ucrc8.get_crc_mask() == 0xff );
 
 
     CRC_t<16, 0, 0, true, false, 0>  ucrc16;
-    if( ucrc16.get_crc_mask() != 0xffff )
-        TEST_FAIL(NULL);
+    TEST_ASSERT(ucrc16.get_crc_mask() == 0xffff );
 
 
     CRC_t<24, 0, 0, true, false, 0>  ucrc24;
-    if( ucrc24.get_crc_mask() != 0xffffff )
-        TEST_FAIL(NULL);
+    TEST_ASSERT(ucrc24.get_crc_mask() == 0xffffff );
 
 
     TEST_PASS(NULL);
