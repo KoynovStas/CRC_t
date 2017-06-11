@@ -20,7 +20,7 @@
 
 
 If you need a class to work with different CRC algorithms, which can change the algorithm parameters in the dynamics (Run-Time) see:
-[CRC_CPP_Class](https://github.com/KoynovStas/CRC_CPP_Class)
+[uCRC_t](https://github.com/KoynovStas/uCRC_t)
 
 
 Template parameters is the standard Specifications algorithms CRC as described in Ross N. Williams [A PAINLESS GUIDE TO CRC ERROR DETECTION ALGORITHMS.](http://www.ross.net/crc/download/crc_v3.txt)
