@@ -75,9 +75,20 @@ struct test_info_t
 
 
 
-#define TEST_PASS(msg)  return (struct test_info_t) {__FILE__, __func__, __LINE__, STATUS_PASS, msg}
-#define TEST_SKIP(msg)  return (struct test_info_t) {__FILE__, __func__, __LINE__, STATUS_SKIP, msg}
-#define TEST_FAIL(msg)  return (struct test_info_t) {__FILE__, __func__, __LINE__, STATUS_FAIL, msg}
+static inline struct test_info_t get_test_info( const char *file_name,
+                                                const char *func_name,
+                                                int         line_num,
+                                                int         status,
+                                                const char *msg)
+{
+    struct test_info_t test_info = {file_name, func_name, line_num, status, msg};
+    return test_info;
+}
+
+
+#define TEST_PASS(msg)  return get_test_info(__FILE__, __func__, __LINE__, STATUS_PASS, msg)
+#define TEST_SKIP(msg)  return get_test_info(__FILE__, __func__, __LINE__, STATUS_SKIP, msg)
+#define TEST_FAIL(msg)  return get_test_info(__FILE__, __func__, __LINE__, STATUS_FAIL, msg)
 
 
 
