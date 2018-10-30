@@ -333,16 +333,13 @@ CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_final_crc(CRC_Type 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
 CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::reflect(CRC_Type data, uint8_t num_bits) const
 {
-
     CRC_Type reflection = 0;
-    CRC_Type one = 1;
 
-    for ( size_t i = 0; i < num_bits; ++i, data >>= 1 )
+
+    while( num_bits-- )
     {
-        if ( data & one )
-        {
-            reflection |= ( one << (num_bits - one - i) );
-        }
+        reflection = (reflection << 1) | (data & 1);
+        data >>= 1;
     }
 
     return reflection;
