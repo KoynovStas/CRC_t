@@ -287,7 +287,7 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, FILE*
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
 CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(const void* data, size_t len, CRC_Type crc) const
 {
-    register const uint8_t* buf = static_cast< const uint8_t* >(data);
+    const uint8_t* buf = static_cast< const uint8_t* >(data);
 
 
     if(Bits > 8)
