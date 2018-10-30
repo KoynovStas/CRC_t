@@ -176,6 +176,7 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
     // CRC-8
     ADD_CRC_TO_LIST("CRC-8",            8, 0x7,  0x0,  false, false, 0x0,  0xF4);
     ADD_CRC_TO_LIST("CRC-8/AUTOSAR",    8, 0x2F, 0xFF, false, false, 0xFF, 0xDF);
+    ADD_CRC_TO_LIST("CRC-8/BLUETOOTH",  8, 0xA7, 0x0,  true,  true,  0x0,  0x26);
     ADD_CRC_TO_LIST("CRC-8/CDMA2000",   8, 0x9B, 0xFF, false, false, 0x0,  0xDA);
     ADD_CRC_TO_LIST("CRC-8/DARC",       8, 0x39, 0x0,  true,  true,  0x0,  0x15);
     ADD_CRC_TO_LIST("CRC-8/DVB-S2",     8, 0xD5, 0x0,  false, false, 0x0,  0xBC);
