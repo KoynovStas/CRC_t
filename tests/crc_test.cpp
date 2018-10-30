@@ -306,6 +306,22 @@ const uint8_t std_check_data[] = {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38
 
 
 
+static std::stringstream ss;
+static std::string       msg;
+
+
+void test_init(struct test_case_t *test_case)
+{
+    ss.clear();
+    ss.str(""); // clear ss
+    ss << std::hex;
+
+    msg.clear();
+}
+
+
+
+
 //------------- tests for CRC_Type_helper -------------
 
 
@@ -415,9 +431,9 @@ TEST(test_universal_crc_get_bits)
 
         if( CRC_List[i]->get_bits() != CRC_List[i]->bits )
         {
-            std::stringstream ss;
             ss << "For CRC: " << CRC_List[i]->name <<  " bits must be: " << CRC_List[i]->bits << " but get: " << CRC_List[i]->get_bits();
-            TEST_FAIL(ss.str().c_str());
+            msg = ss.str();
+            TEST_FAIL(msg.c_str());
         }
     }
 
@@ -435,10 +451,9 @@ TEST(test_universal_crc_get_poly)
 
         if( CRC_List[i]->get_poly() != CRC_List[i]->poly )
         {
-            std::stringstream ss;
-            ss << std::hex;
             ss << "For CRC: " << CRC_List[i]->name <<  " poly must be: " << CRC_List[i]->poly << " but get: " << CRC_List[i]->get_poly();
-            TEST_FAIL(ss.str().c_str());
+            msg = ss.str();
+            TEST_FAIL(msg.c_str());
         }
     }
 
@@ -456,10 +471,9 @@ TEST(test_universal_crc_get_init)
 
         if( CRC_List[i]->get_init() != CRC_List[i]->init )
         {
-            std::stringstream ss;
-            ss << std::hex;
             ss << "For CRC: " << CRC_List[i]->name <<  " Init must be: " << CRC_List[i]->init << " but get: " << CRC_List[i]->get_init();
-            TEST_FAIL(ss.str().c_str());
+            msg = ss.str();
+            TEST_FAIL(msg.c_str());
         }
     }
 
@@ -477,10 +491,9 @@ TEST(test_universal_crc_get_xor_out)
 
         if( CRC_List[i]->get_xor_out() != CRC_List[i]->xor_out )
         {
-            std::stringstream ss;
-            ss << std::hex;
             ss << "For CRC: " << CRC_List[i]->name <<  " Xor_out must be: " << CRC_List[i]->xor_out << " but get: " << CRC_List[i]->get_xor_out();
-            TEST_FAIL(ss.str().c_str());
+            msg = ss.str();
+            TEST_FAIL(msg.c_str());
         }
     }
 
@@ -498,10 +511,9 @@ TEST(test_universal_crc_get_ref_in)
 
         if( CRC_List[i]->get_ref_in() != CRC_List[i]->ref_in )
         {
-            std::stringstream ss;
-            ss << std::hex;
             ss << "For CRC: " << CRC_List[i]->name <<  " ref_in must be: " << CRC_List[i]->ref_in << " but get: " << CRC_List[i]->get_ref_in();
-            TEST_FAIL(ss.str().c_str());
+            msg = ss.str();
+            TEST_FAIL(msg.c_str());
         }
     }
 
@@ -519,10 +531,9 @@ TEST(test_universal_crc_get_ref_out)
 
         if( CRC_List[i]->get_ref_out() != CRC_List[i]->ref_out )
         {
-            std::stringstream ss;
-            ss << std::hex;
             ss << "For CRC: " << CRC_List[i]->name <<  " ref_out must be: " << CRC_List[i]->ref_out << " but get: " << CRC_List[i]->get_ref_out();
-            TEST_FAIL(ss.str().c_str());
+            msg = ss.str();
+            TEST_FAIL(msg.c_str());
         }
     }
 
@@ -617,19 +628,17 @@ TEST(test_crc_std_check)
 
         if( crc != CRC_List[i]->check )
         {
-            std::stringstream ss;
-            ss << std::hex;
             ss << "For CRC: " << CRC_List[i]->name <<  " std check: 0x" << CRC_List[i]->check << " but get: 0x" << crc;
-            TEST_FAIL(ss.str().c_str());
+            msg = ss.str();
+            TEST_FAIL(msg.c_str());
         }
 
 
         if( CRC_List[i]->get_check() != CRC_List[i]->check )
         {
-            std::stringstream ss;
-            ss << std::hex;
             ss << "For CRC: " << CRC_List[i]->name <<  " std check: 0x" << CRC_List[i]->check << " but get_check: 0x" << CRC_List[i]->get_check();
-            TEST_FAIL(ss.str().c_str());
+            msg = ss.str();
+            TEST_FAIL(msg.c_str());
         }
     }
 
@@ -655,10 +664,9 @@ TEST(test_crc_std_check_file)
 
         if( (res != 0) ||  (crc != CRC_List[i]->check) )
         {
-            std::stringstream ss;
-            ss << std::hex;
             ss << "For CRC: " << CRC_List[i]->name <<  " std check: 0x" << CRC_List[i]->check << " but get: 0x" << crc;
-            TEST_FAIL(ss.str().c_str());
+            msg = ss.str();
+            TEST_FAIL(msg.c_str());
         }
     }
 
@@ -680,10 +688,9 @@ TEST(test_crc_no_file)
 
         if( (res != -1) || (crc != 0) )
         {
-            std::stringstream ss;
-            ss << std::hex;
             ss << "For CRC: " << CRC_List[i]->name <<  "no file but get_crc() ret:" << res << " crc:" << crc;
-            TEST_FAIL(ss.str().c_str());
+            msg = ss.str();
+            TEST_FAIL(msg.c_str());
         }
     }
 
@@ -711,10 +718,9 @@ TEST(test_crc_for_cunks)
 
         if( crc != CRC_List[i]->check )
         {
-            std::stringstream ss;
-            ss << std::hex;
             ss << "For CRC: " << CRC_List[i]->name <<  " std check: 0x" << CRC_List[i]->check << " but get: 0x" << crc;
-            TEST_FAIL(ss.str().c_str());
+            msg = ss.str();
+            TEST_FAIL(msg.c_str());
         }
     }
 
@@ -760,5 +766,7 @@ ptest_func tests[] =
 };
 
 
+TEST_CASE(test_case, tests, NULL, test_init, NULL)
 
-MAIN_TESTS(tests)
+
+MAIN_CASE(test_case)
