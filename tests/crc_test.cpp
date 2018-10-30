@@ -252,6 +252,9 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
     // CRC-17
     ADD_CRC_TO_LIST("CRC-17/CAN-FD",     17, 0x1685B, 0x0, false, false, 0x0,  0x4F03);
 
+    // CRC-21
+    ADD_CRC_TO_LIST("CRC-21/CAN-FD",     21, 0x102899, 0x0,false, false, 0x0,  0xED841);
+
     // CRC-24
     ADD_CRC_TO_LIST("CRC-24",            24, 0x864CFB, 0xB704CE, false, false, 0x0,      0x21CF02);
     ADD_CRC_TO_LIST("CRC-24/BLE",        24, 0x65B,    0x555555, true,  true,  0x0,      0xC25A56);
