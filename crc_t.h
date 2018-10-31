@@ -96,10 +96,8 @@ template<> struct CRC_Type_helper<3> { typedef uint32_t value_type; }; //for Bit
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
 class CRC_t
 {
-
     CRC_STATIC_ASSERT(Bits >= 1);
     CRC_STATIC_ASSERT(Bits <= 64);
-
 
 
     public:
@@ -144,11 +142,11 @@ class CRC_t
         CRC_Type reflect(CRC_Type data, uint8_t num_bits) const;
         void init_crc_table();
 
-        uint8_t  shift;
         CRC_Type crc_init;
         CRC_Type top_bit;
         CRC_Type crc_mask;
         CRC_Type crc_table[256];
+        uint8_t  shift;
 };
 
 
@@ -159,7 +157,6 @@ template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, C
 CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRC_t(const std::string& crc_name) :
     name(crc_name)
 {
-
     top_bit  = (CRC_Type)1 << (Bits - 1);
     crc_mask = ( (top_bit - 1) << 1) | 1;
 
@@ -194,7 +191,6 @@ CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_check() const
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
 CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(const void* data, size_t len) const
 {
-
     CRC_Type crc = get_raw_crc(data, len, crc_init);
 
     return get_final_crc(crc);
@@ -205,7 +201,6 @@ CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(const void* dat
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
 int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, const char *file_name) const
 {
-
     char buf[4096];
 
     return get_crc(crc, file_name, buf, sizeof(buf));
@@ -216,7 +211,6 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, const
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
 int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, FILE* pfile) const
 {
-
     char buf[4096];
 
     return get_crc(crc, pfile, buf, sizeof(buf));
@@ -227,7 +221,6 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, FILE*
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
 int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const
 {
-
     if( !file_name )
     {
         errno = EINVAL;
@@ -245,7 +238,6 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, const
 
     fclose(stream);
 
-
     return res;
 }
 
@@ -254,7 +246,6 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, const
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
 int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, FILE* pfile, void* buf, size_t size_buf) const
 {
-
     if( !pfile || !buf || (size_buf == 0) )
     {
         errno = EINVAL;
@@ -277,7 +268,6 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, FILE*
     fseek(pfile, cur_pos, SEEK_SET);
 
     crc = get_final_crc(crc);
-
 
     return 0; //good  job
 }
@@ -318,7 +308,6 @@ CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(const void*
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
 CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_final_crc(CRC_Type raw_crc) const
 {
-
     if(RefOut^RefIn)
         raw_crc = reflect(raw_crc, Bits);
 
@@ -335,7 +324,6 @@ CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::reflect(CRC_Type data, 
 {
     CRC_Type reflection = 0;
 
-
     while( num_bits-- )
     {
         reflection = (reflection << 1) | (data & 1);
@@ -350,7 +338,6 @@ CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::reflect(CRC_Type data, 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
 void CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_crc_table()
 {
-
     //Calculation of the standard CRC table for byte.
     for(int i = 0; i < 256; i++)
     {
