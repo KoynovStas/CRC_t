@@ -43,9 +43,11 @@
 #define CRC_T_H
 
 #include <stdint.h>
-#include <string>
-#include <cstdio>
 #include <errno.h>
+#include <string>
+#include <fstream>    // for std::ifstream
+#include <ios>        // for std::ios_base, etc.
+
 
 
 
@@ -126,9 +128,7 @@ class CRC_t
         // Calculate methods
         CRC_Type get_crc(const void* data, size_t len) const;
         int      get_crc(CRC_Type &crc, const char* file_name) const;
-        int      get_crc(CRC_Type &crc, FILE* pfile) const;
         int      get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const;
-        int      get_crc(CRC_Type &crc, FILE* pfile, void* buf, size_t size_buf) const;
 
 
         // Calculate for chunks of data
@@ -139,14 +139,17 @@ class CRC_t
 
     private:
 
-        CRC_Type reflect(CRC_Type data, uint8_t num_bits) const;
-        void init_crc_table();
-
         CRC_Type crc_init;
         CRC_Type top_bit;
         CRC_Type crc_mask;
         CRC_Type crc_table[256];
         uint8_t  shift;
+
+
+        CRC_Type reflect(CRC_Type data, uint8_t num_bits) const;
+        void     init_crc_table();
+
+        int      get_crc(CRC_Type &crc, std::ifstream& ifs, void* buf, size_t size_buf) const;
 };
 
 
@@ -209,67 +212,35 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, const
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, FILE* pfile) const
-{
-    char buf[4096];
-
-    return get_crc(crc, pfile, buf, sizeof(buf));
-}
-
-
-
-template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
 int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const
 {
-    if( !file_name )
+    std::ifstream ifs(file_name, std::ios_base::binary);
+
+    if( !ifs || !buf || !size_buf)
     {
         errno = EINVAL;
         return -1;
     }
 
-
-    FILE *stream = fopen(file_name, "rb");
-    if( stream == NULL )
-        return -1; //Cant open file
-
-
-    int res = get_crc(crc, stream, buf, size_buf);
-
-
-    fclose(stream);
-
-    return res;
+    return get_crc(crc, ifs, buf, size_buf);
 }
 
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, FILE* pfile, void* buf, size_t size_buf) const
+int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, std::ifstream& ifs, void* buf, size_t size_buf) const
 {
-    if( !pfile || !buf || (size_buf == 0) )
+    crc = crc_init;
+
+    while( ifs )
     {
-        errno = EINVAL;
-        return -1;
+        ifs.read(static_cast<char *>(buf), size_buf);
+        crc = get_raw_crc(buf, ifs.gcount(), crc);
     }
-
-
-    crc          = crc_init;
-    long cur_pos = ftell(pfile);
-    rewind(pfile);
-
-
-    while( !feof(pfile) )
-    {
-       size_t len = fread(buf, 1, size_buf, pfile);
-       crc = get_raw_crc(buf, len, crc);
-    }
-
-
-    fseek(pfile, cur_pos, SEEK_SET);
 
     crc = get_final_crc(crc);
 
-    return 0; //good  job
+    return (ifs.rdstate() & std::ios_base::badbit);  //return 0 if all good
 }
 
 
