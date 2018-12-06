@@ -237,6 +237,7 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
     ADD_CRC_TO_LIST("CRC-16/CRC-A",       16, 0x1021, 0xC6C6, true,  true,  0x0,    0xBF05);
     ADD_CRC_TO_LIST("CRC-16/KERMIT",      16, 0x1021, 0x0,    true,  true,  0x0,    0x2189);
     ADD_CRC_TO_LIST("CRC-16/MODBUS",      16, 0x8005, 0xFFFF, true,  true,  0x0,    0x4B37);
+    ADD_CRC_TO_LIST("CRC-16/NRSC-5",      16, 0x080B, 0xFFFF, true,  true,  0x0,    0xA066);
     ADD_CRC_TO_LIST("CRC-16/X-25",        16, 0x1021, 0xFFFF, true,  true,  0xFFFF, 0x906E);
     ADD_CRC_TO_LIST("CRC-16/XMODEM",      16, 0x1021, 0x0,    false, false, 0x0,    0x31C3);
 
