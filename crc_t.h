@@ -143,7 +143,6 @@ class CRC_t
         CRC_Type top_bit;
         CRC_Type crc_mask;
         CRC_Type crc_table[256];
-        uint8_t  shift;
 
 
         CRC_Type reflect(CRC_Type data, uint8_t num_bits) const;
@@ -162,12 +161,6 @@ CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRC_t(const std::string& crc_nam
 {
     top_bit  = (CRC_Type)1 << (Bits - 1);
     crc_mask = ( (top_bit - 1) << 1) | 1;
-
-
-    if(Bits > 8)
-        shift = (Bits - 8);
-    else
-        shift = (8 - Bits);
 
 
     if(RefIn)
@@ -250,12 +243,19 @@ CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(const void*
 {
     const uint8_t* buf = static_cast< const uint8_t* >(data);
 
+    uint8_t shift;
+
+    if(Bits > 8)
+        shift = (Bits - 8);
+    else
+        shift = (8 - Bits);
+
 
     if(Bits > 8)
     {
         if(RefIn)
             while (len--)
-                crc = (crc >> 8) ^ crc_table[ (crc ^ *buf++) & 0xff ];
+                crc = (crc >> 8) ^ crc_table[ (crc & 0xff) ^ *buf++];
         else
             while (len--)
                 crc = (crc << 8) ^ crc_table[ ((crc >> shift) & 0xff) ^ *buf++ ];
