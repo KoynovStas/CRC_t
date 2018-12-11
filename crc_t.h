@@ -120,8 +120,8 @@ class CRC_t
         bool     get_ref_out() const { return RefOut;}
 
         CRC_Type get_crc_init()const { return crc_init;} //crc_init = reflect(Init, Bits) if RefIn, else = Init
-        CRC_Type get_top_bit() const { return top_bit; }
-        CRC_Type get_crc_mask()const { return crc_mask;}
+        CRC_Type get_top_bit() const { return (CRC_Type)1 << (Bits - 1);      }
+        CRC_Type get_crc_mask()const { return ( (get_top_bit() - 1) << 1) | 1;}
         CRC_Type get_check()   const;                    //crc for ASCII string "123456789" (i.e. 313233... (hexadecimal)).
 
 
@@ -140,8 +140,6 @@ class CRC_t
     private:
 
         CRC_Type crc_init;
-        CRC_Type top_bit;
-        CRC_Type crc_mask;
         CRC_Type crc_table[256];
 
 
@@ -159,9 +157,6 @@ template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, C
 CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRC_t(const std::string& crc_name) :
     name(crc_name)
 {
-    top_bit  = (CRC_Type)1 << (Bits - 1);
-    crc_mask = ( (top_bit - 1) << 1) | 1;
-
 
     if(RefIn)
         crc_init = reflect(Init, Bits);
@@ -283,7 +278,7 @@ CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_final_crc(CRC_Type 
         raw_crc = reflect(raw_crc, Bits);
 
     raw_crc ^= XorOut;
-    raw_crc &= crc_mask; //for CRC not power 2
+    raw_crc &= get_crc_mask(); //for CRC not power 2
 
     return raw_crc;
 }
@@ -319,10 +314,10 @@ void CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_crc_table()
         {
 
             if ( i & mask )
-                crc ^= top_bit;
+                crc ^= get_top_bit();
 
 
-            if (crc & top_bit)
+            if (crc & get_top_bit())
             {
                 crc <<= 1;
                 crc ^= Poly;
@@ -331,7 +326,7 @@ void CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_crc_table()
                 crc <<= 1;
         }
 
-        crc &= crc_mask; //for CRC not power 2
+        crc &= get_crc_mask(); //for CRC not power 2
 
         if(RefIn)
             crc_table[reflect(i, 8)] = reflect(crc, Bits);
