@@ -44,7 +44,6 @@
 
 #include <stdint.h>
 #include <errno.h>
-#include <string>
 #include <fstream>    // for std::ifstream
 #include <ios>        // for std::ios_base, etc.
 
@@ -106,10 +105,8 @@ class CRC_t
 
         typedef CRC_TYPE CRC_Type;
 
-        explicit CRC_t(const std::string& crc_name = "");
+        CRC_t();
 
-
-        std::string name;
 
         // get param CRC
         uint8_t  get_bits()    const { return Bits;  }
@@ -155,8 +152,7 @@ class CRC_t
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRC_t(const std::string& crc_name) :
-    name(crc_name)
+CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRC_t()
 {
 
     if(RefIn)

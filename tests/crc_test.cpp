@@ -391,30 +391,6 @@ TEST(test_crc_type_helper_uint64)
 
 
 
-TEST(test_universal_crc_name)
-{
-    CRC_t<1, 0, 0, true, true, 0>  ucrc;
-
-    TEST_ASSERT(ucrc.name == "" );
-
-    TEST_PASS(NULL);
-}
-
-
-
-TEST(test_universal_crc_name_2)
-{
-    const char* name = "some_name";
-
-    CRC_t<1, 0, 0, true, true, 0>  ucrc(name);
-
-    TEST_ASSERT(ucrc.name == name );
-
-    TEST_PASS(NULL);
-}
-
-
-
 TEST(test_universal_crc_get_bits)
 {
 
@@ -733,9 +709,6 @@ ptest_func tests[] =
 
 
     //Universal_CRC methods
-    test_universal_crc_name,
-    test_universal_crc_name_2,
-
     test_universal_crc_get_bits,
     test_universal_crc_get_poly,
     test_universal_crc_get_init,
