@@ -119,9 +119,9 @@ class CRC_t
         bool     get_ref_in()  const { return RefIn; }
         bool     get_ref_out() const { return RefOut;}
 
-        CRC_Type get_crc_init()const { return crc_init;} //crc_init = reflect(Init, Bits) if RefIn, else = Init
         CRC_Type get_top_bit() const { return (CRC_Type)1 << (Bits - 1);      }
         CRC_Type get_crc_mask()const { return ( (get_top_bit() - 1) << 1) | 1;}
+        CRC_Type get_crc_init()const { return crc_init;} //crc_init = reflect(Init, Bits) if RefIn, else = Init
         CRC_Type get_check()   const;                    //crc for ASCII string "123456789" (i.e. 313233... (hexadecimal)).
 
 
@@ -144,7 +144,8 @@ class CRC_t
 
 
         CRC_Type reflect(CRC_Type data, uint8_t num_bits) const;
-        void     init_crc_table();
+        void     init_normal_crc_table();
+        void     init_reflected_crc_table();
 
         int      get_crc(CRC_Type &crc, std::ifstream& ifs, void* buf, size_t size_buf) const;
 };
@@ -159,12 +160,15 @@ CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRC_t(const std::string& crc_nam
 {
 
     if(RefIn)
+    {
         crc_init = reflect(Init, Bits);
+        init_reflected_crc_table();
+    }
     else
+    {
         crc_init = Init;
-
-
-    init_crc_table();
+        init_normal_crc_table();
+    }
 }
 
 
@@ -302,22 +306,22 @@ CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::reflect(CRC_Type data, 
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-void CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_crc_table()
+void CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_normal_crc_table()
 {
-    //Calculation of the standard CRC table for byte.
-    for(int i = 0; i < 256; i++)
+    //Calculation of the Normal CRC table for byte.
+    for(int byte = 0; byte < 256; byte++)
     {
 
         CRC_Type crc = 0;
 
-        for(uint8_t mask = 0x80; mask; mask >>= 1)
+        for(int bit = 0x80; bit; bit >>= 1)
         {
 
-            if ( i & mask )
+            if( byte & bit )
                 crc ^= get_top_bit();
 
 
-            if (crc & get_top_bit())
+            if( crc & get_top_bit() )
             {
                 crc <<= 1;
                 crc ^= Poly;
@@ -327,12 +331,37 @@ void CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_crc_table()
         }
 
         crc &= get_crc_mask(); //for CRC not power 2
-
-        if(RefIn)
-            crc_table[reflect(i, 8)] = reflect(crc, Bits);
-        else
-            crc_table[i] = crc;
+        crc_table[byte] = crc;
      }
+}
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
+void CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_reflected_crc_table()
+{
+    //Calculation of the Reflected CRC table for byte.
+    CRC_Type ref_poly = reflect(Poly, Bits);
+
+    for(int byte = 0; byte < 256; byte++)
+    {
+
+        CRC_Type crc = byte;
+
+        for(int bit = 0x80; bit; bit >>= 1)
+        {
+
+            if( crc & 1 )
+            {
+                crc >>= 1;
+                crc ^= ref_poly;
+            }
+            else
+                crc >>= 1;
+        }
+
+        crc_table[byte] = crc;
+    }
 }
 
 
