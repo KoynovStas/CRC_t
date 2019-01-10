@@ -52,7 +52,7 @@ class AbstractProxy_CRC_t
 
         // Calculate for chunks of data
         virtual uint64_t get_raw_crc(const void* data, size_t len, uint64_t crc) = 0;
-        virtual uint64_t get_final_crc(uint64_t raw_crc) = 0;
+        virtual uint64_t get_end_crc(uint64_t raw_crc) = 0;
 };
 
 
@@ -95,8 +95,8 @@ class Proxy_CRC_t : public AbstractProxy_CRC_t
         virtual uint64_t get_raw_crc(const void* data, size_t len, uint64_t crc)
                                     { return _crc.get_raw_crc(data, len, (CRC_TYPE)crc); }
 
-        virtual uint64_t get_final_crc(uint64_t raw_crc)
-                                      { return _crc.get_final_crc((CRC_TYPE)raw_crc); }
+        virtual uint64_t get_end_crc(uint64_t raw_crc)
+                                    { return _crc.get_end_crc((CRC_TYPE)raw_crc); }
 
     private:
 
@@ -682,7 +682,7 @@ TEST(test_crc_for_cunks)
         crc = CRC_List[i]->get_crc_init();
         crc = CRC_List[i]->get_raw_crc(&std_check_data[0], 4, crc);
         crc = CRC_List[i]->get_raw_crc(&std_check_data[4], 5, crc);
-        crc = CRC_List[i]->get_final_crc(crc);
+        crc = CRC_List[i]->get_end_crc(crc);
 
         if( crc != CRC_List[i]->check )
         {

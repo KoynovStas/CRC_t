@@ -130,7 +130,7 @@ class CRC_t
 
         // Calculate for chunks of data
         CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
-        CRC_Type get_final_crc(CRC_Type raw_crc) const;
+        CRC_Type get_end_crc(CRC_Type raw_crc) const;
 
 
 
@@ -184,7 +184,7 @@ CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(const void* dat
 {
     CRC_Type crc = get_raw_crc(data, len, crc_init);
 
-    return get_final_crc(crc);
+    return get_end_crc(crc);
 }
 
 
@@ -226,7 +226,7 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, std::
         crc = get_raw_crc(buf, ifs.gcount(), crc);
     }
 
-    crc = get_final_crc(crc);
+    crc = get_end_crc(crc);
 
     return (ifs.rdstate() & std::ios_base::badbit);  //return 0 if all good
 }
@@ -272,7 +272,7 @@ CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(const void*
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_final_crc(CRC_Type raw_crc) const
+CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_end_crc(CRC_Type raw_crc) const
 {
     if(RefOut^RefIn)
         raw_crc = reflect(raw_crc, Bits);
