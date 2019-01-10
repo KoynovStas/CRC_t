@@ -278,7 +278,7 @@ CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_end_crc(CRC_Type ra
         raw_crc = reflect(raw_crc, Bits);
 
     raw_crc ^= XorOut;
-    raw_crc &= get_crc_mask(); //for CRC not power 2
+    raw_crc &= get_crc_mask(); //for CRC not a multiple of a byte (8 bits)
 
     return raw_crc;
 }
@@ -326,7 +326,7 @@ void CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_normal_crc_table()
                 crc <<= 1;
         }
 
-        crc &= get_crc_mask(); //for CRC not power 2
+        crc &= get_crc_mask(); //for CRC not a multiple of a byte (8 bits)
         crc_table[byte] = crc;
      }
 }
