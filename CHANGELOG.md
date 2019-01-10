@@ -13,6 +13,35 @@ Copyright (c) 2015, Koynov Stas - skojnov@yandex.ru
 
 
 
+### New
+- deleted `name` field - user self can add it (if need)
+
+
+### BugFix
+ - BugFix: bad error message if test is fail (`ss` was be on stack)
+
+
+### Refactoring
+ - `reflect` method
+ - use `std::ifstream` for calculate crc for file
+ - delete prefix `register` - old style
+ - moved var `shift` to `get_raw_crc()` method
+ - moved calculate `crc_mask` and `top_bit` to methods
+ - divided the `init_crc_table` function into **two** functions `normal\reflected`
+ - rename `get_final_crc` -> `get_end_crc`
+
+
+### Tests
+ - add to CRC list `CRC-8/BLUETOOTH`
+ - add to CRC list `CRC-8/NRSC-5`
+ - add to CRC list `CRC-16/NRSC-5`
+ - add to CRC list `CRC-17/CAN-FD`
+ - add to CRC list `CRC-21/CAN-FD`
+ - add to CRC list `CRC-24/OS-9`
+
+
+
+
 ## [v1.1](https://github.com/KoynovStas/CRC_t/tree/v1.1) (2017-05-03)
 [Full Changelog](https://github.com/KoynovStas/CRC_t/compare/v1.0...v1.1)
 
