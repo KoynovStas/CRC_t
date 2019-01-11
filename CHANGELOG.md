@@ -13,6 +13,11 @@ Copyright (c) 2015, Koynov Stas - skojnov@yandex.ru
 
 
 
+## [v1.2](https://github.com/KoynovStas/CRC_t/tree/v1.2) (2018-01-11)
+[Full Changelog](https://github.com/KoynovStas/CRC_t/compare/v1.1...v1.2)
+
+
+
 ### New
 - deleted `name` field - user self can add it (if need)
 
