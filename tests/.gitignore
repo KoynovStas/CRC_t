@@ -23,6 +23,11 @@
 
 
 
+# asm files
+*.s
+*.S
+
+
 # Binary files
 *.exe
 crc_test
