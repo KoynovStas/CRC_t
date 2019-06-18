@@ -51,7 +51,6 @@
 
 
 
-
 // For GCC 4.6 or higher, in C++ you can use a standard
 // static_assert(exp, msg) in *.c and in *.h files.
 // For GCC 4.6 is required to add CFLAGS += -std="c++0x"
@@ -75,11 +74,6 @@
 
 
 
-
-
-
-
-
 template<uint8_t Bits_minus_1_div_8> struct CRC_Type_helper{ typedef uint64_t value_type; }; // default
 
 template<> struct CRC_Type_helper<0> { typedef uint8_t  value_type; }; //for Bits 1..8
@@ -94,8 +88,13 @@ template<> struct CRC_Type_helper<3> { typedef uint32_t value_type; }; //for Bit
 
 
 
-template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-class CRC_t
+/*
+ * CRCBase_t - is the base class that we will use in various algorithms.
+ * This class accepts an Impl template parameter (use Curiously Recurring Template Pattern (CRTP)).
+ * This allows us to use the get_raw_crc() method from the implementation class without using virtual methods.
+ */
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
+class CRCBase_t
 {
     CRC_STATIC_ASSERT(Bits >= 1);
     CRC_STATIC_ASSERT(Bits <= 64);
@@ -105,7 +104,7 @@ class CRC_t
 
         typedef CRC_TYPE CRC_Type;
 
-        CRC_t();
+        CRCBase_t();
 
 
         // get param CRC
@@ -132,17 +131,12 @@ class CRC_t
         CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
         CRC_Type get_end_crc(CRC_Type raw_crc) const;
 
+        CRC_Type reflect(CRC_Type data, uint8_t num_bits) const;
 
 
     private:
 
         CRC_Type crc_init;
-        CRC_Type crc_table[256];
-
-
-        CRC_Type reflect(CRC_Type data, uint8_t num_bits) const;
-        void     init_normal_crc_table();
-        void     init_reflected_crc_table();
 
         int      get_crc(CRC_Type &crc, std::ifstream& ifs, void* buf, size_t size_buf) const;
 };
@@ -151,26 +145,23 @@ class CRC_t
 
 
 
-template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRC_t()
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
+CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::CRCBase_t()
 {
-
     if(RefIn)
     {
         crc_init = reflect(Init, Bits);
-        init_reflected_crc_table();
     }
     else
     {
         crc_init = Init;
-        init_normal_crc_table();
     }
 }
 
 
 
-template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_check() const
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
+CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_check() const
 {
     const uint8_t data[] = {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39};
 
@@ -179,8 +170,8 @@ CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_check() const
 
 
 
-template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(const void* data, size_t len) const
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
+CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_crc(const void* data, size_t len) const
 {
     CRC_Type crc = get_raw_crc(data, len, crc_init);
 
@@ -189,8 +180,8 @@ CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(const void* dat
 
 
 
-template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, const char *file_name) const
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
+int CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_crc(CRC_Type &crc, const char *file_name) const
 {
     char buf[4096];
 
@@ -199,8 +190,8 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, const
 
 
 
-template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
+int CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const
 {
     std::ifstream ifs(file_name, std::ios_base::binary);
 
@@ -215,8 +206,8 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, const
 
 
 
-template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, std::ifstream& ifs, void* buf, size_t size_buf) const
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
+int CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_crc(CRC_Type &crc, std::ifstream& ifs, void* buf, size_t size_buf) const
 {
     crc = crc_init;
 
@@ -229,6 +220,86 @@ int CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_crc(CRC_Type &crc, std::
     crc = get_end_crc(crc);
 
     return (ifs.rdstate() & std::ios_base::badbit);  //return 0 if all good
+}
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
+CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_crc(const void* data, size_t len, CRC_Type crc) const
+{
+    //use Curiously Recurring Template Pattern (CRTP)
+    return static_cast<const Impl*>(this)->get_raw_crc(data, len, crc);
+}
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
+CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_end_crc(CRC_Type raw_crc) const
+{
+    if(RefOut^RefIn)
+        raw_crc = reflect(raw_crc, Bits);
+
+    raw_crc ^= XorOut;
+    raw_crc &= get_crc_mask(); //for CRC not a multiple of a byte (8 bits)
+
+    return raw_crc;
+}
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
+CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::reflect(CRC_Type data, uint8_t num_bits) const
+{
+    CRC_Type reflection = 0;
+
+    while( num_bits-- )
+    {
+        reflection = (reflection << 1) | (data & 1);
+        data >>= 1;
+    }
+
+    return reflection;
+}
+
+
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
+class CRC_t: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut> >
+{
+    public:
+
+        typedef CRC_TYPE CRC_Type;
+
+        CRC_t();
+
+        CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
+
+
+    private:
+        CRC_Type crc_table[256];
+
+        void     init_normal_crc_table();
+        void     init_reflected_crc_table();
+};
+
+
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
+CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRC_t()
+{
+
+    if(RefIn)
+    {
+        init_reflected_crc_table();
+    }
+    else
+    {
+        init_normal_crc_table();
+    }
 }
 
 
@@ -272,36 +343,6 @@ CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(const void*
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_end_crc(CRC_Type raw_crc) const
-{
-    if(RefOut^RefIn)
-        raw_crc = reflect(raw_crc, Bits);
-
-    raw_crc ^= XorOut;
-    raw_crc &= get_crc_mask(); //for CRC not a multiple of a byte (8 bits)
-
-    return raw_crc;
-}
-
-
-
-template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::reflect(CRC_Type data, uint8_t num_bits) const
-{
-    CRC_Type reflection = 0;
-
-    while( num_bits-- )
-    {
-        reflection = (reflection << 1) | (data & 1);
-        data >>= 1;
-    }
-
-    return reflection;
-}
-
-
-
-template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
 void CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_normal_crc_table()
 {
     //Calculation of the Normal CRC table for byte.
@@ -314,10 +355,10 @@ void CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_normal_crc_table()
         {
 
             if( byte & bit )
-                crc ^= get_top_bit();
+                crc ^= this->get_top_bit();
 
 
-            if( crc & get_top_bit() )
+            if( crc & this->get_top_bit() )
             {
                 crc <<= 1;
                 crc ^= Poly;
@@ -326,7 +367,7 @@ void CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_normal_crc_table()
                 crc <<= 1;
         }
 
-        crc &= get_crc_mask(); //for CRC not a multiple of a byte (8 bits)
+        crc &= this->get_crc_mask(); //for CRC not a multiple of a byte (8 bits)
         crc_table[byte] = crc;
      }
 }
@@ -337,7 +378,7 @@ template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, C
 void CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_reflected_crc_table()
 {
     //Calculation of the Reflected CRC table for byte.
-    CRC_Type ref_poly = reflect(Poly, Bits);
+    CRC_Type ref_poly = this->reflect(Poly, Bits);
 
     for(int byte = 0; byte < 256; byte++)
     {
