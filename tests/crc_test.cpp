@@ -59,7 +59,8 @@ class AbstractProxy_CRC_t
 
 
 
-template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, uint64_t Check>
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, uint64_t Check,
+          template<uint8_t, CRC_TYPE, CRC_TYPE, bool, bool, CRC_TYPE> class Impl>
 class Proxy_CRC_t : public AbstractProxy_CRC_t
 {
 
@@ -100,17 +101,17 @@ class Proxy_CRC_t : public AbstractProxy_CRC_t
 
     private:
 
-        CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut>  _crc;
+        CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>  _crc;
 };
 
 
 
 
 
-#define ADD_CRC_TO_LIST(Name, Bits, Poly, Init, RefIn, RefOut, XorOut, Check)                                            \
+#define ADD_CRC_TO_LIST_IMPL(Name, Bits, Poly, Init, RefIn, RefOut, XorOut, Check, Impl)                                            \
 {                                                                                                                        \
     AbstractProxy_CRC_t *ptr = static_cast<AbstractProxy_CRC_t *>                                                        \
-                               ( new Proxy_CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Check>() );                    \
+                               ( new Proxy_CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Check, Impl>() );                    \
     if( !ptr )                                                                                                           \
     {                                                                                                                    \
         std::cerr << "Can't get MEM for Proxy_CRC_t<" << Bits << "," << Poly << "," << Init << "," << RefIn << ","       \
@@ -128,6 +129,12 @@ class Proxy_CRC_t : public AbstractProxy_CRC_t
                                                                                                                          \
     CRC_List.push_back(ptr);                                                                                             \
 }                                                                                                                        \
+
+
+#define ADD_CRC_TO_LIST(Name, Bits, Poly, Init, RefIn, RefOut, XorOut, Check)                             \
+    ADD_CRC_TO_LIST_IMPL(Name " (Table8)", Bits, Poly, Init, RefIn, RefOut, XorOut, Check, CRCImplTable8) \
+    ADD_CRC_TO_LIST_IMPL(Name " (Bits)"  , Bits, Poly, Init, RefIn, RefOut, XorOut, Check, CRCImplBits)   \
+
 
 
 
