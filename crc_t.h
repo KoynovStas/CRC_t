@@ -134,8 +134,12 @@ class CRCBase_t
         CRC_Type reflect(CRC_Type data, uint8_t num_bits) const;
 
 
-    private:
+    protected:
+        CRC_Type get_raw_normal_crc(uint8_t byte) const;
+        CRC_Type get_raw_reflected_crc(uint8_t byte) const;
 
+
+    private:
         CRC_Type crc_init;
 
         int      get_crc(CRC_Type &crc, std::ifstream& ifs, void* buf, size_t size_buf) const;
@@ -263,6 +267,54 @@ CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::reflect(CRC_T
 
 
 
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
+CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_normal_crc(uint8_t byte)  const
+{
+    CRC_Type crc = 0;
+
+    for(int bit = 0x80; bit; bit >>= 1)
+    {
+        if( byte & bit )
+            crc ^= get_top_bit();
+
+
+        if( crc & get_top_bit() )
+        {
+            crc <<= 1;
+            crc ^= Poly;
+        }
+        else
+            crc <<= 1;
+    }
+
+    return crc & get_crc_mask(); //for CRC not a multiple of a byte (8 bits);
+}
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
+CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_reflected_crc(uint8_t byte) const
+{
+    CRC_Type ref_poly = reflect(Poly, Bits);
+
+    CRC_Type crc = byte;
+
+    for(int bit = 0x80; bit; bit >>= 1)
+    {
+        if( crc & 1 )
+        {
+            crc >>= 1;
+            crc ^= ref_poly;
+        }
+        else
+            crc >>= 1;
+    }
+
+    return crc;
+}
+
+
+
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
@@ -349,27 +401,7 @@ void CRCImplTable8<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_normal_crc_tab
     //Calculation of the Normal CRC table for byte.
     for(int byte = 0; byte < 256; byte++)
     {
-
-        CRC_Type crc = 0;
-
-        for(int bit = 0x80; bit; bit >>= 1)
-        {
-
-            if( byte & bit )
-                crc ^= this->get_top_bit();
-
-
-            if( crc & this->get_top_bit() )
-            {
-                crc <<= 1;
-                crc ^= Poly;
-            }
-            else
-                crc <<= 1;
-        }
-
-        crc &= this->get_crc_mask(); //for CRC not a multiple of a byte (8 bits)
-        crc_table[byte] = crc;
+        crc_table[byte] = this->get_raw_normal_crc(byte);
     }
 }
 
@@ -379,26 +411,9 @@ template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, C
 void CRCImplTable8<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_reflected_crc_table()
 {
     //Calculation of the Reflected CRC table for byte.
-    CRC_Type ref_poly = this->reflect(Poly, Bits);
-
     for(int byte = 0; byte < 256; byte++)
     {
-
-        CRC_Type crc = byte;
-
-        for(int bit = 0x80; bit; bit >>= 1)
-        {
-
-            if( crc & 1 )
-            {
-                crc >>= 1;
-                crc ^= ref_poly;
-            }
-            else
-                crc >>= 1;
-        }
-
-        crc_table[byte] = crc;
+        crc_table[byte] = this->get_raw_reflected_crc(byte);;
     }
 }
 
@@ -415,10 +430,6 @@ class CRCImplBits: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
         typedef CRC_TYPE CRC_Type;
 
         CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
-
-    private:
-        CRC_Type get_raw_normal_crc(uint8_t byte) const;
-        CRC_Type get_raw_reflected_crc(uint8_t byte) const;
 };
 
 
@@ -442,67 +453,19 @@ CRC_TYPE CRCImplBits<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(const
     {
         if(RefIn)
             while (len--)
-                crc = (crc >> 8) ^ get_raw_reflected_crc(crc^*buf++);
+                crc = (crc >> 8) ^ this->get_raw_reflected_crc(crc^*buf++);
         else
             while (len--)
-                crc = (crc << 8) ^ get_raw_normal_crc(((crc >> shift) & 0xff) ^ *buf++);
+                crc = (crc << 8) ^ this->get_raw_normal_crc(((crc >> shift) & 0xff) ^ *buf++);
     }
     else
     {
         if(RefIn)
             while (len--)
-                crc = get_raw_reflected_crc(crc^*buf++);
+                crc = this->get_raw_reflected_crc(crc^*buf++);
         else
             while (len--)
-                crc = get_raw_normal_crc((crc << shift) ^ *buf++);
-    }
-
-    return crc;
-}
-
-
-
-template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE CRCImplBits<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_normal_crc(uint8_t byte)  const
-{
-    CRC_Type crc = 0;
-
-    for(int bit = 0x80; bit; bit >>= 1)
-    {
-        if( byte & bit )
-            crc ^= this->get_top_bit();
-
-
-        if( crc & this->get_top_bit() )
-        {
-            crc <<= 1;
-            crc ^= Poly;
-        }
-        else
-            crc <<= 1;
-    }
-
-    return crc & this->get_crc_mask(); //for CRC not a multiple of a byte (8 bits);
-}
-
-
-
-template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE CRCImplBits<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_reflected_crc(uint8_t byte) const
-{
-    CRC_Type ref_poly = this->reflect(Poly, Bits);
-
-    CRC_Type crc = byte;
-
-    for(int bit = 0x80; bit; bit >>= 1)
-    {
-        if( crc & 1 )
-        {
-            crc >>= 1;
-            crc ^= ref_poly;
-        }
-        else
-            crc >>= 1;
+                crc = this->get_raw_normal_crc((crc << shift) ^ *buf++);
     }
 
     return crc;
