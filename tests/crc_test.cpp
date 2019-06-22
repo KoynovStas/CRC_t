@@ -133,6 +133,7 @@ class Proxy_CRC_t : public AbstractProxy_CRC_t
 
 #define ADD_CRC_TO_LIST(Name, Bits, Poly, Init, RefIn, RefOut, XorOut, Check)                             \
     ADD_CRC_TO_LIST_IMPL(Name " (Table8)", Bits, Poly, Init, RefIn, RefOut, XorOut, Check, CRCImplTable8) \
+    ADD_CRC_TO_LIST_IMPL(Name " (Table4)", Bits, Poly, Init, RefIn, RefOut, XorOut, Check, CRCImplTable4) \
     ADD_CRC_TO_LIST_IMPL(Name " (Bits)"  , Bits, Poly, Init, RefIn, RefOut, XorOut, Check, CRCImplBits)   \
 
 
