@@ -295,7 +295,7 @@ CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_norma
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
 CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_reflected_crc(uint8_t byte) const
 {
-    CRC_Type ref_poly = reflect(Poly, Bits);
+    static CRC_Type ref_poly = reflect(Poly, Bits);
 
     CRC_Type crc = byte;
 
@@ -452,6 +452,7 @@ CRC_TYPE CRCImplBits<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(const
 
     return crc;
 }
+
 
 
 
