@@ -7,9 +7,12 @@
 
 #### Features of the implementation:
 
- - The code uses only the standard **C++03** -> This allows you to use the template in the oldest projects with older compilers.
  - The code has no dependencies, and imprisoned in the one file.
- - For **any** bit-depth (width) of CRC will be use the standard table method for calculation. Will be calculated standart table for byte (table size 256 elements)
+ - The code uses only the standard **C++03** -> This allows you to use the template in the oldest projects with older compilers.
+ - The following implementations are supported:
+    * **CRCImplBits** - loop for 8 bits in byte (no table)
+    * **CRCImplTable4** - table for half byte (16 elements)
+    * **CRCImplTable8** - std table for byte (256 elements)
  - All the parameters of CRC passed as template parameters. This allows the compiler to make a very strong optimization. Example ModBus-CRC for architecture ARMv7 (GCC 4.9.2) calculate CRC for a buffer(array) will loop from 9 commands in assembler.
 
 
@@ -77,16 +80,13 @@ Template parameters is the standard Specifications algorithms CRC as described i
 
 **Template CRC_t has the following parameters:**
 ```C++
-template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
+template <Bits, Poly, Init, RefIn, RefOut, XorOut, Impl = CRCImplTable8>
 ```
 
 
 **The class has the following public methods:**
 ```C++
 typedef CRC_TYPE CRC_Type;
-
-CRC_t();
-
 
 // get param CRC
 uint8_t  get_bits()    const { return Bits;  }
