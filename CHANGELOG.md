@@ -11,6 +11,23 @@ Copyright (c) 2015, Koynov Stas - skojnov@yandex.ru
 
 ---
 
+### New
+- New: extracted base class `CRCBase_t` from `CRC_t`
+- New: add template parameter `Impl` (Implementation of algorithm)
+- New: add implementation of algorithm **CRCImplTable4** - Table method for half byte
+- New: add implementation of algorithm **CRCImplBits** - No table, Loop for every byte
+
+
+### Refactoring
+- Ref: join `init_xxx_crc_table` to one method (small code)
+- Ref: moved `get_raw_normal`/`reflect_crc` from `ImplBits` to Base class
+
+
+### Tests
+ - add to tests **CRCImplBits** strategy
+ - add to tests **CRCImplTable4** strategy
+
+
 
 
 ## [v1.2](https://github.com/KoynovStas/CRC_t/tree/v1.2) (2018-01-11)
