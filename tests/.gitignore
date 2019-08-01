@@ -30,7 +30,7 @@
 
 # Binary files
 *.exe
-crc_test
+crc_test*
 
 
 
@@ -45,3 +45,6 @@ crc_test
 
 # Files that we don't want to ignore
 !.gitignore
+!crc_test*.cpp
+!crc_test*.h
+!crc_test*.hpp
