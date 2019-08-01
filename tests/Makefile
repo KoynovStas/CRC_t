@@ -6,14 +6,32 @@ CXX      ?=  g++
 
 
 
+
 # list of tests for build
 TESTS  = crc_test
+
+
+SPEED_TESTS = crc_test_speed
+
+
+ALL_TESTS = $(TESTS) $(SPEED_TESTS)
+
+
+
+UNAME := $(shell uname)
+
+ifneq ($(UNAME), Linux)
+ALL_TESTS = $(addsuffix .exe, $(ALL_TESTS))
+endif
 
 
 
 
 .PHONY: all
-all: clean  $(TESTS)
+all: $(TESTS)
+	@for test in $(TESTS) ; do  \
+        ./$$test ; \
+    done
 
 
 
@@ -21,21 +39,24 @@ all: clean  $(TESTS)
 clean:
 	-@rm -f *.o
 	-@rm -f *.*~
-	-@rm -f $(TESTS)
+	-@rm -f $(ALL_TESTS)
 
 
 
-.PHONY: $(TESTS)
-$(TESTS):
-	$(CXX)  $@.cpp -o $@  $(CXXFLAGS)
+$(ALL_TESTS): crc_list.h
+	$(CXX)  $(basename $@).cpp -o $@  $(CXXFLAGS)
 	@echo "  ---- Compiled $@ ----"
-	@./$@
 
 
 
-.PHONY: asm
-asm:
-	$(CXX)  crc_test.cpp $(CXXFLAGS) -S
+
+.PHONY: speed
+speed: CXXFLAGS += -std=c++11 -lpthread
+speed: $(SPEED_TESTS)
+	@for test in $(SPEED_TESTS) ; do  \
+        ./$$test ; \
+    done
+
 
 
 
@@ -44,7 +65,7 @@ asm:
 help:
 	@echo "make [command]"
 	@echo "command is:"
-	@echo "   clean   -  remove all binary files"
-	@echo "   all     -  clean and build all tests"
-	@echo "   asm     -  get ASM listing"
-	@echo "   help    -  This help"
+	@echo "   clean  - remove all binary files"
+	@echo "   all    - build an all tests (with out speed test)"
+	@echo "   speed  - build and run all speed tests"
+	@echo "   help   - This help"
