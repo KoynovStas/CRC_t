@@ -1,3 +1,13 @@
+/*
+ * ThreadPool
+ * A simple C++11 Thread Pool implementation.
+ *
+ * Copyright (c) 2012 Jakob Progsch, Václav Zeman
+ *
+ * License: zlib
+ *
+ * see sources: https://github.com/progschj/ThreadPool
+ */
 #ifndef THREAD_POOL_H
 #define THREAD_POOL_H
 
