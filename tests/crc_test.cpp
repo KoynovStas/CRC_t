@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 #include <vector>
 #include <string>
@@ -336,6 +337,117 @@ TEST(test_crc_std_check)
 
 
 
+
+//------------- tests for Calculate CRC different IMPL -------------
+
+
+TEST(test_crc_impl_1byte)
+{
+    uint64_t crc1, crc2;
+
+    const size_t CNT_IMPL = get_cnt_impl();
+
+    uint8_t test_byte;
+
+    for(int i = 0; i < 256; i++)//test all bytes
+    {
+        test_byte = i;
+
+        //test all impl
+        for(size_t i = 0; i < CRC_List.size(); i += CNT_IMPL)
+        {
+            crc1 = CRC_List[i]->get_crc(&test_byte, sizeof(test_byte));
+
+            for(size_t j = 1; j < CNT_IMPL; j++)
+            {
+                crc2 = CRC_List[i+j]->get_crc(&test_byte, sizeof(test_byte));
+                if( crc1 !=  crc2)
+                {
+                    ss << "For CRC: " << CRC_List[i]->name  <<  " crc: 0x" << crc1
+                       << " but for:" << CRC_List[i+j]->name<<  " crc: 0x" << crc2;
+                    msg = ss.str();
+                    TEST_FAIL(msg.c_str());
+                }
+            }
+        }
+    }
+
+
+    TEST_PASS(NULL);
+}
+
+
+
+TEST(test_crc_impl_data_xyz_256)
+{
+    uint64_t crc1, crc2;
+
+    const size_t CNT_IMPL = get_cnt_impl();
+
+    uint8_t test_data[256];
+
+    for(int i = 0; i < 256; i++)
+        test_data[i] = i;
+
+
+    for(size_t i = 0; i < CRC_List.size(); i += CNT_IMPL)
+    {
+        crc1 = CRC_List[i]->get_crc(test_data, sizeof(test_data));
+
+        for(size_t j = 1; j < CNT_IMPL; j++)
+        {
+            crc2 = CRC_List[i+j]->get_crc(test_data, sizeof(test_data));
+            if( crc1 !=  crc2)
+            {
+                ss << "For CRC: " << CRC_List[i]->name  <<  " crc: 0x" << crc1
+                   << " but for:" << CRC_List[i+j]->name<<  " crc: 0x" << crc2;
+                msg = ss.str();
+                TEST_FAIL(msg.c_str());
+            }
+        }
+    }
+
+
+    TEST_PASS(NULL);
+}
+
+
+
+TEST(test_crc_impl_data_xxx_256)
+{
+    uint64_t crc1, crc2;
+
+    const size_t CNT_IMPL = get_cnt_impl();
+
+    uint8_t test_data[256];
+
+    for(int i = 0; i < 256; i++)
+    {
+        memset(test_data, i, sizeof(test_data));
+
+
+        for(size_t i = 0; i < CRC_List.size(); i += CNT_IMPL)
+        {
+            crc1 = CRC_List[i]->get_crc(test_data, sizeof(test_data));
+
+            for(size_t j = 1; j < CNT_IMPL; j++)
+            {
+                crc2 = CRC_List[i+j]->get_crc(test_data, sizeof(test_data));
+                if( crc1 !=  crc2)
+                {
+                    ss << "For CRC: " << CRC_List[i]->name  <<  " crc: 0x" << crc1
+                       << " but for:" << CRC_List[i+j]->name<<  " crc: 0x" << crc2;
+                    msg = ss.str();
+                    TEST_FAIL(msg.c_str());
+                }
+            }
+        }
+    }
+
+    TEST_PASS(NULL);
+}
+
+
 //------------- tests for Calculate CRC for file -------------
 
 
@@ -443,6 +555,9 @@ ptest_func tests[] =
 
     //CRC
     test_crc_std_check,
+    test_crc_impl_1byte,
+    test_crc_impl_data_xyz_256,
+    test_crc_impl_data_xxx_256,
 
     test_crc_std_check_file,
     test_crc_no_file,
