@@ -495,27 +495,45 @@ CRC_TYPE CRCImplTable4<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(con
 
     int shift;
 
-    if(Bits >= 4)
+    if(Bits > 4)
         shift = Bits - 4;
     else
-        shift = 4;
+        shift = 4 - Bits;
 
-
-    if(RefIn)
-        while (len--)
-        {
-            crc = crc_table[(crc ^ *buf       ) & 0x0f] ^ (crc >> 4);
-            crc = crc_table[(crc ^ (*buf >> 4)) & 0x0f] ^ (crc >> 4);
-            buf++;
-        }
-    else
-        while (len--)
-        {
-            crc = crc_table[((crc >> shift) ^ (*buf >> 4)) & 0x0f] ^ (crc << 4);
-            crc = crc_table[((crc >> shift) ^ *buf       ) & 0x0f] ^ (crc << 4);
-            buf++;
-        }
-
+    if(Bits > 4)
+    {
+        if(RefIn)
+            while (len--)
+            {
+                crc = crc_table[(crc ^ *buf       ) & 0x0f] ^ (crc >> 4);
+                crc = crc_table[(crc ^ (*buf >> 4)) & 0x0f] ^ (crc >> 4);
+                buf++;
+            }
+        else
+            while (len--)
+            {
+                crc = crc_table[((crc >> shift) ^ (*buf >> 4)) & 0x0f] ^ (crc << 4);
+                crc = crc_table[((crc >> shift) ^ *buf       ) & 0x0f] ^ (crc << 4);
+                buf++;
+            }
+    }
+    else//Bits <= 4
+    {
+        if(RefIn)
+            while (len--)
+            {
+                crc = crc_table[(crc ^ *buf       ) & 0x0f];
+                crc = crc_table[(crc ^ (*buf >> 4)) & 0x0f];
+                buf++;
+            }
+        else
+            while (len--)
+            {
+                crc = crc_table[((crc << shift) ^ (*buf >> 4)) & 0x0f];
+                crc = crc_table[((crc << shift) ^ *buf       ) & 0x0f];
+                buf++;
+            }
+    }
 
     return crc;
 }
