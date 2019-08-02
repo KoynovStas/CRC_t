@@ -26,6 +26,10 @@ Copyright (c) 2015, Koynov Stas - skojnov@yandex.ru
 ### Tests
  - add to tests **CRCImplBits** strategy
  - add to tests **CRCImplTable4** strategy
+ - add `test_crc_impl_1byte`
+ - add `test_crc_impl_data_xyz_256`
+ - add `test_crc_impl_data_xxx_256`
+ - add `test_crc_speed` - benchmark for calc speed for 1GB data
 
 
 
