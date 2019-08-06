@@ -14,22 +14,22 @@ TESTS  = crc_test
 SPEED_TESTS = crc_test_speed
 
 
-ALL_TESTS = $(TESTS) $(SPEED_TESTS)
-
-
-
 UNAME := $(shell uname)
 
 ifneq ($(UNAME), Linux)
-ALL_TESTS = $(addsuffix .exe, $(ALL_TESTS))
+BIN_TESTS       = $(addsuffix .exe, $(TESTS))
+BIN_SPEED_TESTS = $(addsuffix .exe, $(SPEED_TESTS))
+else
+BIN_TESTS       = $(TESTS)
+BIN_SPEED_TESTS = $(SPEED_TESTS)
 endif
 
 
 
 
 .PHONY: all
-all: $(TESTS)
-	@for test in $(TESTS) ; do  \
+all: $(BIN_TESTS)
+	@for test in $(BIN_TESTS) ; do  \
         ./$$test ; \
     done
 
@@ -39,11 +39,11 @@ all: $(TESTS)
 clean:
 	-@rm -f *.o
 	-@rm -f *.*~
-	-@rm -f $(ALL_TESTS)
+	-@rm -f $(BIN_TESTS) $(BIN_SPEED_TESTS)
 
 
 
-$(ALL_TESTS): crc_list.h
+$(BIN_TESTS) $(BIN_SPEED_TESTS): crc_list.h
 	$(CXX)  $(basename $@).cpp -o $@  $(CXXFLAGS)
 	@echo "  ---- Compiled $@ ----"
 
@@ -52,11 +52,10 @@ $(ALL_TESTS): crc_list.h
 
 .PHONY: speed
 speed: CXXFLAGS += -std=c++11 -lpthread
-speed: $(SPEED_TESTS)
-	@for test in $(SPEED_TESTS) ; do  \
+speed: $(BIN_SPEED_TESTS)
+	@for test in $(BIN_SPEED_TESTS) ; do  \
         ./$$test ; \
     done
-
 
 
 
