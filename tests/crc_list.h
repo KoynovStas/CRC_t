@@ -273,16 +273,17 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
     ADD_CRC_TO_LIST("CRC-31/PHILIPS", 31, 0x4C11DB7, 0x7FFFFFFF, false, false, 0x7FFFFFFF, 0xCE9E46C);
 
     // CRC-32
-    ADD_CRC_TO_LIST("CRC-32/AIXM",     32, 0x814141AB, 0x0,        false, false, 0x0,        0x3010BF7F);
-    ADD_CRC_TO_LIST("CRC-32/AUTOSAR",  32, 0xF4ACFB13, 0xFFFFFFFF, true,  true,  0xFFFFFFFF, 0x1697D06A);
-    ADD_CRC_TO_LIST("CRC-32/BASE91-D", 32, 0xA833982B, 0xFFFFFFFF, true,  true,  0xFFFFFFFF, 0x87315576);
-    ADD_CRC_TO_LIST("CRC-32/BZIP2",    32, 0x4C11DB7,  0xFFFFFFFF, false, false, 0xFFFFFFFF, 0xFC891918);
-    ADD_CRC_TO_LIST("CRC-32/CKSUM",    32, 0x4C11DB7,  0x0,        false, false, 0xFFFFFFFF, 0x765E7680);
-    ADD_CRC_TO_LIST("CRC-32/ISCSI",    32, 0x1EDC6F41, 0xFFFFFFFF, true,  true,  0xFFFFFFFF, 0xE3069283);
-    ADD_CRC_TO_LIST("CRC-32/ISO-HDLC", 32, 0x4C11DB7,  0xFFFFFFFF, true,  true,  0xFFFFFFFF, 0xCBF43926);
-    ADD_CRC_TO_LIST("CRC-32/JAMCRC",   32, 0x4C11DB7,  0xFFFFFFFF, true,  true,  0x0,        0x340BC6D9);
-    ADD_CRC_TO_LIST("CRC-32/MPEG-2",   32, 0x4C11DB7,  0xFFFFFFFF, false, false, 0x0,        0x376E6E7 );
-    ADD_CRC_TO_LIST("CRC-32/XFER",     32, 0xAF,       0x0,        false, false, 0x0,        0xBD0BE338);
+    ADD_CRC_TO_LIST("CRC-32/AIXM",       32, 0x814141AB, 0x0,        false, false, 0x0,        0x3010BF7F);
+    ADD_CRC_TO_LIST("CRC-32/AUTOSAR",    32, 0xF4ACFB13, 0xFFFFFFFF, true,  true,  0xFFFFFFFF, 0x1697D06A);
+    ADD_CRC_TO_LIST("CRC-32/BASE91-D",   32, 0xA833982B, 0xFFFFFFFF, true,  true,  0xFFFFFFFF, 0x87315576);
+    ADD_CRC_TO_LIST("CRC-32/BZIP2",      32, 0x4C11DB7,  0xFFFFFFFF, false, false, 0xFFFFFFFF, 0xFC891918);
+    ADD_CRC_TO_LIST("CRC-32/CD-ROM-EDC", 32, 0x8001801B, 0x0,        true,  true,  0x0,        0x6EC2EDC4);
+    ADD_CRC_TO_LIST("CRC-32/CKSUM",      32, 0x4C11DB7,  0x0,        false, false, 0xFFFFFFFF, 0x765E7680);
+    ADD_CRC_TO_LIST("CRC-32/ISCSI",      32, 0x1EDC6F41, 0xFFFFFFFF, true,  true,  0xFFFFFFFF, 0xE3069283);
+    ADD_CRC_TO_LIST("CRC-32/ISO-HDLC",   32, 0x4C11DB7,  0xFFFFFFFF, true,  true,  0xFFFFFFFF, 0xCBF43926);
+    ADD_CRC_TO_LIST("CRC-32/JAMCRC",     32, 0x4C11DB7,  0xFFFFFFFF, true,  true,  0x0,        0x340BC6D9);
+    ADD_CRC_TO_LIST("CRC-32/MPEG-2",     32, 0x4C11DB7,  0xFFFFFFFF, false, false, 0x0,        0x376E6E7 );
+    ADD_CRC_TO_LIST("CRC-32/XFER",       32, 0xAF,       0x0,        false, false, 0x0,        0xBD0BE338);
 
     // CRC-40
     ADD_CRC_TO_LIST("CRC-40/GSM", 40, 0x4820009, 0x0, false, false, 0xFFFFFFFFFF, 0xD4164FC646);
