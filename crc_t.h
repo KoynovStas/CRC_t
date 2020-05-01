@@ -128,7 +128,8 @@ class CRCBase_t
 
 
         // Calculate for chunks of data
-        CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
+        CRC_Type get_raw_crc(const void* data, size_t len) const;                   //get raw_crc for first chunk of data
+        CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type raw_crc) const; //get raw_crc for chunk of data
         CRC_Type get_end_crc(CRC_Type raw_crc) const;
 
         CRC_Type reflect(CRC_Type data, uint8_t num_bits) const;
@@ -229,10 +230,18 @@ int CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_crc(CRC_Type &
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
-CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_crc(const void* data, size_t len, CRC_Type crc) const
+CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_crc(const void* data, size_t len) const
+{
+    return get_raw_crc(data, len, get_crc_init());
+}
+
+
+
+template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
+CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_crc(const void* data, size_t len, CRC_Type raw_crc) const
 {
     //use Curiously Recurring Template Pattern (CRTP)
-    return static_cast<const Impl*>(this)->get_raw_crc(data, len, crc);
+    return static_cast<const Impl*>(this)->get_raw_crc_impl(data, len, raw_crc);
 }
 
 
@@ -327,7 +336,7 @@ class CRCImplTable8: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
 
         CRCImplTable8();
 
-        CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
+        CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
 
 
     private:
@@ -349,7 +358,7 @@ CRCImplTable8<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRCImplTable8()
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE CRCImplTable8<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(const void* data, size_t len, CRC_Type crc) const
+CRC_TYPE CRCImplTable8<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const
 {
     const uint8_t* buf = static_cast< const uint8_t* >(data);
 
@@ -411,7 +420,7 @@ class CRCImplBits: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
 
         typedef CRC_TYPE CRC_Type;
 
-        CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
+        CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
 };
 
 
@@ -419,7 +428,7 @@ class CRCImplBits: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE CRCImplBits<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(const void* data, size_t len, CRC_Type crc) const
+CRC_TYPE CRCImplBits<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const
 {
     const uint8_t* buf = static_cast< const uint8_t* >(data);
 
@@ -467,7 +476,7 @@ class CRCImplTable4: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
 
         CRCImplTable4();
 
-        CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
+        CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
 
 
     private:
@@ -489,7 +498,7 @@ CRCImplTable4<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRCImplTable4()
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE CRCImplTable4<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc(const void* data, size_t len, CRC_Type crc) const
+CRC_TYPE CRCImplTable4<Bits, Poly, Init, RefIn, RefOut, XorOut>::get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const
 {
     const uint8_t* buf = static_cast< const uint8_t* >(data);
 
