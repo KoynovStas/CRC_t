@@ -143,7 +143,7 @@ void TestSpeed::wait_all_results()
 void TestSpeed::print_table()
 {
     const size_t CNT_IMPL   = get_cnt_impl();
-    const int    NAME_WIDTH = 20;
+    const int    NAME_WIDTH = 24;
     const int    IMPL_WIDTH = 10;
 
     std::cout << std::left;

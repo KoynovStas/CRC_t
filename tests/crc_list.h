@@ -1,6 +1,7 @@
 #ifndef CRC_LIST_H
 #define CRC_LIST_H
 
+#include <iostream>
 #include <vector>
 #include <set>
 
