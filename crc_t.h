@@ -91,7 +91,7 @@ template<> struct CRC_Type_helper<3> { typedef uint32_t value_type; }; //for Bit
 /*
  * CRCBase_t - is the base class that we will use in various algorithms.
  * This class accepts an Impl template parameter (use Curiously Recurring Template Pattern (CRTP)).
- * This allows us to use the get_raw_crc() method from the implementation class without using virtual methods.
+ * This allows us to use the get_raw_crc_impl() method from the implementation class without using virtual methods.
  */
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
 class CRCBase_t
