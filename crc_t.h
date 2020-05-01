@@ -2,7 +2,7 @@
  * crc_t.h
  *
  *
- * version 1.2
+ * version 2.0
  *
  *
  *

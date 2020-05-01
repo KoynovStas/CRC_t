@@ -10,6 +10,9 @@ Copyright (c) 2015, Koynov Stas - skojnov@yandex.ru
 
 
 ---
+## [v2.0](https://github.com/KoynovStas/CRC_t/tree/v2.0) (2020-05-01)
+[Full Changelog](https://github.com/KoynovStas/CRC_t/compare/v1.2...v2.0)
+
 
 ### New
 - New: Started using pattern [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern) this allows the use of static polymorphism. And this allows you to extract each algorithm to a separate class!
