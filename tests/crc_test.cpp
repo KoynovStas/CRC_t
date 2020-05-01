@@ -530,6 +530,31 @@ TEST(test_crc_for_cunks)
 
 
 
+TEST(test_crc_for_cunks2) //use wrapper for first chunk of data
+{
+    uint64_t crc;
+
+
+    for( size_t i = 0; i < CRC_List.size(); i++)
+    {
+        crc = CRC_List[i]->get_raw_crc(&std_check_data[0], 4);
+        crc = CRC_List[i]->get_raw_crc(&std_check_data[4], 5, crc);
+        crc = CRC_List[i]->get_end_crc(crc);
+
+        if( crc != CRC_List[i]->check )
+        {
+            ss << "For CRC: " << CRC_List[i]->name <<  " std check: 0x" << CRC_List[i]->check << " but get: 0x" << crc;
+            msg = ss.str();
+            TEST_FAIL(msg.c_str());
+        }
+    }
+
+
+    TEST_PASS(NULL);
+}
+
+
+
 ptest_func tests[] =
 {
 
@@ -563,6 +588,7 @@ ptest_func tests[] =
     test_crc_no_file,
 
     test_crc_for_cunks,
+    test_crc_for_cunks2,
 };
 
 

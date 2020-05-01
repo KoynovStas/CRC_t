@@ -51,6 +51,7 @@ class AbstractProxy_CRC_t
         virtual int      get_crc(uint64_t &crc, const char* file_name, void* buf, size_t size_buf) = 0;
 
         // Calculate for chunks of data
+        virtual uint64_t get_raw_crc(const void* data, size_t len) = 0;
         virtual uint64_t get_raw_crc(const void* data, size_t len, uint64_t crc) = 0;
         virtual uint64_t get_end_crc(uint64_t raw_crc) = 0;
 };
@@ -93,6 +94,9 @@ class Proxy_CRC_t : public AbstractProxy_CRC_t
                                 { return _crc.get_crc((CRC_TYPE &)crc, file_name, buf, size_buf); }
 
         //Calculate for chunks of data
+        virtual uint64_t get_raw_crc(const void* data, size_t len)
+                                    { return _crc.get_raw_crc(data, len); }
+
         virtual uint64_t get_raw_crc(const void* data, size_t len, uint64_t crc)
                                     { return _crc.get_raw_crc(data, len, (CRC_TYPE)crc); }
 
