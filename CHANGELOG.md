@@ -12,10 +12,16 @@ Copyright (c) 2015, Koynov Stas - skojnov@yandex.ru
 ---
 
 ### New
+- New: Started using pattern [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern) this allows the use of static polymorphism. And this allows you to extract each algorithm to a separate class!
 - New: extracted base class `CRCBase_t` from `CRC_t`
 - New: add template parameter `Impl` (Implementation of algorithm)
-- New: add implementation of algorithm **CRCImplTable4** - Table method for half byte
-- New: add implementation of algorithm **CRCImplBits** - No table, Loop for every byte
+- New: add implementation of algorithm **CRCImplTable4** - table for half byte (16 elements)
+- New: add implementation of algorithm **CRCImplBits** - loop for 8 bits in byte (no table)
+
+- The current version are supported:
+   * **CRCImplBits** - loop for 8 bits in byte (no table) - **new**
+   * **CRCImplTable4** - table for half byte (16 elements) - **new**
+   * **CRCImplTable8** - std table for byte (256 elements)
 
 
 ### Refactoring
@@ -29,6 +35,7 @@ Copyright (c) 2015, Koynov Stas - skojnov@yandex.ru
  - add `test_crc_impl_1byte`
  - add `test_crc_impl_data_xyz_256`
  - add `test_crc_impl_data_xxx_256`
+ - add `test_crc_for_cunks2` for test wrapper `get_raw_crc`
  - add `test_crc_speed` - benchmark for calc speed for 1GB data
 
 
