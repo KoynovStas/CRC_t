@@ -25,7 +25,7 @@ If you need a class to work with different CRC algorithms, which can change the 
 [uCRC_t](https://github.com/KoynovStas/uCRC_t)
 
 
-Template parameters is the standard Specifications algorithms CRC as described in Ross N. Williams [A PAINLESS GUIDE TO CRC ERROR DETECTION ALGORITHMS.](http://www.ross.net/crc/download/crc_v3.txt)
+Template parameters is the standard Specifications algorithms CRC as described in Ross N. Williams [A PAINLESS GUIDE TO CRC ERROR DETECTION ALGORITHMS](./doc/crc_v3.txt)
 
 
 **Ross N. Williams:**
