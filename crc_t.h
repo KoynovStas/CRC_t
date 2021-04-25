@@ -68,8 +68,8 @@
 #define CRC_ASSERT_CONCAT_(a, b) a##b
 #define CRC_ASSERT_CONCAT(a, b) CRC_ASSERT_CONCAT_(a, b)
 #define CRC_STATIC_ASSERT(expr) \
-    enum { CRC_ASSERT_CONCAT(assert_line_, __LINE__) = 1/(int)(!!(expr)) }
-
+    enum {CRC_ASSERT_CONCAT(CRC_ASSERT_CONCAT(level_, __INCLUDE_LEVEL__), \
+          CRC_ASSERT_CONCAT(_static_assert_on_line_, __LINE__)) = 1/(int)(!!(expr)) }
 
 
 
