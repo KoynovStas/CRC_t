@@ -2,7 +2,6 @@ CXXFLAGS += -O2  -s  -Wall
 CXXFLAGS += -D__USE_MINGW_ANSI_STDIO=1  #-DWITHOUT_CONSOLE_COLOR
 CXXFLAGS += -I..
 CXX      ?=  g++
-#CXX      ?=  arm-gcc_4.9.2_cortex_a15-linux-uclibcgnueabi-g++
 
 
 
@@ -17,11 +16,11 @@ SPEED_TESTS = crc_test_speed
 UNAME := $(shell uname)
 
 ifneq ($(UNAME), Linux)
-BIN_TESTS       = $(addsuffix .exe, $(TESTS))
-BIN_SPEED_TESTS = $(addsuffix .exe, $(SPEED_TESTS))
+    BIN_TESTS       = $(addsuffix .exe, $(TESTS))
+    BIN_SPEED_TESTS = $(addsuffix .exe, $(SPEED_TESTS))
 else
-BIN_TESTS       = $(TESTS)
-BIN_SPEED_TESTS = $(SPEED_TESTS)
+    BIN_TESTS       = $(TESTS)
+    BIN_SPEED_TESTS = $(SPEED_TESTS)
 endif
 
 
@@ -51,7 +50,7 @@ $(BIN_TESTS) $(BIN_SPEED_TESTS): crc_list.h
 
 
 .PHONY: speed
-speed: CXXFLAGS += -std=c++11 -lpthread
+speed: CXXFLAGS += -std=c++11 -pthread
 speed: $(BIN_SPEED_TESTS)
 	@for test in $(BIN_SPEED_TESTS) ; do  \
         ./$$test ; \
