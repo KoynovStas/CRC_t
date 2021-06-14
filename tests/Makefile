@@ -26,6 +26,7 @@ endif
 
 
 .PHONY: all
+all: CXXFLAGS += -std=c++03
 all: $(BIN_TESTS)
 	@for test in $(BIN_TESTS) ; do  \
         ./$$test ; \
