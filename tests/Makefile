@@ -1,4 +1,4 @@
-CXXFLAGS += -O2  -s  -Wall
+CXXFLAGS += -O2 -s -Wall
 CXXFLAGS += -D__USE_MINGW_ANSI_STDIO=1
 CXXFLAGS += -I..
 CXX      ?=  g++
@@ -13,11 +13,10 @@ TESTS  = crc_test
 SPEED_TESTS = crc_test_speed
 
 
-UNAME := $(shell uname)
-
-ifneq ($(UNAME), Linux)
-    BIN_TESTS       = $(addsuffix .exe, $(TESTS))
-    BIN_SPEED_TESTS = $(addsuffix .exe, $(SPEED_TESTS))
+ifeq ($(OS),Windows_NT)
+    BIN_SUFFIX      = .exe
+    BIN_TESTS       = $(addsuffix $(BIN_SUFFIX), $(TESTS))
+    BIN_SPEED_TESTS = $(addsuffix $(BIN_SUFFIX), $(SPEED_TESTS))
 else
     BIN_TESTS       = $(TESTS)
     BIN_SPEED_TESTS = $(SPEED_TESTS)
@@ -34,21 +33,6 @@ all: $(BIN_TESTS)
 
 
 
-.PHONY: clean
-clean:
-	-@rm -f *.o
-	-@rm -f *.*~
-	-@rm -f $(BIN_TESTS) $(BIN_SPEED_TESTS)
-
-
-
-$(BIN_TESTS) $(BIN_SPEED_TESTS): crc_list.h
-	$(CXX)  $(basename $@).cpp -o $@  $(CXXFLAGS)
-	@echo "  ---- Compiled $@ ----"
-
-
-
-
 .PHONY: speed
 speed: CXXFLAGS += -std=c++11 -pthread
 speed: $(BIN_SPEED_TESTS)
@@ -58,12 +42,25 @@ speed: $(BIN_SPEED_TESTS)
 
 
 
+%$(BIN_SUFFIX): %.cpp crc_list.h ../crc_t.h
+	$(CXX) $< -o $@  $(CXXFLAGS)
+	@echo "  ---- Compiled $@ ----"
+
+
+
+.PHONY: clean
+clean:
+	-@rm -f *.o
+	-@rm -f *.*~
+	-@rm -f $(BIN_TESTS) $(BIN_SPEED_TESTS)
+
+
 
 .PHONY: help
 help:
 	@echo "make [command]"
 	@echo "command is:"
-	@echo "   clean  - remove all binary files"
 	@echo "   all    - build an all tests (with out speed test)"
 	@echo "   speed  - build and run all speed tests"
+	@echo "   clean  - remove all binary files"
 	@echo "   help   - This help"
