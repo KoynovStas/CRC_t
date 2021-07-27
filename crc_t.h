@@ -101,11 +101,9 @@ class CRCBase_t
 
 
     public:
-
         typedef CRC_TYPE CRC_Type;
 
         CRCBase_t();
-
 
         // get param CRC
         uint8_t  get_bits()    const { return Bits;  }
@@ -120,12 +118,10 @@ class CRCBase_t
         CRC_Type get_crc_init()const { return crc_init;} //crc_init = reflect(Init, Bits) if RefIn, else = Init
         CRC_Type get_check()   const;                    //crc for ASCII string "123456789" (i.e. 313233... (hexadecimal)).
 
-
         // Calculate methods
         CRC_Type get_crc(const void* data, size_t len) const;
         int      get_crc(CRC_Type &crc, const char* file_name) const;
         int      get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const;
-
 
         // Calculate for chunks of data
         CRC_Type get_raw_crc(const void* data, size_t len) const;                   //get raw_crc for first chunk of data
@@ -331,10 +327,9 @@ class CRCImplTable8: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
                                       CRCImplTable8<Bits, Poly, Init, RefIn, RefOut, XorOut> >
 {
     public:
-
         typedef CRC_TYPE CRC_Type;
 
-        CRCImplTable8();
+        CRCImplTable8() { init_crc_table(); }
 
         CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
 
@@ -346,14 +341,6 @@ class CRCImplTable8: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
 };
 
 
-
-
-
-template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRCImplTable8<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRCImplTable8()
-{
-    init_crc_table();
-}
 
 
 
@@ -417,7 +404,6 @@ class CRCImplBits: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
                                     CRCImplBits<Bits, Poly, Init, RefIn, RefOut, XorOut> >
 {
     public:
-
         typedef CRC_TYPE CRC_Type;
 
         CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
@@ -471,10 +457,9 @@ class CRCImplTable4: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
                                       CRCImplTable4<Bits, Poly, Init, RefIn, RefOut, XorOut> >
 {
     public:
-
         typedef CRC_TYPE CRC_Type;
 
-        CRCImplTable4();
+        CRCImplTable4() { init_crc_table(); };
 
         CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const; //for first byte crc = init (must be)
 
@@ -486,14 +471,6 @@ class CRCImplTable4: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
 };
 
 
-
-
-
-template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRCImplTable4<Bits, Poly, Init, RefIn, RefOut, XorOut>::CRCImplTable4()
-{
-    init_crc_table();
-}
 
 
 
@@ -572,7 +549,6 @@ template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, C
           template<uint8_t, CRC_TYPE, CRC_TYPE, bool, bool, CRC_TYPE> class Impl = CRCImplTable8>
 class CRC_t: public Impl<Bits, Poly, Init, RefIn, RefOut, XorOut>
 {
-
 };
 
 
