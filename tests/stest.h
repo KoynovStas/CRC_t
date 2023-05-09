@@ -2,7 +2,7 @@
  * stest.h
  *
  *
- * version 2.0
+ * version 2.1
  *
  *
  *
@@ -50,20 +50,32 @@
 
 /*
  * STest uses the stest_printf macro as a function to print,
- * if the macro is not defined, we use the standard clib function from stdio.h.
+ * if the macro is not defined, we use the standard clib function from stdio.h
  * If you are using STest on an embedded system perhaps you have your own
  * function or less resource-intensive one like xprintf (http://elm-chan.org/fsw/strf/xprintf.html)
  * Then uncomment the definition and add your function.
  * The function must have signature like printf and
  * must support printing for formats: %s %d %u
+ *
+ * Define the stest_snprintf macro if you need TEST_PASS/SKIP/FAIL/ASSERT with print format variant
  */
 
-//#define  stest_printf  xprintf
+//#include "xprintf.h"
+//#define  stest_printf   xprintf
+//#define  stest_snprintf(buf, sz, ...)  xsprintf(buf, __VA_ARGS__)
 
 #ifndef stest_printf  //use printf from libc
     #include <stdio.h>
     #define  stest_printf  printf
 #endif
+
+
+//Uncomment if you want use snprintf from libc
+#ifndef stest_snprintf
+//    #include <stdio.h>
+//    #define  stest_snprintf  snprintf
+#endif
+
 
 
 
@@ -76,6 +88,11 @@
 #define STEST_SKIP_MORE_INFO  0  //1 - on  0 - off; show more info (file:line)
 #define STEST_FAIL_MORE_INFO  1  //1 - on  0 - off; show more info (file:line)
 
+#define STEST_PASS_ENABLED    1  //1 - on  0 - off; show(print) status
+#define STEST_SKIP_ENABLED    1  //1 - on  0 - off; show(print) status
+//FAIL test always ENABLED
+
+
 
 enum stest_return_t
 {
@@ -87,11 +104,32 @@ enum stest_return_t
     STEST_RETURN_CNT_TOTAL,
 };
 
-/*
- * Select the option you want functions main and run_case(s) to return
- * if you are using STest on an embedded system.
- */
+//Select the option you want functions main and run_case(s) to return
 #define STEST_RETURN_TYPE  STEST_RETURN_0
+
+//uncomment manually or use CFLAGS in build system
+//#define STEST_ONLY_BASENAME   //need only basename of __FILE__
+//#define STEST_UNIX_SLASH      //Unix style slash
+
+
+#ifdef STEST_ONLY_BASENAME
+    #include <string.h>
+
+    static const char* stest_basename(const char *filename)
+    {
+        #ifdef STEST_UNIX_SLASH
+            const char slash = '/';
+        #else
+            const char slash = '\\';
+        #endif
+
+        const char *p = strrchr(filename, slash);
+        return p ? p + 1 : filename;
+    }
+
+#else
+    #define stest_basename(filename) filename
+#endif
 
 
 
@@ -160,6 +198,9 @@ struct test_case_t
 
 #define TEST(name) static struct test_info_t name(struct test_case_t *test_case)
 
+#define TEST_INIT(name)  void name(struct test_case_t *test_case)
+#define TEST_CLEAN(name) void name(struct test_case_t *test_case)
+
 
 
 __attribute__((used))
@@ -185,12 +226,32 @@ static inline struct test_info_t get_test_info( const char         *file_name,
 #define TEST_ASSERT(expr)  TEST_ASSERT2(expr, NULL)
 
 
+#ifdef stest_snprintf  //User wants to use TEST_PASS/SKIP/FAIL/ASSERT with print format variant
+    #define STEST_MSG_BUF_SIZE  256 //Change the value to suit your requirements
+
+    __attribute__((used))
+    static char stest_msg_buf[STEST_MSG_BUF_SIZE];
+
+    #define TEST_PASSF(...) {                                              \
+            stest_snprintf(stest_msg_buf, STEST_MSG_BUF_SIZE, __VA_ARGS__);\
+            TEST_PASS(stest_msg_buf); }
+
+    #define TEST_SKIPF(...) {                                              \
+            stest_snprintf(stest_msg_buf, STEST_MSG_BUF_SIZE, __VA_ARGS__);\
+            TEST_SKIP(stest_msg_buf); }
+
+    #define TEST_FAILF(...) {                                              \
+            stest_snprintf(stest_msg_buf, STEST_MSG_BUF_SIZE, __VA_ARGS__);\
+            TEST_FAIL(stest_msg_buf); }
+
+    #define TEST_ASSERTF(expr, ...)  if( !(expr) ) TEST_FAILF(__VA_ARGS__)
+#endif
+
+
+
 /*
- * For GCC 4.6 or higher, in C++ you can use a standard right static_assert(exp, msg)
- * in *.c and in *.h files.
- * For GCC 4.6 is required to add CFLAGS += -std="c++0x"
- * Simple C (gcc) have not static_assert.
- * A lot of variants, it is the most simple and intuitive
+ * Since C/C++ 11 you can use a standard static_assert(exp, msg)
+ * For old C/C++ a lot of variants, this is the most simple and intuitive
  * It can be used in *.c and in *.h files.
  * (macros that use function style can be used in *.c files only)
  *
@@ -214,34 +275,7 @@ static inline struct test_info_t get_test_info( const char         *file_name,
 #define STEST_COLOR_TEXT_RED    "\033[31m"
 #define STEST_COLOR_TEXT_GREEN  "\033[32m"
 #define STEST_COLOR_TEXT_YELLOW "\033[33m"
-
-
-
-static inline void stest_print_title(const char *first, struct test_case_t *test_case, const char *last)
-{
-    stest_printf("%s", first);
-
-    if(test_case && test_case->case_name)
-        stest_printf(" of %s from: %s:%d", test_case->case_name,
-                                           test_case->file_name,
-                                           test_case->line_num);
-
-    stest_printf("%s", last);
-}
-
-
-
-static inline void stest_print_header(struct test_case_t *test_case)
-{
-    stest_print_title("\n\n---------- Start testing", test_case, " ----------");
-}
-
-
-
-static inline void stest_print_footer(struct test_case_t *test_case)
-{
-    stest_print_title("========== Finished testing", test_case, " ==========\n\n");
-}
+#define STEST_COLOR_TEXT_CYAN   "\033[1;34m"
 
 
 
@@ -255,13 +289,28 @@ static inline void stest_print_msg(const char *msg, const char *color)
 
 
 
+static inline void stest_print_header(struct test_case_t *test_case)
+{
+    stest_printf("\n\nStart testing of ");
+
+    stest_print_msg(test_case->case_name, STEST_COLOR_TEXT_CYAN);
+    stest_printf(" from: ");
+    stest_print_msg(stest_basename(test_case->file_name), STEST_COLOR_TEXT_CYAN);
+    stest_printf(":%d\n", test_case->line_num);
+}
+
+
+
 static void stest_print_info(struct test_info_t *test_info, int more_info, const char *color_msg)
 {
-    stest_printf("  %s", test_info->func_name);
+    stest_printf(" %s", test_info->func_name);
 
     if(more_info)
-        stest_printf("  in file: %s:%d", test_info->file_name,
-                                         test_info->line_num);
+    {
+        stest_printf("  in file: ");
+        stest_print_msg(stest_basename(test_info->file_name), STEST_COLOR_TEXT_CYAN);
+        stest_printf(":%d", test_info->line_num);
+    }
 
     if(test_info->msg)
     {
@@ -278,6 +327,7 @@ struct print_status_inf
     const char *prefix_color;
     const char *msg_color;
     int         more_info;
+    int         enabled;
 };
 
 
@@ -290,25 +340,31 @@ static void stest_print_status(struct test_info_t *test_info)
             STEST_COLOR_TEXT_GREEN,
             STEST_PASS_MSG_COLOR ? STEST_COLOR_TEXT_GREEN : NULL,
             STEST_PASS_MORE_INFO,
+            STEST_PASS_ENABLED,
         },
         {
             "\nSKIP: ",
             STEST_COLOR_TEXT_YELLOW,
             STEST_SKIP_MSG_COLOR ? STEST_COLOR_TEXT_YELLOW : NULL,
             STEST_SKIP_MORE_INFO,
+            STEST_SKIP_ENABLED,
         },
         {
             "\nFAIL: ",
             STEST_COLOR_TEXT_RED,
             STEST_FAIL_MSG_COLOR ? STEST_COLOR_TEXT_RED : NULL,
             STEST_FAIL_MORE_INFO,
+            1,  //FAIL test always ENABLED
         },
     };
 
     const struct print_status_inf *inf = &data[test_info->status];
 
-    stest_print_msg(inf->prefix, inf->prefix_color);
-    stest_print_info(test_info, inf->more_info, inf->msg_color);
+    if(inf->enabled)
+    {
+        stest_print_msg(inf->prefix, inf->prefix_color);
+        stest_print_info(test_info, inf->more_info, inf->msg_color);
+    }
 }
 
 
@@ -333,7 +389,7 @@ static void stest_print_totals(unsigned int *status_cnt)
     stest_print_counter("passed," , STEST_COLOR_TEXT_GREEN , status_cnt[TEST_STATUS_PASS]);
     stest_print_counter("skipped,", STEST_COLOR_TEXT_YELLOW, status_cnt[TEST_STATUS_SKIP]);
     stest_print_counter("failed," , STEST_COLOR_TEXT_RED   , status_cnt[TEST_STATUS_FAIL]);
-    stest_print_counter("total\n" , NULL                   , status_cnt[TEST_STATUS_PASS]+
+    stest_print_counter("total\n\n",NULL                   , status_cnt[TEST_STATUS_PASS]+
                                                              status_cnt[TEST_STATUS_SKIP]+
                                                              status_cnt[TEST_STATUS_FAIL]);
 }
@@ -382,7 +438,6 @@ static unsigned int run_case(struct test_case_t *test_case)
 
 
     stest_print_totals(test_case->status_cnt);
-    stest_print_footer(test_case);
 
     return stest_ret_result(test_case->status_cnt);
 }
@@ -407,8 +462,8 @@ static inline unsigned int run_cases(struct test_case_t *test_cases[], size_t co
 
     if( count_cases > 1 )
     {
+        stest_printf("\n\n---------- Finished testing ----------");
         stest_print_totals(total_cnt);
-        stest_print_footer(NULL);
     }
 
     return stest_ret_result(total_cnt);
