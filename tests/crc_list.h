@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <vector>
-#include <set>
 
 #include "crc_t.h"
 
@@ -306,19 +305,7 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
 
 
 const std::vector<AbstractProxy_CRC_t *> CRC_List = get_crc_list();
-
-
-
-
-size_t get_cnt_impl()
-{
-     std::set<std::string> impl_names;
-
-     for(size_t i = 0; i < CRC_List.size(); i++)
-        impl_names.insert(CRC_List[i]->impl_name);
-
-     return impl_names.size();
-}
+const size_t CNT_IMPL = 3;
 
 
 

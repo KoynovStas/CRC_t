@@ -3,9 +3,6 @@
 #include <string.h>
 #include <inttypes.h>
 
-#include <vector>
-#include <string>
-
 #include "stest.h"
 
 #include "crc_list.h"
@@ -296,9 +293,6 @@ TEST(test_crc_std_check)
 TEST(test_crc_impl_1byte)
 {
     uint64_t crc1, crc2;
-
-    const size_t CNT_IMPL = get_cnt_impl();
-
     uint8_t test_byte;
 
     for(int i = 0; i < 256; i++)//test all bytes
@@ -331,9 +325,6 @@ TEST(test_crc_impl_1byte)
 TEST(test_crc_impl_data_xyz_256)
 {
     uint64_t crc1, crc2;
-
-    const size_t CNT_IMPL = get_cnt_impl();
-
     uint8_t test_data[256];
 
     for(int i = 0; i < 256; i++)
@@ -365,9 +356,6 @@ TEST(test_crc_impl_data_xyz_256)
 TEST(test_crc_impl_data_xxx_256)
 {
     uint64_t crc1, crc2;
-
-    const size_t CNT_IMPL = get_cnt_impl();
-
     uint8_t test_data[256];
 
     for(int i = 0; i < 256; i++)
