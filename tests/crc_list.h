@@ -1,9 +1,9 @@
 #ifndef CRC_LIST_H
 #define CRC_LIST_H
 
-#include <iostream>
 #include <vector>
 
+#include "stest.h"
 #include "crc_t.h"
 
 
@@ -111,29 +111,28 @@ class Proxy_CRC_t : public AbstractProxy_CRC_t
 
 
 
-#define ADD_CRC_TO_LIST_IMPL(CRC_Name, IMPL_Name, Bits, Poly, Init, RefIn, RefOut, XorOut, Check, Impl)                  \
-{                                                                                                                        \
-    AbstractProxy_CRC_t *ptr = static_cast<AbstractProxy_CRC_t *>                                                        \
-                               ( new Proxy_CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Check, Impl>() );              \
-    if( !ptr )                                                                                                           \
-    {                                                                                                                    \
-        std::cerr << "Can't get MEM for Proxy_CRC_t<" << Bits << "," << Poly << "," << Init << "," << RefIn << ","       \
-                                                      << RefOut << "," << XorOut << "," << Check << ">";                 \
-        exit(-1);                                                                                                        \
-    }                                                                                                                    \
-    ptr->name      = CRC_Name IMPL_Name;                                                                               \
-    ptr->crc_name  = CRC_Name;                                                                                           \
-    ptr->impl_name = IMPL_Name;                                                                                          \
-    ptr->bits      = Bits;                                                                                               \
-    ptr->poly      = Poly;                                                                                               \
-    ptr->init      = Init;                                                                                               \
-    ptr->ref_in    = RefIn;                                                                                              \
-    ptr->ref_out   = RefOut;                                                                                             \
-    ptr->xor_out   = XorOut;                                                                                             \
-    ptr->check     = Check;                                                                                              \
-                                                                                                                         \
-    CRC_List.push_back(ptr);                                                                                             \
-}                                                                                                                        \
+#define ADD_CRC_TO_LIST_IMPL(CRC_Name, IMPL_Name, Bits, Poly, Init, RefIn, RefOut, XorOut, Check, Impl)       \
+{                                                                                                             \
+    AbstractProxy_CRC_t *ptr = static_cast<AbstractProxy_CRC_t *>                                             \
+                               ( new Proxy_CRC_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Check, Impl>() );   \
+    if( !ptr )                                                                                                \
+    {                                                                                                         \
+        stest_printf("Can't get MEM for: " CRC_Name IMPL_Name);                                               \
+        exit(-1);                                                                                             \
+    }                                                                                                         \
+    ptr->name      = CRC_Name IMPL_Name;                                                                      \
+    ptr->crc_name  = CRC_Name;                                                                                \
+    ptr->impl_name = IMPL_Name;                                                                               \
+    ptr->bits      = Bits;                                                                                    \
+    ptr->poly      = Poly;                                                                                    \
+    ptr->init      = Init;                                                                                    \
+    ptr->ref_in    = RefIn;                                                                                   \
+    ptr->ref_out   = RefOut;                                                                                  \
+    ptr->xor_out   = XorOut;                                                                                  \
+    ptr->check     = Check;                                                                                   \
+                                                                                                              \
+    CRC_List.push_back(ptr);                                                                                  \
+}                                                                                                             \
 
 
 #define ADD_CRC_TO_LIST(CRC_Name, Bits, Poly, Init, RefIn, RefOut, XorOut, Check)                             \

@@ -3,8 +3,6 @@
 #include <string.h>
 #include <inttypes.h>
 
-#include "stest.h"
-
 #include "crc_list.h"
 
 
