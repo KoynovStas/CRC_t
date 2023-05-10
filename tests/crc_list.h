@@ -287,6 +287,7 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
     ADD_CRC_TO_LIST("CRC-32/ISCSI",      32, 0x1EDC6F41, 0xFFFFFFFF, true,  true,  0xFFFFFFFF, 0xE3069283);
     ADD_CRC_TO_LIST("CRC-32/ISO-HDLC",   32, 0x4C11DB7,  0xFFFFFFFF, true,  true,  0xFFFFFFFF, 0xCBF43926);
     ADD_CRC_TO_LIST("CRC-32/JAMCRC",     32, 0x4C11DB7,  0xFFFFFFFF, true,  true,  0x0,        0x340BC6D9);
+    ADD_CRC_TO_LIST("CRC-32/MEF",        32, 0X741B8CD7, 0xFFFFFFFF, true,  true,  0x0,        0xD2C22F51);
     ADD_CRC_TO_LIST("CRC-32/MPEG-2",     32, 0x4C11DB7,  0xFFFFFFFF, false, false, 0x0,        0x376E6E7 );
     ADD_CRC_TO_LIST("CRC-32/XFER",       32, 0xAF,       0x0,        false, false, 0x0,        0xBD0BE338);
 
