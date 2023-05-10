@@ -182,6 +182,7 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
     ADD_CRC_TO_LIST("CRC-8/DVB-S2",     8, 0xD5, 0x0,  false, false, 0x0,  0xBC);
     ADD_CRC_TO_LIST("CRC-8/GSM-A",      8, 0x1D, 0x0,  false, false, 0x0,  0x37);
     ADD_CRC_TO_LIST("CRC-8/GSM-B",      8, 0x49, 0x0,  false, false, 0xFF, 0x94);
+    ADD_CRC_TO_LIST("CRC-8/HITAG",      8, 0x1D, 0xFF, false, false, 0x0,  0xB4);
     ADD_CRC_TO_LIST("CRC-8/I-432-1",    8, 0x7,  0x0,  false, false, 0x55, 0xA1);
     ADD_CRC_TO_LIST("CRC-8/I-CODE",     8, 0x1D, 0xFD, false, false, 0x0,  0x7E);
     ADD_CRC_TO_LIST("CRC-8/LTE",        8, 0x9B, 0x0,  false, false, 0x0,  0xEA);
