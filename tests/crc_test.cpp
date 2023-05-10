@@ -221,6 +221,22 @@ TEST(test_universal_crc_get_top_bit)
     TEST_ASSERT(ucrc24.get_top_bit() == 0x800000);
 
 
+    CRC_t<28, 0, 0, true, false, 0>  ucrc28;
+    TEST_ASSERT(ucrc28.get_top_bit() == 0x8000000);
+
+
+    CRC_t<32, 0, 0, true, false, 0>  ucrc32;
+    TEST_ASSERT(ucrc32.get_top_bit() == 0x80000000);
+
+
+    CRC_t<40, 0, 0, true, false, 0>  ucrc40;
+    TEST_ASSERT(ucrc40.get_top_bit() == 0x8000000000);
+
+
+    CRC_t<64, 0, 0, true, false, 0>  ucrc64;
+    TEST_ASSERT(ucrc64.get_top_bit() == 0x8000000000000000);
+
+
     TEST_PASS(NULL);
 }
 
@@ -246,6 +262,10 @@ TEST(test_universal_crc_get_crc_mask)
 
     CRC_t<24, 0, 0, true, false, 0>  ucrc24;
     TEST_ASSERT(ucrc24.get_crc_mask() == 0xffffff );
+
+
+    CRC_t<32, 0, 0, true, false, 0>  ucrc32;
+    TEST_ASSERT(ucrc32.get_crc_mask() == 0xffffffff );
 
 
     TEST_PASS(NULL);
