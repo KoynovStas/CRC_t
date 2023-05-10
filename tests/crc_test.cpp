@@ -94,7 +94,7 @@ TEST(test_universal_crc_get_bits)
     {
         TEST_ASSERTF(CRC_List[i]->get_bits() == CRC_List[i]->bits,
                      "For CRC: %s bits must be: %d but get: %d",
-                     CRC_List[i]->name.c_str(),
+                     CRC_List[i]->name,
                      (int)CRC_List[i]->bits,
                      (int)CRC_List[i]->get_bits());
     }
@@ -110,7 +110,7 @@ TEST(test_universal_crc_get_poly)
     {
         TEST_ASSERTF(CRC_List[i]->get_poly() == CRC_List[i]->poly,
                      "For CRC: %s poly must be: 0x%" PRIX64 " but get: 0x%" PRIX64,
-                     CRC_List[i]->name.c_str(),
+                     CRC_List[i]->name,
                      CRC_List[i]->poly,
                      CRC_List[i]->get_poly());
     }
@@ -126,7 +126,7 @@ TEST(test_universal_crc_get_init)
     {
         TEST_ASSERTF(CRC_List[i]->get_init() == CRC_List[i]->init,
                      "For CRC: %s init must be: 0x%" PRIX64 " but get: 0x%" PRIX64,
-                     CRC_List[i]->name.c_str(),
+                     CRC_List[i]->name,
                      CRC_List[i]->init,
                      CRC_List[i]->get_init());
     }
@@ -142,7 +142,7 @@ TEST(test_universal_crc_get_xor_out)
     {
         TEST_ASSERTF(CRC_List[i]->get_xor_out() == CRC_List[i]->xor_out,
                      "For CRC: %s Xor_out must be: 0x%" PRIX64 " but get: 0x%" PRIX64,
-                     CRC_List[i]->name.c_str(),
+                     CRC_List[i]->name,
                      CRC_List[i]->xor_out,
                      CRC_List[i]->get_xor_out());
     }
@@ -158,7 +158,7 @@ TEST(test_universal_crc_get_ref_in)
     {
         TEST_ASSERTF(CRC_List[i]->get_ref_in() == CRC_List[i]->ref_in,
                      "For CRC: %s ref_in must be: %d but get: %d",
-                     CRC_List[i]->name.c_str(),
+                     CRC_List[i]->name,
                      CRC_List[i]->ref_in,
                      CRC_List[i]->get_ref_in());
     }
@@ -174,7 +174,7 @@ TEST(test_universal_crc_get_ref_out)
     {
         TEST_ASSERTF(CRC_List[i]->get_ref_out() == CRC_List[i]->ref_out,
                      "For CRC: %s ref_out must be: %d but get: %d",
-                     CRC_List[i]->name.c_str(),
+                     CRC_List[i]->name,
                      CRC_List[i]->ref_out,
                      CRC_List[i]->get_ref_out());
     }
@@ -268,13 +268,13 @@ TEST(test_crc_std_check)
 
         TEST_ASSERTF(crc == CRC_List[i]->check,
                      "For CRC: %s std check must be: 0x%" PRIX64 " but get: 0x%" PRIX64,
-                     CRC_List[i]->name.c_str(),
+                     CRC_List[i]->name,
                      CRC_List[i]->check,
                      crc);
 
         TEST_ASSERTF(CRC_List[i]->get_check() == CRC_List[i]->check,
                      "For CRC: %s std check must be: 0x%" PRIX64 " but get: 0x%" PRIX64,
-                     CRC_List[i]->name.c_str(),
+                     CRC_List[i]->name,
                      CRC_List[i]->check,
                      CRC_List[i]->get_check());
     }
@@ -307,9 +307,9 @@ TEST(test_crc_impl_1byte)
                 crc2 = CRC_List[i+j]->get_crc(&test_byte, sizeof(test_byte));
                 TEST_ASSERTF(crc1 == crc2,
                              "For CRC: %s crc: 0x%" PRIX64 " but for: %s crc: 0x%" PRIX64,
-                             CRC_List[i]->name.c_str(),
+                             CRC_List[i]->name,
                              crc1,
-                             CRC_List[i+j]->name.c_str(),
+                             CRC_List[i+j]->name,
                              crc2);
             }
         }
@@ -338,9 +338,9 @@ TEST(test_crc_impl_data_xyz_256)
             crc2 = CRC_List[i+j]->get_crc(test_data, sizeof(test_data));
             TEST_ASSERTF(crc1 == crc2,
                          "For CRC: %s crc: 0x%" PRIX64 " but for: %s crc: 0x%" PRIX64,
-                         CRC_List[i]->name.c_str(),
+                         CRC_List[i]->name,
                          crc1,
-                         CRC_List[i+j]->name.c_str(),
+                         CRC_List[i+j]->name,
                          crc2);
         }
     }
@@ -370,9 +370,9 @@ TEST(test_crc_impl_data_xxx_256)
                 crc2 = CRC_List[i+j]->get_crc(test_data, sizeof(test_data));
                 TEST_ASSERTF(crc1 == crc2,
                              "For CRC: %s crc: 0x%" PRIX64 " but for: %s crc: 0x%" PRIX64,
-                             CRC_List[i]->name.c_str(),
+                             CRC_List[i]->name,
                              crc1,
-                             CRC_List[i+j]->name.c_str(),
+                             CRC_List[i+j]->name,
                              crc2);
             }
         }
@@ -397,7 +397,7 @@ TEST(test_crc_std_check_file)
 
         TEST_ASSERTF((res == 0) &&  (crc == CRC_List[i]->check),
                      "For CRC: %s std check: 0x%" PRIX64 " but get: 0x%" PRIX64,
-                     CRC_List[i]->name.c_str(),
+                     CRC_List[i]->name,
                      CRC_List[i]->check,
                      crc);
     }
@@ -418,7 +418,7 @@ TEST(test_crc_no_file)
 
         TEST_ASSERTF((res == -1) && (crc == 0),
                      "For CRC: %s no file but get_crc() ret: %d crc: 0x%" PRIX64,
-                     CRC_List[i]->name.c_str(),
+                     CRC_List[i]->name,
                      res,
                      crc);
     }
@@ -445,7 +445,7 @@ TEST(test_crc_for_cunks)
 
         TEST_ASSERTF(crc == CRC_List[i]->check,
                      "For CRC: %s std check: 0x%" PRIX64 " but get: 0x%" PRIX64,
-                     CRC_List[i]->name.c_str(),
+                     CRC_List[i]->name,
                      CRC_List[i]->check,
                      crc);
     }
@@ -467,7 +467,7 @@ TEST(test_crc_for_cunks2) //use wrapper for first chunk of data
 
         TEST_ASSERTF(crc == CRC_List[i]->check,
                      "For CRC: %s std check: 0x%" PRIX64 " but get: 0x%" PRIX64,
-                     CRC_List[i]->name.c_str(),
+                     CRC_List[i]->name,
                      CRC_List[i]->check,
                      crc);
     }

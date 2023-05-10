@@ -19,9 +19,9 @@ class AbstractProxy_CRC_t
 
 
         //specification
-        std::string  name;
-        std::string  crc_name;
-        std::string  impl_name;
+        const char*  name;
+        const char*  crc_name;
+        const char*  impl_name;
         uint8_t      bits;
         uint64_t     poly;
         uint64_t     init;

@@ -1,7 +1,6 @@
 #include <cstdlib>
 #include <unistd.h>
 
-#include <string>
 #include <vector>
 #include <iostream>
 #include <iomanip>
