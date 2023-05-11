@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#define __STDC_FORMAT_MACROS //for MinGW
 #include <inttypes.h>
 
 #include "crc_list.h"
