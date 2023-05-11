@@ -101,7 +101,7 @@ enum stest_return_t
     STEST_RETURN_CNT_FAILED,
     STEST_RETURN_CNT_SKIPPED,
     STEST_RETURN_CNT_PASSED,
-    STEST_RETURN_CNT_TOTAL,
+    STEST_RETURN_CNT_TOTAL
 };
 
 //Select the option you want functions main and run_case(s) to return
