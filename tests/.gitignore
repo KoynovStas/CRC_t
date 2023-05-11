@@ -1,50 +1,31 @@
-# Object files
-*.o
-*.o.*
-*.ko
-*.obj
-*.elf
-
-
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-
-
-# asm files
-*.s
-*.S
-
-
-# Binary files
-*.exe
-crc_test*
-
-
-
-#log files
-*.log*
-
-
 # Temp files
 *.*~
 
 
+# cmake
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+[Dd]ebug/
+[Rr]elease/
+[Bb]uild/
+MinSizeRel/
+RelWithDebInfo/
+
+
+# gcc asm files
+*.s
+*.S
+
 
 # Files that we don't want to ignore
 !.gitignore
-!crc_test*.cpp
-!crc_test*.h
-!crc_test*.hpp
