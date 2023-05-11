@@ -162,7 +162,7 @@ if( res == 0 )
 >  These method are reentrant. He use a buffer on the stack.
 >  The buffer size is 4 Kib (4096 bytes) which is optimal for most   systems.
 >  If you have a buffer or needs aligned buffer, you can use the following method:
->  
+>
 >  ```C++
 >  int get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const;
 >  ```
@@ -238,6 +238,22 @@ crc = ucrc.get_end_crc(crc);
 
 More details can be found in the test application: **[crc_test.cpp](./tests/crc_test.cpp)**
 
+
+
+## Tests
+
+To run tests, perform the following steps:
+
+```
+cd tests
+cmake . -B ./build
+cmake --build build
+```
+
+On Windows for MinGW you can generate `MinGW Makefiles`:
+```
+cmake . -B ./build -G "MinGW Makefiles"
+```
 
 
 

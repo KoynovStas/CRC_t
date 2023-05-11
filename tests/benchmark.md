@@ -4,13 +4,13 @@
 To run the Benchmark on your machine, run the `speed` target:
 
 ```
-make speed
+cmake --build build -t speed
 ```
 
 Result for my PC:
  - CPU: Intel(R) Core(TM) i7-6700K
  - RAM: Corsair	CMK32GX4M4B3200C16
- - GCC: mingw-7.3 CXX flags see in [Makefile](./Makefile)
+ - GCC: mingw-7.3 CXX flags see in [CMakeLists.txt](./CMakeLists.txt)
 
 
 |Name/Impl               |(Table8)  |(Table4)  |(Bits)
@@ -37,6 +37,7 @@ Result for my PC:
 |CRC-8/DVB-S2            |541.40    |201.68    |76.51
 |CRC-8/GSM-A             |546.95    |202.07    |78.49
 |CRC-8/GSM-B             |551.97    |198.98    |79.88
+|CRC-8/HITAG             |526.87    |194.05    |80.32
 |CRC-8/I-432-1           |549.58    |202.16    |76.83
 |CRC-8/I-CODE            |546.00    |200.17    |72.66
 |CRC-8/LTE               |545.55    |201.88    |80.53
@@ -78,6 +79,7 @@ Result for my PC:
 |CRC-16/ISO-IEC-14443-3-A|475.64    |203.33    |87.97
 |CRC-16/KERMIT           |472.80    |212.25    |85.57
 |CRC-16/LJ1200           |376.28    |187.59    |69.23
+|CRC-16//M17             |368.99    |181.77    |70.07
 |CRC-16/MAXIM-DOW        |479.76    |210.41    |82.64
 |CRC-16/MCRF4XX          |476.23    |211.87    |87.12
 |CRC-16/MODBUS           |476.13    |210.37    |87.23
@@ -114,10 +116,13 @@ Result for my PC:
 |CRC-32/ISCSI            |456.95    |234.18    |88.35
 |CRC-32/ISO-HDLC         |460.44    |236.90    |89.24
 |CRC-32/JAMCRC           |479.41    |234.22    |84.09
+|CRC-32/MEF              |468.64    |223.65    |85.83
 |CRC-32/MPEG-2           |423.81    |216.29    |74.56
 |CRC-32/XFER             |422.61    |214.63    |70.16
 |CRC-40/GSM              |417.18    |205.89    |30.87
 |CRC-64/ECMA-182         |479.32    |230.00    |31.66
 |CRC-64/GO-ISO           |481.44    |237.66    |91.27
+|CRC-64/MS               |479.70    |226.18    |88.74
+|CRC-64/REDIS            |466.72    |226.80    |91.52
 |CRC-64/WE               |473.90    |228.68    |32.87
 |CRC-64/XZ               |477.69    |238.39    |112.49
