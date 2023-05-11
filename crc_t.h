@@ -1,9 +1,8 @@
 /*
- * crc_t.h
+ * CRC_t is C++ template for calculation CRC any sizes(width) 1-64 bits.
  *
  *
  * version 2.0
- *
  *
  *
  * BSD 3-Clause License
@@ -210,7 +209,7 @@ int CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_crc(CRC_Type &
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
 int CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_crc(CRC_Type &crc, std::ifstream& ifs, void* buf, size_t size_buf) const
 {
-    crc = crc_init;
+    crc = get_crc_init();
 
     while( ifs )
     {
@@ -300,7 +299,7 @@ CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_norma
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
 CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_reflected_crc(uint8_t byte) const
 {
-    static CRC_Type ref_poly = reflect(Poly, Bits);
+    static const CRC_Type ref_poly = reflect(Poly, Bits);
 
     CRC_Type crc = byte;
 
