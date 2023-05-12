@@ -105,15 +105,16 @@ class CRCBase_t
         CRCBase_t();
 
         // get param CRC
-        uint8_t  get_bits()    const { return Bits;  }
-        CRC_Type get_poly()    const { return Poly;  }
-        CRC_Type get_init()    const { return Init;  }
-        CRC_Type get_xor_out() const { return XorOut;}
-        bool     get_ref_in()  const { return RefIn; }
-        bool     get_ref_out() const { return RefOut;}
+        static uint8_t  get_bits()    { return Bits;  }
+        static CRC_Type get_poly()    { return Poly;  }
+        static CRC_Type get_init()    { return Init;  }
+        static CRC_Type get_xor_out() { return XorOut;}
+        static bool     get_ref_in()  { return RefIn; }
+        static bool     get_ref_out() { return RefOut;}
 
-        CRC_Type get_top_bit() const { return (CRC_Type)1 << (Bits - 1);      }
-        CRC_Type get_crc_mask()const { return ( (get_top_bit() - 1) << 1) | 1;}
+        static CRC_Type get_top_bit() { return (CRC_Type)1 << (Bits - 1);      }
+        static CRC_Type get_crc_mask(){ return ( (get_top_bit() - 1) << 1) | 1;}
+
         CRC_Type get_crc_init()const { return crc_init;} //crc_init = reflect(Init, Bits) if RefIn, else = Init
         CRC_Type get_check()   const;                    //crc for ASCII string "123456789" (i.e. 313233... (hexadecimal)).
 
@@ -125,14 +126,13 @@ class CRCBase_t
         // Calculate for chunks of data
         CRC_Type get_raw_crc(const void* data, size_t len) const;                   //get raw_crc for first chunk of data
         CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type raw_crc) const; //get raw_crc for chunk of data
-        CRC_Type get_end_crc(CRC_Type raw_crc) const;
-
-        CRC_Type reflect(CRC_Type data, uint8_t num_bits) const;
+        static CRC_Type get_end_crc(CRC_Type raw_crc);
 
 
     protected:
-        CRC_Type get_raw_normal_crc(uint8_t byte) const;
-        CRC_Type get_raw_reflected_crc(uint8_t byte) const;
+        static CRC_Type reflect(CRC_Type data, uint8_t num_bits);
+        static CRC_Type get_raw_normal_crc(uint8_t byte);
+        static CRC_Type get_raw_reflected_crc(uint8_t byte);
 
 
     private:
@@ -242,7 +242,7 @@ CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_crc(c
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
-CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_end_crc(CRC_Type raw_crc) const
+CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_end_crc(CRC_Type raw_crc)
 {
     if(RefOut^RefIn)
         raw_crc = reflect(raw_crc, Bits);
@@ -256,7 +256,7 @@ CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_end_crc(C
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
-CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::reflect(CRC_Type data, uint8_t num_bits) const
+CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::reflect(CRC_Type data, uint8_t num_bits)
 {
     CRC_Type reflection = 0;
 
@@ -272,9 +272,10 @@ CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::reflect(CRC_T
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
-CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_normal_crc(uint8_t byte)  const
+CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_normal_crc(uint8_t byte)
 {
     CRC_Type crc = 0;
+
 
     for(int bit = 0x80; bit; bit >>= 1)
     {
@@ -297,7 +298,7 @@ CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_norma
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
-CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_reflected_crc(uint8_t byte) const
+CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_reflected_crc(uint8_t byte)
 {
     static const CRC_Type ref_poly = reflect(Poly, Bits);
 

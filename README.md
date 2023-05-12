@@ -89,15 +89,16 @@ template <Bits, Poly, Init, RefIn, RefOut, XorOut, Impl = CRCImplTable8>
 typedef CRC_TYPE CRC_Type;
 
 // get param CRC
-uint8_t  get_bits()    const { return Bits;  }
-CRC_Type get_poly()    const { return Poly;  }
-CRC_Type get_init()    const { return Init;  }
-CRC_Type get_xor_out() const { return XorOut;}
-bool     get_ref_in()  const { return RefIn; }
-bool     get_ref_out() const { return RefOut;}
+static uint8_t  get_bits()    { return Bits;  }
+static CRC_Type get_poly()    { return Poly;  }
+static CRC_Type get_init()    { return Init;  }
+static CRC_Type get_xor_out() { return XorOut;}
+static bool     get_ref_in()  { return RefIn; }
+static bool     get_ref_out() { return RefOut;}
 
-CRC_Type get_top_bit() const { return (CRC_Type)1 << (Bits - 1);      }
-CRC_Type get_crc_mask()const { return ( (get_top_bit() - 1) << 1) | 1;}
+static CRC_Type get_top_bit() { return (CRC_Type)1 << (Bits - 1);      }
+static CRC_Type get_crc_mask(){ return ( (get_top_bit() - 1) << 1) | 1;}
+
 CRC_Type get_crc_init()const { return crc_init;} //crc_init = reflect(Init, Bits) if RefIn, else = Init
 CRC_Type get_check()   const;                    //crc for ASCII string "123456789" (i.e. 313233... (hexadecimal)).
 
@@ -111,7 +112,7 @@ int      get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_bu
 // Calculate for chunks of data
 CRC_Type get_raw_crc(const void* data, size_t len) const;                   //get raw_crc for first chunk of data
 CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type raw_crc) const; //get raw_crc for chunk of data
-CRC_Type get_end_crc(CRC_Type raw_crc) const;
+static CRC_Type get_end_crc(CRC_Type raw_crc);
 ```
 
 More details see: **[crc_t.h](./crc_t.h)**
