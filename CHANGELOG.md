@@ -10,6 +10,33 @@ Copyright (c) 2015, Koynov Stas - skojnov@yandex.ru
 
 
 ---
+## [v2.1](https://github.com/KoynovStas/CRC_t/tree/v2.1) (2023-05-12)
+[Full Changelog](https://github.com/KoynovStas/CRC_t/compare/v2.0...v2.1)
+
+
+### New
+ - New: use cmake for build tests
+ - Fix: use `__INCLUDE_LEVEL__` in `STATIC_ASSERT` for fix ODR in headers
+
+
+### Refactoring
+ - replaced `std::string` to `const char*` in Proxy
+ - use `stest_printf` for embedded (was be `std::cerr`)
+ - deleted `get_cnt_impl()`, add const `CNT_IMPL`
+ - deleted `sstream`, use `TEST_ASSERTF` with `printf`
+ - add `static` prefix for some methods
+
+
+### Tests
+ - add to CRC list `CRC-64/MS`
+ - add to CRC list `CRC-64/REDIS`
+ - add to CRC list `CRC-32/MEF`
+ - add to CRC list `CRC-16/M17`
+ - add to CRC list `CRC-8/HITAG`
+
+
+
+
 ## [v2.0](https://github.com/KoynovStas/CRC_t/tree/v2.0) (2020-05-01)
 [Full Changelog](https://github.com/KoynovStas/CRC_t/compare/v1.2...v2.0)
 

@@ -2,7 +2,7 @@
  * CRC_t is C++ template for calculation CRC any sizes(width) 1-64 bits.
  *
  *
- * version 2.0
+ * version 2.1
  *
  *
  * BSD 3-Clause License
