@@ -497,6 +497,19 @@ TEST(test_crc_for_cunks2) //use wrapper for first chunk of data
 
 
 
+TEST(test_clean_up)
+{
+    for(auto alg : CRC_List)
+    {
+        delete alg;
+    }
+
+
+    TEST_PASS(nullptr);
+}
+
+
+
 stest_func tests[] =
 {
     //CRC_Type_Helper
@@ -530,6 +543,9 @@ stest_func tests[] =
 
     test_crc_for_cunks,
     test_crc_for_cunks2,
+
+    //it's no test
+    test_clean_up
 };
 
 
