@@ -1,8 +1,8 @@
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #define __STDC_FORMAT_MACROS //for MinGW
-#include <inttypes.h>
+#include <cinttypes>
+#include <unistd.h>
 
 #include "crc_list.h"
 

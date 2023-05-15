@@ -41,8 +41,8 @@
 #ifndef CRC_T_H
 #define CRC_T_H
 
-#include <stdint.h>
-#include <errno.h>
+#include <cstdint>
+#include <cerrno>
 #include <fstream>    // for std::ifstream
 #include <ios>        // for std::ios_base, etc.
 
