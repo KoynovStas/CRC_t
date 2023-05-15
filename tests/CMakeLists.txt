@@ -9,7 +9,7 @@ if(UNIX)
     set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -DSTEST_UNIX_SLASH")
 endif()
 
-
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -18,7 +18,7 @@ if(MSVC)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
     add_compile_options(/W4 /WX)
 else()
-    add_compile_options(-Wall -Wextra -pedantic -Wno-variadic-macros)
+    add_compile_options(-Wall -Wextra -pedantic)
 endif()
 
 
@@ -49,8 +49,6 @@ set(HEADERS
 # --- General Tests ---
 add_executable(tests crc_test.cpp ${HEADERS})
 
-set_property(TARGET tests PROPERTY CXX_STANDARD 98)
-
 target_include_directories(tests PRIVATE ${INCLUDE_DIR})
 
 # phony target for run tests
@@ -68,8 +66,6 @@ add_custom_command(TARGET tests POST_BUILD
 # --- Speed tests ---
 # To run the speed test: cmake --build build -t speed
 add_executable(speed_test crc_test_speed.cpp ThreadPool.h ${HEADERS})
-
-set_property(TARGET speed_test PROPERTY CXX_STANDARD 11)
 
 
 find_package(Threads)
