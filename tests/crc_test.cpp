@@ -28,7 +28,7 @@ TEST(test_crc_type_helper_uint8)
     TEST_ASSERT(sizeof(CRC_Type_helper< (7-1)/8 >::value_type) == sizeof(uint8_t));
     TEST_ASSERT(sizeof(CRC_Type_helper< (8-1)/8 >::value_type) == sizeof(uint8_t));
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -45,7 +45,7 @@ TEST(test_crc_type_helper_uint16)
     TEST_ASSERT(sizeof(CRC_Type_helper< (15-1)/8 >::value_type) == sizeof(uint16_t));
     TEST_ASSERT(sizeof(CRC_Type_helper< (16-1)/8 >::value_type) == sizeof(uint16_t));
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -70,7 +70,7 @@ TEST(test_crc_type_helper_uint32)
     TEST_ASSERT(sizeof(CRC_Type_helper< (31-1)/8 >::value_type) == sizeof(uint32_t));
     TEST_ASSERT(sizeof(CRC_Type_helper< (32-1)/8 >::value_type) == sizeof(uint32_t));
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -80,7 +80,7 @@ TEST(test_crc_type_helper_uint64)
     //Template CRC_Type_helper default is uint64_t
     TEST_ASSERT(sizeof(CRC_Type_helper<100>::value_type) == sizeof(uint64_t));
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -100,7 +100,7 @@ TEST(test_universal_crc_get_bits)
                      (int)CRC_List[i]->get_bits());
     }
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -116,7 +116,7 @@ TEST(test_universal_crc_get_poly)
                      CRC_List[i]->get_poly());
     }
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -132,7 +132,7 @@ TEST(test_universal_crc_get_init)
                      CRC_List[i]->get_init());
     }
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -148,7 +148,7 @@ TEST(test_universal_crc_get_xor_out)
                      CRC_List[i]->get_xor_out());
     }
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -164,7 +164,7 @@ TEST(test_universal_crc_get_ref_in)
                      CRC_List[i]->get_ref_in());
     }
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -180,7 +180,7 @@ TEST(test_universal_crc_get_ref_out)
                      CRC_List[i]->get_ref_out());
     }
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -195,7 +195,7 @@ TEST(test_universal_crc_get_crc_init)
     TEST_ASSERT(ucrc1.get_crc_init() == 0x2c48 );
 
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -238,7 +238,7 @@ TEST(test_universal_crc_get_top_bit)
     TEST_ASSERT(ucrc64.get_top_bit() == 0x8000000000000000);
 
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -269,7 +269,7 @@ TEST(test_universal_crc_get_crc_mask)
     TEST_ASSERT(ucrc32.get_crc_mask() == 0xffffffff );
 
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -300,7 +300,7 @@ TEST(test_crc_std_check)
                      CRC_List[i]->get_check());
     }
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -336,7 +336,7 @@ TEST(test_crc_impl_1byte)
         }
     }
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -367,7 +367,7 @@ TEST(test_crc_impl_data_xyz_256)
     }
 
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -399,7 +399,7 @@ TEST(test_crc_impl_data_xxx_256)
         }
     }
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -423,7 +423,7 @@ TEST(test_crc_std_check_file)
                      crc);
     }
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -444,7 +444,7 @@ TEST(test_crc_no_file)
                      crc);
     }
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -471,7 +471,7 @@ TEST(test_crc_for_cunks)
                      crc);
     }
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
@@ -493,7 +493,7 @@ TEST(test_crc_for_cunks2) //use wrapper for first chunk of data
                      crc);
     }
 
-    TEST_PASS(NULL);
+    TEST_PASS(nullptr);
 }
 
 
