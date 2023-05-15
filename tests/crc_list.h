@@ -309,7 +309,7 @@ std::vector<AbstractProxy_CRC_t *> get_crc_list()
 
 
 const std::vector<AbstractProxy_CRC_t *> CRC_List = get_crc_list();
-const size_t CNT_IMPL = 3;
+constexpr size_t CNT_IMPL = 3;
 
 
 

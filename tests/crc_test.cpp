@@ -91,13 +91,13 @@ TEST(test_crc_type_helper_uint64)
 
 TEST(test_universal_crc_get_bits)
 {
-    for(size_t i = 0; i < CRC_List.size(); i++)
+    for(auto alg : CRC_List)
     {
-        TEST_ASSERTF(CRC_List[i]->get_bits() == CRC_List[i]->bits,
+        TEST_ASSERTF(alg->get_bits() == alg->bits,
                      "For CRC: %s bits must be: %d but get: %d",
-                     CRC_List[i]->name,
-                     (int)CRC_List[i]->bits,
-                     (int)CRC_List[i]->get_bits());
+                     alg->name,
+                     (int)alg->bits,
+                     (int)alg->get_bits());
     }
 
     TEST_PASS(nullptr);
@@ -107,13 +107,13 @@ TEST(test_universal_crc_get_bits)
 
 TEST(test_universal_crc_get_poly)
 {
-    for( size_t i = 0; i < CRC_List.size(); i++)
+    for(auto alg : CRC_List)
     {
-        TEST_ASSERTF(CRC_List[i]->get_poly() == CRC_List[i]->poly,
+        TEST_ASSERTF(alg->get_poly() == alg->poly,
                      "For CRC: %s poly must be: 0x%" PRIX64 " but get: 0x%" PRIX64,
-                     CRC_List[i]->name,
-                     CRC_List[i]->poly,
-                     CRC_List[i]->get_poly());
+                     alg->name,
+                     alg->poly,
+                     alg->get_poly());
     }
 
     TEST_PASS(nullptr);
@@ -123,13 +123,13 @@ TEST(test_universal_crc_get_poly)
 
 TEST(test_universal_crc_get_init)
 {
-    for( size_t i = 0; i < CRC_List.size(); i++)
+    for(auto alg : CRC_List)
     {
-        TEST_ASSERTF(CRC_List[i]->get_init() == CRC_List[i]->init,
+        TEST_ASSERTF(alg->get_init() == alg->init,
                      "For CRC: %s init must be: 0x%" PRIX64 " but get: 0x%" PRIX64,
-                     CRC_List[i]->name,
-                     CRC_List[i]->init,
-                     CRC_List[i]->get_init());
+                     alg->name,
+                     alg->init,
+                     alg->get_init());
     }
 
     TEST_PASS(nullptr);
@@ -139,13 +139,13 @@ TEST(test_universal_crc_get_init)
 
 TEST(test_universal_crc_get_xor_out)
 {
-    for( size_t i = 0; i < CRC_List.size(); i++)
+    for(auto alg : CRC_List)
     {
-        TEST_ASSERTF(CRC_List[i]->get_xor_out() == CRC_List[i]->xor_out,
+        TEST_ASSERTF(alg->get_xor_out() == alg->xor_out,
                      "For CRC: %s Xor_out must be: 0x%" PRIX64 " but get: 0x%" PRIX64,
-                     CRC_List[i]->name,
-                     CRC_List[i]->xor_out,
-                     CRC_List[i]->get_xor_out());
+                     alg->name,
+                     alg->xor_out,
+                     alg->get_xor_out());
     }
 
     TEST_PASS(nullptr);
@@ -155,13 +155,13 @@ TEST(test_universal_crc_get_xor_out)
 
 TEST(test_universal_crc_get_ref_in)
 {
-    for( size_t i = 0; i < CRC_List.size(); i++)
+    for(auto alg : CRC_List)
     {
-        TEST_ASSERTF(CRC_List[i]->get_ref_in() == CRC_List[i]->ref_in,
+        TEST_ASSERTF(alg->get_ref_in() == alg->ref_in,
                      "For CRC: %s ref_in must be: %d but get: %d",
-                     CRC_List[i]->name,
-                     CRC_List[i]->ref_in,
-                     CRC_List[i]->get_ref_in());
+                     alg->name,
+                     alg->ref_in,
+                     alg->get_ref_in());
     }
 
     TEST_PASS(nullptr);
@@ -171,13 +171,13 @@ TEST(test_universal_crc_get_ref_in)
 
 TEST(test_universal_crc_get_ref_out)
 {
-    for( size_t i = 0; i < CRC_List.size(); i++)
+    for(auto alg : CRC_List)
     {
-        TEST_ASSERTF(CRC_List[i]->get_ref_out() == CRC_List[i]->ref_out,
+        TEST_ASSERTF(alg->get_ref_out() == alg->ref_out,
                      "For CRC: %s ref_out must be: %d but get: %d",
-                     CRC_List[i]->name,
-                     CRC_List[i]->ref_out,
-                     CRC_List[i]->get_ref_out());
+                     alg->name,
+                     alg->ref_out,
+                     alg->get_ref_out());
     }
 
     TEST_PASS(nullptr);
@@ -282,22 +282,21 @@ TEST(test_crc_std_check)
 {
     uint64_t crc;
 
-    for( size_t i = 0; i < CRC_List.size(); i++)
+    for(auto alg : CRC_List)
     {
+        crc = alg->get_crc(std_check_data, sizeof(std_check_data));
 
-        crc = CRC_List[i]->get_crc(std_check_data, sizeof(std_check_data));
-
-        TEST_ASSERTF(crc == CRC_List[i]->check,
+        TEST_ASSERTF(crc == alg->check,
                      "For CRC: %s std check must be: 0x%" PRIX64 " but get: 0x%" PRIX64,
-                     CRC_List[i]->name,
-                     CRC_List[i]->check,
+                     alg->name,
+                     alg->check,
                      crc);
 
-        TEST_ASSERTF(CRC_List[i]->get_check() == CRC_List[i]->check,
+        TEST_ASSERTF(alg->get_check() == alg->check,
                      "For CRC: %s std check must be: 0x%" PRIX64 " but get: 0x%" PRIX64,
-                     CRC_List[i]->name,
-                     CRC_List[i]->check,
-                     CRC_List[i]->get_check());
+                     alg->name,
+                     alg->check,
+                     alg->get_check());
     }
 
     TEST_PASS(nullptr);
@@ -411,15 +410,15 @@ TEST(test_crc_std_check_file)
 {
     uint64_t crc;
 
-    for( size_t i = 0; i < CRC_List.size(); i++)
+    for(auto alg : CRC_List)
     {
         crc = 0;
-        int res = CRC_List[i]->get_crc(crc, "std_file_to_test_crc");
+        int res = alg->get_crc(crc, "std_file_to_test_crc");
 
-        TEST_ASSERTF((res == 0) &&  (crc == CRC_List[i]->check),
+        TEST_ASSERTF((res == 0) &&  (crc == alg->check),
                      "For CRC: %s std check: 0x%" PRIX64 " but get: 0x%" PRIX64,
-                     CRC_List[i]->name,
-                     CRC_List[i]->check,
+                     alg->name,
+                     alg->check,
                      crc);
     }
 
@@ -432,14 +431,14 @@ TEST(test_crc_no_file)
 {
     uint64_t crc;
 
-    for( size_t i = 0; i < CRC_List.size(); i++)
+    for(auto alg : CRC_List)
     {
         crc = 0;
-        int res = CRC_List[i]->get_crc(crc, "");
+        int res = alg->get_crc(crc, "");
 
         TEST_ASSERTF((res == -1) && (crc == 0),
                      "For CRC: %s no file but get_crc() ret: %d crc: 0x%" PRIX64,
-                     CRC_List[i]->name,
+                     alg->name,
                      res,
                      crc);
     }
@@ -457,17 +456,17 @@ TEST(test_crc_for_cunks)
 {
     uint64_t crc;
 
-    for( size_t i = 0; i < CRC_List.size(); i++)
+    for(auto alg : CRC_List)
     {
-        crc = CRC_List[i]->get_crc_init();
-        crc = CRC_List[i]->get_raw_crc(&std_check_data[0], 4, crc);
-        crc = CRC_List[i]->get_raw_crc(&std_check_data[4], 5, crc);
-        crc = CRC_List[i]->get_end_crc(crc);
+        crc = alg->get_crc_init();
+        crc = alg->get_raw_crc(&std_check_data[0], 4, crc);
+        crc = alg->get_raw_crc(&std_check_data[4], 5, crc);
+        crc = alg->get_end_crc(crc);
 
-        TEST_ASSERTF(crc == CRC_List[i]->check,
+        TEST_ASSERTF(crc == alg->check,
                      "For CRC: %s std check: 0x%" PRIX64 " but get: 0x%" PRIX64,
-                     CRC_List[i]->name,
-                     CRC_List[i]->check,
+                     alg->name,
+                     alg->check,
                      crc);
     }
 
@@ -480,16 +479,16 @@ TEST(test_crc_for_cunks2) //use wrapper for first chunk of data
 {
     uint64_t crc;
 
-    for( size_t i = 0; i < CRC_List.size(); i++)
+    for(auto alg : CRC_List)
     {
-        crc = CRC_List[i]->get_raw_crc(&std_check_data[0], 4);
-        crc = CRC_List[i]->get_raw_crc(&std_check_data[4], 5, crc);
-        crc = CRC_List[i]->get_end_crc(crc);
+        crc = alg->get_raw_crc(&std_check_data[0], 4);
+        crc = alg->get_raw_crc(&std_check_data[4], 5, crc);
+        crc = alg->get_end_crc(crc);
 
-        TEST_ASSERTF(crc == CRC_List[i]->check,
+        TEST_ASSERTF(crc == alg->check,
                      "For CRC: %s std check: 0x%" PRIX64 " but get: 0x%" PRIX64,
-                     CRC_List[i]->name,
-                     CRC_List[i]->check,
+                     alg->name,
+                     alg->check,
                      crc);
     }
 

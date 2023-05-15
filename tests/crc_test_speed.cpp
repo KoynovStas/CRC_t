@@ -104,12 +104,12 @@ void TestSpeed::init()
 
 void TestSpeed::create_workers()
 {
-    for(size_t i = 0; i < CRC_List.size(); ++i) {
+    for(auto alg : CRC_List) {
         results.emplace_back(
-            pool.enqueue([i, this] {
+            pool.enqueue([alg, this] {
                 auto start = std::chrono::steady_clock::now();
 
-                CRC_List[i]->get_crc(data, DATA_LEN);
+                alg->get_crc(data, DATA_LEN);
 
                 auto end  = std::chrono::steady_clock::now();
                 auto diff = end - start;
@@ -140,8 +140,8 @@ void TestSpeed::wait_all_results()
 
 void TestSpeed::print_table()
 {
-    const int    NAME_WIDTH = 24;
-    const int    IMPL_WIDTH = 10;
+    constexpr int NAME_WIDTH = 24;
+    constexpr int IMPL_WIDTH = 10;
 
     std::cout << std::left;
 
