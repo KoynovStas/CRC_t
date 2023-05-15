@@ -69,38 +69,38 @@ class Proxy_CRC_t : public AbstractProxy_CRC_t
         virtual ~Proxy_CRC_t(){}
 
         // get param CRC
-        virtual uint8_t  get_bits()    { return _crc.get_bits();    }
-        virtual uint64_t get_poly()    { return _crc.get_poly();    }
-        virtual uint64_t get_init()    { return _crc.get_init();    }
-        virtual uint64_t get_xor_out() { return _crc.get_xor_out(); }
-        virtual bool     get_ref_in()  { return _crc.get_ref_in();  }
-        virtual bool     get_ref_out() { return _crc.get_ref_out(); }
+        uint8_t  get_bits()    override { return _crc.get_bits();    }
+        uint64_t get_poly()    override { return _crc.get_poly();    }
+        uint64_t get_init()    override { return _crc.get_init();    }
+        uint64_t get_xor_out() override { return _crc.get_xor_out(); }
+        bool     get_ref_in()  override { return _crc.get_ref_in();  }
+        bool     get_ref_out() override { return _crc.get_ref_out(); }
 
-        virtual uint64_t get_crc_init() { return _crc.get_crc_init();}
-        virtual uint64_t get_top_bit()  { return _crc.get_top_bit(); }
-        virtual uint64_t get_crc_mask() { return _crc.get_crc_mask();}
-        virtual uint64_t get_check()    { return _crc.get_check();   }
+        uint64_t get_crc_init()override { return _crc.get_crc_init();}
+        uint64_t get_top_bit() override { return _crc.get_top_bit(); }
+        uint64_t get_crc_mask()override { return _crc.get_crc_mask();}
+        uint64_t get_check()   override { return _crc.get_check();   }
 
 
         // Calculate methods
-        virtual uint64_t get_crc(const void* data, size_t len)
-                                { return _crc.get_crc(data, len); }
+        uint64_t get_crc(const void* data, size_t len) override
+                        { return _crc.get_crc(data, len); }
 
-        virtual int      get_crc(uint64_t &crc, const char *file_name)
-                                { return _crc.get_crc((CRC_TYPE &)crc, file_name); }
+        int      get_crc(uint64_t &crc, const char *file_name) override
+                        { return _crc.get_crc((CRC_TYPE &)crc, file_name); }
 
-        virtual int      get_crc(uint64_t &crc, const char* file_name, void* buf, size_t size_buf)
-                                { return _crc.get_crc((CRC_TYPE &)crc, file_name, buf, size_buf); }
+        int      get_crc(uint64_t &crc, const char* file_name, void* buf, size_t size_buf) override
+                        { return _crc.get_crc((CRC_TYPE &)crc, file_name, buf, size_buf); }
 
         //Calculate for chunks of data
-        virtual uint64_t get_raw_crc(const void* data, size_t len)
-                                    { return _crc.get_raw_crc(data, len); }
+        uint64_t get_raw_crc(const void* data, size_t len) override
+                            { return _crc.get_raw_crc(data, len); }
 
-        virtual uint64_t get_raw_crc(const void* data, size_t len, uint64_t crc)
-                                    { return _crc.get_raw_crc(data, len, (CRC_TYPE)crc); }
+        uint64_t get_raw_crc(const void* data, size_t len, uint64_t crc) override
+                            { return _crc.get_raw_crc(data, len, (CRC_TYPE)crc); }
 
-        virtual uint64_t get_end_crc(uint64_t raw_crc)
-                                    { return _crc.get_end_crc((CRC_TYPE)raw_crc); }
+        uint64_t get_end_crc(uint64_t raw_crc) override
+                            { return _crc.get_end_crc((CRC_TYPE)raw_crc); }
 
     private:
 
