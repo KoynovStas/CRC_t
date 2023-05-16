@@ -8,12 +8,12 @@
 #### Features of the implementation:
 
  - The code has no dependencies, and imprisoned in the one file.
- - The code uses only the standard **C++03** -> This allows you to use the template in the oldest projects with older compilers.
  - The following implementations are supported:
     * **CRCImplBits** - loop for 8 bits in byte (no table)
     * **CRCImplTable4** - table for half byte (16 elements)
     * **CRCImplTable8** - std table for byte (256 elements)
- - All the parameters of CRC passed as template parameters. This allows the compiler to make a very strong optimization. Example ModBus-CRC for architecture ARMv7 (GCC 4.9.2) calculate CRC for a buffer(array) will loop from 9 commands in assembler.
+ - All the parameters of CRC passed as template parameters. This allows the compiler to make a very strong optimization.
+ Example ModBus-CRC for architecture ARMv7 (GCC 4.9.2) calculate CRC for a buffer(array) will loop from 9 commands in assembler.
 
 
 #### Limitations of the implementation:
@@ -86,33 +86,31 @@ template <Bits, Poly, Init, RefIn, RefOut, XorOut, Impl = CRCImplTable8>
 
 **The class has the following public methods:**
 ```C++
-typedef CRC_TYPE CRC_Type;
+using CRC_Type = CRC_TYPE;
 
 // get param CRC
-static uint8_t  get_bits()    { return Bits;  }
-static CRC_Type get_poly()    { return Poly;  }
-static CRC_Type get_init()    { return Init;  }
-static CRC_Type get_xor_out() { return XorOut;}
-static bool     get_ref_in()  { return RefIn; }
-static bool     get_ref_out() { return RefOut;}
+static constexpr uint8_t  get_bits()    noexcept { return Bits;  }
+static constexpr CRC_Type get_poly()    noexcept { return Poly;  }
+static constexpr CRC_Type get_init()    noexcept { return Init;  }
+static constexpr CRC_Type get_xor_out() noexcept { return XorOut;}
+static constexpr bool     get_ref_in()  noexcept { return RefIn; }
+static constexpr bool     get_ref_out() noexcept { return RefOut;}
 
-static CRC_Type get_top_bit() { return (CRC_Type)1 << (Bits - 1);      }
-static CRC_Type get_crc_mask(){ return ( (get_top_bit() - 1) << 1) | 1;}
+static constexpr CRC_Type get_top_bit() noexcept { return (CRC_Type)1 << (Bits - 1);      }
+static constexpr CRC_Type get_crc_mask()noexcept { return ( (get_top_bit() - 1) << 1) | 1;}
 
-CRC_Type get_crc_init()const { return crc_init;} //crc_init = reflect(Init, Bits) if RefIn, else = Init
-CRC_Type get_check()   const;                    //crc for ASCII string "123456789" (i.e. 313233... (hexadecimal)).
-
+CRC_Type get_crc_init()const noexcept{ return crc_init;} //crc_init = reflect(Init, Bits) if RefIn, else = Init
+CRC_Type get_check()   const noexcept;                   //crc for ASCII string "123456789" (3132..39(in hex))
 
 // Calculate methods
-CRC_Type get_crc(const void* data, size_t len) const;
-int      get_crc(CRC_Type &crc, const char* file_name) const;
-int      get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const;
-
+CRC_Type get_crc(const void* data, size_t len) const noexcept;
+int      get_crc(CRC_Type &crc, const char* file_name) const noexcept;
+int      get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const noexcept;
 
 // Calculate for chunks of data
-CRC_Type get_raw_crc(const void* data, size_t len) const;                   //get raw_crc for first chunk of data
-CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type raw_crc) const; //get raw_crc for chunk of data
-static CRC_Type get_end_crc(CRC_Type raw_crc);
+CRC_Type get_raw_crc(const void* data, size_t len) const noexcept;                   //get raw_crc for first chunk of data
+CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type raw_crc) const noexcept; //get raw_crc for chunk of data
+static CRC_Type get_end_crc(CRC_Type raw_crc) noexcept;
 ```
 
 More details see: **[crc_t.h](./crc_t.h)**
