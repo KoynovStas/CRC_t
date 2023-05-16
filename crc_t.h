@@ -50,12 +50,12 @@
 
 
 
-template<uint8_t Bits_minus_1_div_8> struct CRC_Type_helper{ typedef uint64_t value_type; }; // default
+template<uint8_t Bits_minus_1_div_8> struct CRC_Type_helper{ using value_type = uint64_t; }; // default
 
-template<> struct CRC_Type_helper<0> { typedef uint8_t  value_type; }; //for Bits 1..8
-template<> struct CRC_Type_helper<1> { typedef uint16_t value_type; }; //for Bits 9..16
-template<> struct CRC_Type_helper<2> { typedef uint32_t value_type; }; //for Bits 17..24
-template<> struct CRC_Type_helper<3> { typedef uint32_t value_type; }; //for Bits 25..32
+template<> struct CRC_Type_helper<0> { using value_type = uint8_t;  }; //for Bits 1..8
+template<> struct CRC_Type_helper<1> { using value_type = uint16_t; }; //for Bits 9..16
+template<> struct CRC_Type_helper<2> { using value_type = uint32_t; }; //for Bits 17..24
+template<> struct CRC_Type_helper<3> { using value_type = uint32_t; }; //for Bits 25..32
 
 
 #define CRC_TYPE typename CRC_Type_helper< (Bits-1)/8 >::value_type
@@ -76,7 +76,7 @@ class CRCBase_t
 
 
     public:
-        typedef CRC_TYPE CRC_Type;
+        using CRC_Type = CRC_TYPE;
 
         CRCBase_t() noexcept;
 
@@ -310,7 +310,7 @@ class CRCImplTable8: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
                                       CRCImplTable8<Bits, Poly, Init, RefIn, RefOut, XorOut> >
 {
     public:
-        typedef CRC_TYPE CRC_Type;
+        using CRC_Type = CRC_TYPE;
 
         CRCImplTable8() noexcept { init_crc_table(); }
 
@@ -388,7 +388,7 @@ class CRCImplBits: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
                                     CRCImplBits<Bits, Poly, Init, RefIn, RefOut, XorOut> >
 {
     public:
-        typedef CRC_TYPE CRC_Type;
+        using CRC_Type = CRC_TYPE;
 
         CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept; //for first byte crc = init (must be)
 };
@@ -442,7 +442,7 @@ class CRCImplTable4: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
                                       CRCImplTable4<Bits, Poly, Init, RefIn, RefOut, XorOut> >
 {
     public:
-        typedef CRC_TYPE CRC_Type;
+        using CRC_Type = CRC_TYPE;
 
         CRCImplTable4() noexcept { init_crc_table(); };
 
