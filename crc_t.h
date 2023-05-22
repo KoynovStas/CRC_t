@@ -115,6 +115,11 @@ class CRCBase_t
         CRC_Type crc_init;
 
         int      get_crc(CRC_Type &crc, std::ifstream& ifs, void* buf, size_t size_buf) const noexcept;
+
+        static constexpr CRC_Type shift_to_right(CRC_Type data) noexcept { return data >> 1; }
+        static constexpr CRC_Type reflect(CRC_Type ref_data, CRC_Type data, uint8_t num_bits) noexcept {
+            return num_bits ? reflect((ref_data << 1) | (data & 1), shift_to_right(data), --num_bits) : ref_data;
+        }
 };
 
 
