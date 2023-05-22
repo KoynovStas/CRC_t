@@ -333,12 +333,7 @@ get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept
 {
     auto buf = static_cast< const uint8_t* >(data);
 
-    int shift;
-
-    if(Bits > 8)
-        shift = (Bits - 8);
-    else
-        shift = (8 - Bits);
+    constexpr int shift = (Bits > 8) ? (Bits - 8) : (8 - Bits);
 
 
     if(Bits > 8)
@@ -403,12 +398,7 @@ get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept
 {
     auto buf = static_cast< const uint8_t* >(data);
 
-    int shift;
-
-    if(Bits > 8)
-        shift = (Bits - 8);
-    else
-        shift = (8 - Bits);
+    constexpr int shift = (Bits > 8) ? (Bits - 8) : (8 - Bits);
 
 
     if(Bits > 8)
@@ -465,12 +455,8 @@ get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept
 {
     auto buf = static_cast< const uint8_t* >(data);
 
-    int shift;
+    constexpr int shift = (Bits > 4) ? (Bits - 4) : (4 - Bits);
 
-    if(Bits > 4)
-        shift = Bits - 4;
-    else
-        shift = 4 - Bits;
 
     if(Bits > 4)
     {
