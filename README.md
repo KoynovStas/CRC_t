@@ -56,7 +56,7 @@ Template parameters is the standard Specifications algorithms CRC as described i
 >   - **REFIN:** This is a boolean parameter. If it is FALSE, input bytes are
 >   processed with bit 7 being treated as the most significant bit
 >   (MSB) and bit 0 being treated as the least significant bit. If this
->   parameter is FALSE, each byte is reflected before being processed.>
+>   parameter is FALSE, each byte is reflected before being processed.
 >
 >   - **REFOUT:** This is a boolean parameter. If it is set to FALSE, the
 >   final value in the register is fed into the XOROUT stage directly,
@@ -120,11 +120,17 @@ More details see: **[crc_t.h](./crc_t.h)**
 
 **To start working, perform the following steps:**
 
-1. You need to include **[crc_t.h](./crc_t.h)** file in your **.cpp** file.
-2. Parameterize a template (see an examples)
+1. You must select the appropriate version:
+  + C++98 version - 2.x
+  + C++11 version - 3.x
+    > Where .x maximum minor version at the moment
+2. You need to include **[crc_t.h](./crc_t.h)** file in your **.cpp** file
+3. Parameterize a template (see an examples)
 
 **Note:**
-> The parameters for the template correspond to the `Ross N. Williams` specification. A list of CRC algorithms for this specification can be found here: [Catalogue CRC algorithms](http://reveng.sourceforge.net/crc-catalogue/all.htm)
+> The parameters for the template correspond to the `Ross N. Williams` specification.
+> A list of CRC algorithms for this specification can be found here: [Catalogue CRC algorithms](http://reveng.sourceforge.net/crc-catalogue/all.htm)
+> or see [crc_list.h](./tests/crc_list.h)
 
 
 Since from version 2.0 you can choose a different calculation algorithm.
@@ -146,9 +152,9 @@ uint32_t crc;
 
 CRC_t<32, 0x04C11DB7, 0xFFFFFFFF, true, true, 0xFFFFFFFF>  ucrc;
 
-int res = ucrc.get_crc(crc, "std_file_to_test_crc");
+int err = ucrc.get_crc(crc, "std_file_to_test_crc");
 
-if( res == 0 )
+if( !err )
     //uses crc
 ```
 
@@ -156,14 +162,14 @@ if( res == 0 )
 **Note: methods for calculate CRC file**
 
 >  ```C++
->  int  get_crc(CRC_Type &crc, const char* file_name) const;
+>  int get_crc(CRC_Type &crc, const char* file_name) const noexcept
 >  ```
 >  These method are reentrant. He use a buffer on the stack.
->  The buffer size is 4 Kib (4096 bytes) which is optimal for most   systems.
+>  The buffer size is 4 Kib (4096 bytes) which is optimal for most systems.
 >  If you have a buffer or needs aligned buffer, you can use the following method:
 >
 >  ```C++
->  int get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const;
+>  int get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const noexcept
 >  ```
 
 
@@ -174,7 +180,7 @@ char buf[len_of_buf]; //bla bla
 
 uint32_t crc;
 
-CRC_t<32, 0x04C11DB7, 0xFFFFFFFF, true, true, 0xFFFFFFFF>  ucrc;
+CRC_t<32, 0x04C11DB7, 0xFFFFFFFF, true, true, 0xFFFFFFFF> ucrc;
 
 crc = ucrc.get_crc(buf, len_of_buf);
 //uses crc
@@ -199,7 +205,7 @@ crc = ucrc.get_crc(buf, len_of_buf);
 **Get CRC-8 for buf(s) (chunks):**
 
 **Note:**
->  when the method is used `CRC_Type get_raw_crc(CRC_Type crc, const char* buf, size_t len)`
+>  when the method is used `CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type raw_crc)`
 >  for the first byte (or chunk of data) **crc** param must be obtained through a method `get_crc_init()`
 >  and in the end you need to call the method: `get_end_crc()`:
 
@@ -219,7 +225,7 @@ crc = ucrc.get_end_crc(crc);
 ```
 
 **Note: type for CRC**
-> You can set the type for CRC yourself (uint8_t, uint16_t, uint32_t, uint64_t), or get through template parameters (correctly):
+> You can set the type for CRC yourself (uint8_t, uint16_t, uint32_t, uint64_t), or get through template parameters:
 
 ```C++
 char buf[len_of_buf];   //bla bla
