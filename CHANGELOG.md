@@ -10,6 +10,24 @@ Copyright (c) 2015, Koynov Stas - skojnov@yandex.ru
 
 
 ---
+## [v3.0](https://github.com/KoynovStas/CRC_t/tree/v3.0) (2023-05-23)
+[Full Changelog](https://github.com/KoynovStas/CRC_t/compare/v2.1...v3.0)
+
+
+### New
+ - New: Since version 3.0 required `C++11`
+ - New: add `clean_up` for ASan
+ - New: add `constexpr` variant of `reflect` method (only for constants)
+ - Fix: deleted `crc_init` member (method `get_crc_init()` is full `constexpr`
+
+
+### Refactoring
+ - use std `static_assert`
+ - replace `NULL` -> `nullptr`
+
+
+
+
 ## [v2.1](https://github.com/KoynovStas/CRC_t/tree/v2.1) (2023-05-12)
 [Full Changelog](https://github.com/KoynovStas/CRC_t/compare/v2.0...v2.1)
 
