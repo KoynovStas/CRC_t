@@ -245,12 +245,10 @@ CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_norma
 {
     CRC_Type crc = 0;
 
-
     for(int bit = 0x80; bit; bit >>= 1)
     {
         if( byte & bit )
             crc ^= get_top_bit();
-
 
         if( crc & get_top_bit() )
         {
@@ -300,7 +298,7 @@ class CRCImplTable8: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
 
         CRCImplTable8() noexcept { init_crc_table(); }
 
-        CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept; //for first byte crc = init (must be)
+        CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept;
 
 
     private:
@@ -326,19 +324,19 @@ get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept
     {
         if(RefIn)
             while (len--)
-                crc = (crc >> 8) ^ crc_table[ (crc & 0xff) ^ *buf++];
+                crc = (crc >> 8) ^ crc_table[(crc ^ *buf++) & 0xff];
         else
             while (len--)
-                crc = (crc << 8) ^ crc_table[ ((crc >> shift) & 0xff) ^ *buf++ ];
+                crc = (crc << 8) ^ crc_table[((crc >> shift) ^ *buf++) & 0xff];
     }
     else
     {
         if(RefIn)
             while (len--)
-                crc = crc_table[ crc ^ *buf++ ];
+                crc = crc_table[crc ^ *buf++];
         else
             while (len--)
-                crc = crc_table[ (crc << shift) ^ *buf++ ];
+                crc = crc_table[(crc << shift) ^ *buf++];
     }
 
 
@@ -371,7 +369,7 @@ class CRCImplBits: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
     public:
         using CRC_Type = CRC_TYPE;
 
-        CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept; //for first byte crc = init (must be)
+        CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept;
 };
 
 
@@ -391,10 +389,10 @@ get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept
     {
         if(RefIn)
             while (len--)
-                crc = (crc >> 8) ^ this->get_raw_reflected_crc((crc & 0xff) ^ *buf++);
+                crc = (crc >> 8) ^ this->get_raw_reflected_crc((crc ^ *buf++) & 0xff);
         else
             while (len--)
-                crc = (crc << 8) ^ this->get_raw_normal_crc(((crc >> shift) & 0xff) ^ *buf++);
+                crc = (crc << 8) ^ this->get_raw_normal_crc(((crc >> shift) ^ *buf++) & 0xff);
     }
     else
     {
@@ -422,7 +420,7 @@ class CRCImplTable4: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
 
         CRCImplTable4() noexcept { init_crc_table(); };
 
-        CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept; //for first byte crc = init (must be)
+        CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept;
 
 
     private:
