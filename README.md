@@ -96,9 +96,9 @@ static constexpr CRC_Type get_xor_out() noexcept { return XorOut;}
 static constexpr bool     get_ref_in()  noexcept { return RefIn; }
 static constexpr bool     get_ref_out() noexcept { return RefOut;}
 
-static constexpr CRC_Type get_top_bit() noexcept { return (CRC_Type)1 << (Bits - 1);            }
-static constexpr CRC_Type get_crc_mask()noexcept { return ( (get_top_bit() - 1) << 1) | 1;      }
-static constexpr CRC_Type get_crc_init()noexcept { return RefIn ? reflect(0, Init, Bits) : Init;}
+static constexpr CRC_Type get_top_bit() noexcept { return (CRC_Type)1 << (Bits - 1);         }
+static constexpr CRC_Type get_crc_mask()noexcept { return ( (get_top_bit() - 1) << 1) | 1;   }
+static constexpr CRC_Type get_crc_init()noexcept { return RefIn ? reflect(Init, Bits) : Init;}
 
 CRC_Type get_check() const noexcept; //crc for ASCII string "123456789" (3132..39(in hex))
 

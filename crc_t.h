@@ -86,9 +86,9 @@ class CRCBase_t
         static constexpr bool     get_ref_in()  noexcept { return RefIn; }
         static constexpr bool     get_ref_out() noexcept { return RefOut;}
 
-        static constexpr CRC_Type get_top_bit() noexcept { return (CRC_Type)1 << (Bits - 1);            }
-        static constexpr CRC_Type get_crc_mask()noexcept { return ( (get_top_bit() - 1) << 1) | 1;      }
-        static constexpr CRC_Type get_crc_init()noexcept { return RefIn ? reflect(0, Init, Bits) : Init;}
+        static constexpr CRC_Type get_top_bit() noexcept { return (CRC_Type)1 << (Bits - 1);         }
+        static constexpr CRC_Type get_crc_mask()noexcept { return ( (get_top_bit() - 1) << 1) | 1;   }
+        static constexpr CRC_Type get_crc_init()noexcept { return RefIn ? reflect(Init, Bits) : Init;}
 
         CRC_Type get_check() const noexcept;//crc for ASCII string "123456789" (3132..39(in hex))
 
@@ -104,18 +104,14 @@ class CRCBase_t
 
 
     protected:
-        static CRC_Type reflect(CRC_Type data, uint8_t num_bits) noexcept;
-        static CRC_Type get_raw_normal_crc   (uint8_t byte)      noexcept;
-        static CRC_Type get_raw_reflected_crc(uint8_t byte)      noexcept;
+        static constexpr CRC_Type reflect(CRC_Type data, uint8_t num_bits) noexcept;
+
+        static CRC_Type get_raw_normal_crc   (uint8_t byte) noexcept;
+        static CRC_Type get_raw_reflected_crc(uint8_t byte) noexcept;
 
 
     private:
         int get_crc(CRC_Type &crc, std::ifstream& ifs, void* buf, size_t size_buf) const noexcept;
-
-        static constexpr CRC_Type shift_to_right(CRC_Type data) noexcept { return data >> 1; }
-        static constexpr CRC_Type reflect(CRC_Type ref_data, CRC_Type data, uint8_t num_bits) noexcept {
-            return num_bits ? reflect((ref_data << 1) | (data & 1), shift_to_right(data), --num_bits) : ref_data;
-        }
 };
 
 
@@ -224,7 +220,7 @@ CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_end_crc(C
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
-CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::
+constexpr CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::
 reflect(CRC_Type data, uint8_t num_bits) noexcept
 {
     CRC_Type reflection = 0;
@@ -267,7 +263,7 @@ CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_norma
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
 CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_raw_reflected_crc(uint8_t byte) noexcept
 {
-    constexpr CRC_Type ref_poly = reflect(0, Poly, Bits);
+    constexpr CRC_Type ref_poly = reflect(Poly, Bits);
 
     CRC_Type crc = byte;
 
