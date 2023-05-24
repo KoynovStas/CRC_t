@@ -100,7 +100,7 @@ class CRCBase_t
         // Calculate for chunks of data
         CRC_Type get_raw_crc(const void* data, size_t len) const noexcept;                   //get raw_crc for first chunk of data
         CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type raw_crc) const noexcept; //get raw_crc for chunk of data
-        static CRC_Type get_end_crc(CRC_Type raw_crc) noexcept;
+        static constexpr CRC_Type get_end_crc(CRC_Type raw_crc) noexcept;
 
 
     protected:
@@ -206,7 +206,8 @@ get_raw_crc(const void* data, size_t len, CRC_Type raw_crc) const noexcept
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
-CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_end_crc(CRC_Type raw_crc) noexcept
+constexpr CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::
+get_end_crc(CRC_Type raw_crc) noexcept
 {
     if(RefOut^RefIn)
         raw_crc = reflect(raw_crc, Bits);
