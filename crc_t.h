@@ -43,6 +43,7 @@
 
 #include <cstdint>
 #include <cerrno>
+#include <array>
 #include <fstream>    // for std::ifstream
 #include <ios>        // for std::ios_base, etc.
 
@@ -90,16 +91,16 @@ class CRCBase_t
         static constexpr CRC_Type get_crc_mask()noexcept { return ( (get_top_bit() - 1) << 1) | 1;   }
         static constexpr CRC_Type get_crc_init()noexcept { return RefIn ? reflect(Init, Bits) : Init;}
 
-        CRC_Type get_check() const noexcept;//crc for ASCII string "123456789" (3132..39(in hex))
+        constexpr CRC_Type get_check() const noexcept;//crc for ASCII string "123456789" (3132..39(in hex))
 
         // Calculate methods
-        CRC_Type get_crc(const void* data, size_t len) const noexcept;
-        int      get_crc(CRC_Type &crc, const char* file_name) const noexcept;
-        int      get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const noexcept;
+        constexpr CRC_Type get_crc(const void* data, size_t len) const noexcept;
+        int                get_crc(CRC_Type &crc, const char* file_name) const noexcept;
+        int                get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const noexcept;
 
         // Calculate for chunks of data
-        CRC_Type get_raw_crc(const void* data, size_t len) const noexcept;                   //get raw_crc for first chunk of data
-        CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type raw_crc) const noexcept; //get raw_crc for chunk of data
+        constexpr        CRC_Type get_raw_crc(const void* data, size_t len) const noexcept;
+        constexpr        CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type raw_crc) const noexcept;
         static constexpr CRC_Type get_end_crc(CRC_Type raw_crc) noexcept;
 
 
@@ -118,9 +119,9 @@ class CRCBase_t
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
-CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_check() const noexcept
+constexpr CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_check() const noexcept
 {
-    const uint8_t data[] = {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39};
+    constexpr uint8_t data[] = {0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39};
 
     return get_crc(data, sizeof(data));
 }
@@ -128,7 +129,7 @@ CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::get_check() c
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
-CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::
+constexpr CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::
 get_crc(const void* data, size_t len) const noexcept
 {
     CRC_Type crc = get_raw_crc(data, len, get_crc_init());
@@ -186,7 +187,7 @@ get_crc(CRC_Type &crc, std::ifstream& ifs, void* buf, size_t size_buf) const noe
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
-CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::
+constexpr CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::
 get_raw_crc(const void* data, size_t len) const noexcept
 {
     return get_raw_crc(data, len, get_crc_init());
@@ -195,7 +196,7 @@ get_raw_crc(const void* data, size_t len) const noexcept
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut, class Impl>
-CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::
+constexpr CRC_TYPE CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut, Impl>::
 get_raw_crc(const void* data, size_t len, CRC_Type raw_crc) const noexcept
 {
     //use Curiously Recurring Template Pattern (CRTP)
@@ -294,23 +295,25 @@ class CRCImplTable8: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
     public:
         using CRC_Type = CRC_TYPE;
 
-        CRCImplTable8() noexcept { init_crc_table(); }
+        constexpr CRCImplTable8() noexcept : crc_table{} { init_crc_table(); }
 
-        CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept;
+        //Ctor to init table in RunTime (for bare-metal or embedded)
+        explicit CRCImplTable8(int) { init_crc_table(); }
+
+        constexpr CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept;
 
 
     private:
         CRC_Type crc_table[256];
 
-        void     init_crc_table() noexcept;
+        constexpr void init_crc_table() noexcept;
 };
 
 
 
 
-
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE CRCImplTable8<Bits, Poly, Init, RefIn, RefOut, XorOut>::
+constexpr CRC_TYPE CRCImplTable8<Bits, Poly, Init, RefIn, RefOut, XorOut>::
 get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept
 {
     auto buf = static_cast< const uint8_t* >(data);
@@ -344,7 +347,7 @@ get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-void CRCImplTable8<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_crc_table() noexcept
+constexpr void CRCImplTable8<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_crc_table() noexcept
 {
     //Calculation of the CRC table for byte.
     for(int byte = 0; byte < 256; byte++)
@@ -367,7 +370,7 @@ class CRCImplBits: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
     public:
         using CRC_Type = CRC_TYPE;
 
-        CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept;
+        constexpr CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept;
 };
 
 
@@ -375,7 +378,7 @@ class CRCImplBits: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE CRCImplBits<Bits, Poly, Init, RefIn, RefOut, XorOut>::
+constexpr CRC_TYPE CRCImplBits<Bits, Poly, Init, RefIn, RefOut, XorOut>::
 get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept
 {
     auto buf = static_cast< const uint8_t* >(data);
@@ -416,15 +419,18 @@ class CRCImplTable4: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
     public:
         using CRC_Type = CRC_TYPE;
 
-        CRCImplTable4() noexcept { init_crc_table(); };
+        constexpr CRCImplTable4() noexcept : crc_table{} { init_crc_table(); }
 
-        CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept;
+        //Ctor to init table in RunTime (for bare-metal or embedded)
+        explicit CRCImplTable4(int) { init_crc_table(); }
+
+        constexpr CRC_Type get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept;
 
 
     private:
         CRC_Type crc_table[16];
 
-        void     init_crc_table() noexcept;
+        constexpr void init_crc_table() noexcept;
 };
 
 
@@ -432,7 +438,7 @@ class CRCImplTable4: public CRCBase_t<Bits, Poly, Init, RefIn, RefOut, XorOut,
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-CRC_TYPE CRCImplTable4<Bits, Poly, Init, RefIn, RefOut, XorOut>::
+constexpr CRC_TYPE CRCImplTable4<Bits, Poly, Init, RefIn, RefOut, XorOut>::
 get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept
 {
     auto buf = static_cast< const uint8_t* >(data);
@@ -481,7 +487,7 @@ get_raw_crc_impl(const void* data, size_t len, CRC_Type crc) const noexcept
 
 
 template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, CRC_TYPE XorOut>
-void CRCImplTable4<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_crc_table() noexcept
+constexpr void CRCImplTable4<Bits, Poly, Init, RefIn, RefOut, XorOut>::init_crc_table() noexcept
 {
     //Calculation of the CRC table for half byte.
     for(int byte = 0; byte < 16; byte++)
@@ -503,6 +509,8 @@ template <uint8_t Bits, CRC_TYPE Poly, CRC_TYPE Init, bool RefIn, bool RefOut, C
           template<uint8_t, CRC_TYPE, CRC_TYPE, bool, bool, CRC_TYPE> class Impl = CRCImplTable8>
 class CRC_t: public Impl<Bits, Poly, Init, RefIn, RefOut, XorOut>
 {
+    public:
+        using Impl<Bits, Poly, Init, RefIn, RefOut, XorOut>::Impl; //for using explicit ctors!
 };
 
 
