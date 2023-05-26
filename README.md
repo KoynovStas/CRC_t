@@ -100,17 +100,17 @@ static constexpr CRC_Type get_top_bit() noexcept { return (CRC_Type)1 << (Bits -
 static constexpr CRC_Type get_crc_mask()noexcept { return ( (get_top_bit() - 1) << 1) | 1;   }
 static constexpr CRC_Type get_crc_init()noexcept { return RefIn ? reflect(Init, Bits) : Init;}
 
-CRC_Type get_check() const noexcept; //crc for ASCII string "123456789" (3132..39(in hex))
+constexpr CRC_Type get_check() const noexcept;//crc for ASCII string "123456789" (3132..39(in hex))
 
 // Calculate methods
-CRC_Type get_crc(const void* data, size_t len) const noexcept;
-int      get_crc(CRC_Type &crc, const char* file_name) const noexcept;
-int      get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const noexcept;
+constexpr CRC_Type get_crc(const void* data, size_t len) const noexcept;
+int                get_crc(CRC_Type &crc, const char* file_name) const noexcept;
+int                get_crc(CRC_Type &crc, const char* file_name, void* buf, size_t size_buf) const noexcept;
 
 // Calculate for chunks of data
-CRC_Type get_raw_crc(const void* data, size_t len) const noexcept;                   //get raw_crc for first chunk of data
-CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type raw_crc) const noexcept; //get raw_crc for chunk of data
-static CRC_Type get_end_crc(CRC_Type raw_crc) noexcept;
+constexpr        CRC_Type get_raw_crc(const void* data, size_t len) const noexcept;
+constexpr        CRC_Type get_raw_crc(const void* data, size_t len, CRC_Type raw_crc) const noexcept;
+static constexpr CRC_Type get_end_crc(CRC_Type raw_crc) noexcept;
 ```
 
 More details see: **[crc_t.h](./crc_t.h)**
@@ -123,6 +123,7 @@ More details see: **[crc_t.h](./crc_t.h)**
 1. You must select the appropriate version:
   + C++98 version - 2.x
   + C++11 version - 3.x
+  + C++14 version - 4.x
     > Where .x maximum minor version at the moment
 2. You need to include **[crc_t.h](./crc_t.h)** file in your **.cpp** file
 3. Parameterize a template (see an examples)
@@ -222,19 +223,9 @@ crc = ucrc.get_raw_crc(buf,  len_of_buf,  crc);  //first chunk
 crc = ucrc.get_raw_crc(buf2, len_of_buf2, crc);  //second chunk
 crc = ucrc.get_end_crc(crc);
 //uses crc
-```
 
-**Note: type for CRC**
-> You can set the type for CRC yourself (uint8_t, uint16_t, uint32_t, uint64_t), or get through template parameters:
-
-```C++
-char buf[len_of_buf];   //bla bla
-char buf2[len_of_buf2]; //bla bla
-
-CRC_t<32, 0x04C11DB7, 0xFFFFFFFF, true, true, 0xFFFFFFFF>::CRC_Type crc;
-CRC_t<32, 0x04C11DB7, 0xFFFFFFFF, true, true, 0xFFFFFFFF>  ucrc;
-
-crc = ucrc.get_raw_crc(buf,  len_of_buf);        //first chunk (Since from version 2.0)
+//Since from version 2.0
+crc = ucrc.get_raw_crc(buf,  len_of_buf);        //first chunk
 crc = ucrc.get_raw_crc(buf2, len_of_buf2, crc);  //second chunk
 crc = ucrc.get_end_crc(crc);
 //uses crc
