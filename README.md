@@ -86,8 +86,6 @@ template <Bits, Poly, Init, RefIn, RefOut, XorOut, Impl = CRCImplTable8>
 
 **The class has the following public methods:**
 ```C++
-using CRC_Type = CRC_TYPE;
-
 // get param CRC
 static constexpr uint8_t  get_bits()    noexcept { return Bits;  }
 static constexpr CRC_Type get_poly()    noexcept { return Poly;  }
@@ -138,8 +136,8 @@ Since from version 2.0 you can choose a different calculation algorithm.
 The default implementation parameter is `Impl = CRCImplTable8`.
 You can select the following algorithm:
 * **CRCImplBits** - loop for 8 bits in byte (no table)
-* **CRCImplTable4** - table for half byte (16 elements)
-* **CRCImplTable8** - std table for byte (256 elements)
+* **CRCImplTable4** - table for half byte(4-bits) (16 elements)
+* **CRCImplTable8** - std table for byte (8-bits) (256 elements)
 
 Result of speed test: [benchmark.md](./tests/benchmark.md)
 
@@ -151,7 +149,7 @@ Result of speed test: [benchmark.md](./tests/benchmark.md)
 ```C++
 uint32_t crc;
 
-CRC_t<32, 0x04C11DB7, 0xFFFFFFFF, true, true, 0xFFFFFFFF>  ucrc;
+CRC_t<32, 0x04C11DB7, 0xFFFFFFFF, true, true, 0xFFFFFFFF> ucrc;
 
 int err = ucrc.get_crc(crc, "std_file_to_test_crc");
 
@@ -216,7 +214,7 @@ char buf2[len_of_buf2]; //bla bla
 
 uint8_t crc;
 
-CRC_t<8, 0x7, 0x0, false, false, 0x0>  ucrc;
+CRC_t<8, 0x7, 0x0, false, false, 0x0> ucrc;
 
 crc = ucrc.get_crc_init();
 crc = ucrc.get_raw_crc(buf,  len_of_buf,  crc);  //first chunk
@@ -229,6 +227,26 @@ crc = ucrc.get_raw_crc(buf,  len_of_buf);        //first chunk
 crc = ucrc.get_raw_crc(buf2, len_of_buf2, crc);  //second chunk
 crc = ucrc.get_end_crc(crc);
 //uses crc
+```
+
+
+**Note for bare-metal:**
+
+Since version 4.0, table implementations have two constructors.
+The default constructor is `constexpr` (table calculation in compile-time),
+the second one is needed to call the constructor in run-time(table calculation in run-time).
+This allows you to get various options for working, for example, place a table in the DTCM-RAM by specifying the desired section.
+
+Example for gcc:
+
+```C++
+using CRC32_t = CRC_t<32, 0x4C11DB7, 0xFFFFFFFF, false, false, 0x0>;
+#define DTCM_RAM  __attribute__((section(".DTCM_data")))
+
+const CRC32_t          sw_crc32{}; //table in section .text      (Flash)    (table calculation in compile-time)
+const CRC32_t DTCM_RAM sw_crc32{}; //table in section .DTCM_data (DTCM-RAM) (table calculation in compile-time)
+const CRC32_t DTCM_RAM sw_crc32{1};//table in section .DTCM_data (DTCM-RAM) (table calculation in run-time)
+const CRC32_t          sw_crc32{1};//table in section .bss       (RAM)      (table calculation in run-time)
 ```
 
 

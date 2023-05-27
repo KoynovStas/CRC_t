@@ -7,7 +7,7 @@ To run the Benchmark on your machine, run the `speed` target:
 cmake --build build -t speed
 ```
 
-Result for my PC:
+Result (speed in MiB/sec) for my PC:
  - CPU: Intel(R) Core(TM) i7-6700K
  - RAM: Corsair	CMK32GX4M4B3200C16
  - GCC: mingw-7.3 CXX flags see in [CMakeLists.txt](./CMakeLists.txt)
