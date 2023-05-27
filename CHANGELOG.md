@@ -10,6 +10,24 @@ Copyright (c) 2015, Koynov Stas - skojnov@yandex.ru
 
 
 ---
+## [v4.0](https://github.com/KoynovStas/CRC_t/tree/v4.0) (2023-05-27)
+[Full Changelog](https://github.com/KoynovStas/CRC_t/compare/v3.0...v4.0)
+
+
+### New
+ - New: Since version 4.0 required `C++14`
+ - New: methods `get_crc` is `constexpr`
+ - New: method `reflect` is full `constexpr`
+ - New: add `constexpr` for method `get_end_crc`
+ - New: add `constexpr` ctor for table `Impl` (see note for bare-metall in README)
+
+Since ver 4.0 methods `get_crc` is `constexpr` This allows you to calculate CRC for `constexpr` variables in compile time.
+This works in gcc 10. But it doesn't work in gcc 11. (reason for prohibiting use of `static_cast` from `const void*` in `constexpr` functions)
+But this feature should appear in C++26 see proposal: [P2738](https://github.com/cplusplus/papers/issues/1431)
+
+
+
+
 ## [v3.0](https://github.com/KoynovStas/CRC_t/tree/v3.0) (2023-05-23)
 [Full Changelog](https://github.com/KoynovStas/CRC_t/compare/v2.1...v3.0)
 
